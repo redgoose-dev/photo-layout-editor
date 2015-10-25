@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.js"],"names":["console","log"],"mappings":"AAAA,YAEAA,SAAQC,IAAI,eACZD,QAAQC,IAAI,gBACZD,QAAQC,IAAI","file":"PhotoLayoutEditor.js","sourcesContent":["'use strict';\n\nconsole.log('hello world');\nconsole.log('hello world2');\nconsole.log('hello world3');"],"sourceRoot":"/source/"}
