@@ -10,15 +10,15 @@ var runSequence = require('run-sequence');
 // react.js compile
 gulp.task('react', function(){
 	return gulp.src('src/jsx/*.jsx')
+		.pipe(concat('PhotoLayoutEditor.js', { newLine: '\n' }))
 		.pipe(babel())
 		.pipe(gulp.dest('src/js/'));
 });
 // concat javascript files
 gulp.task('javascript', function(){
-	gulp.src('src/js/*.js')
+	gulp.src('src/js/PhotoLayoutEditor.js')
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
-		.pipe(concat('PhotoLayoutEditor.js', { newLine: '\n' }))
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest('dist/js/'))
 	;
@@ -45,6 +45,7 @@ gulp.task('scss', function(){
 			outputStyle: 'compact'
 			//outputStyle: 'compressed'
 		}).on('error', scss.logError))
+		.pipe(concat('PhotoLayoutEditor.css', { newLine: '\n' }))
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest('dist/css/'));
 });

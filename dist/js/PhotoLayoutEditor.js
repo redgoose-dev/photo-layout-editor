@@ -1,2 +1,2 @@
-"use strict";console.log("hello world"),console.log("hello world2"),console.log("hello world3");
+"use strict";var PhotoLayoutEditor=React.createClass({displayName:"PhotoLayoutEditor",render:function(){return React.createElement("div",null,"hello world react app")}});
 //# sourceMappingURL=../maps/PhotoLayoutEditor.js.map
