@@ -33,6 +33,45 @@ body, input, select, textarea {
 /* Container */
 #container {
 	margin-right: 240px;
+	.nav-top {
+		float: right;
+		height: 43px;
+		.block {
+			float: left;
+			margin-left: 1px;
+			> button {
+				display: block; position: relative;
+				margin: 0; padding: 0; width: 42px; height: 42px;
+				border: none; background: $col-bg-blur; cursor: pointer;
+				i {
+					position: absolute; display: block;
+					left: 50%; top: 50%;
+				}
+			}
+			&.active {
+				> a {background: $col-key;}
+				.form {display: block;}
+			}
+		}
+		.form {
+			display: none;
+		}
+	}
+	.gridster {
+		background: $col-bg-blur;
+		clear: both;
+	}
+	.nav-bottom {
+		margin: 30px 0; text-align: center;
+		button {
+			margin: 0; padding: 15px 34px;
+			border: none; background: $col-key;
+			font-size: 0; cursor: pointer;
+			> * {vertical-align: middle;}
+			i {margin-right: 3px;}
+			span { font-weight: bold; font-size: 15px; color: #fff;}
+		}
+	}
 }
 
 
