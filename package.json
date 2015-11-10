@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "description": "Photo layout editor p/g",
   "dependencies": {
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "react": "^0.14.2"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.0",
     "gulp-concat": "^2.6.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.0.4",
+    "gulp-sass": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.4.2"
+    "gulp-uglify": "^1.4.2",
+    "run-sequence": "^1.1.4"
   },
   "repository": {
     "type": "git",

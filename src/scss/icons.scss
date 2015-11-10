@@ -26,9 +26,18 @@
 	&.abs {margin-left: -8px; margin-top: -8px;}
 }
 .ico-check {width: 16px; height: 14px; background-position: -80px 0;}
-.ico-arrow-left {width: 18px; height: 11px; background-position: -106px 0;}
-.ico-upload {width: 18px; height: 17px; background-position: -134px 0;}
-.ico-trash {width: 13px; height: 17px; background-position: -162px 0;}
+.ico-arrow-left {
+	width: 18px; height: 11px; background-position: -106px 0;
+	&.abs {margin-left: -9px; margin-top: -5px;}
+}
+.ico-upload {
+	width: 18px; height: 17px; background-position: -134px 0;
+	&.abs {margin-left: -9px; margin-top: -9px;}
+}
+.ico-trash {
+	width: 13px; height: 17px; background-position: -162px 0;
+	&.abs {margin-left: -6px; margin-top: -9px;}
+}
 .ico-pencel {width: 18px; height: 18px; background-position: 0 -38px;}
 .ico-trash2 {width: 14px; height: 18px; background-position: -28px -38px;}
 .ico-document {width: 18px; height: 18px; background-position: -52px -38px;}

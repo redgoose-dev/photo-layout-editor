@@ -15,6 +15,12 @@ body, input, select, textarea {
 }
 
 
+/* Attributes */
+.blind {
+	position: absolute !important; overflow: hidden !important; visibility: hidden !important;
+	width: 0 !important; height: 0 !important; font-size: 0 !important; line-height: 0 !important;
+}
+
 
 /* Header */
 #header {
@@ -34,8 +40,7 @@ body, input, select, textarea {
 #container {
 	margin-right: 240px;
 	.nav-top {
-		float: right;
-		height: 43px;
+		float: right; height: 43px;
 		.block {
 			float: left;
 			margin-left: 1px;
@@ -48,13 +53,61 @@ body, input, select, textarea {
 					left: 50%; top: 50%;
 				}
 			}
-			&.active {
-				> a {background: $col-key;}
+			&.is-active {
+				> button {background: $col-key;}
 				.form {display: block;}
 			}
 		}
 		.form {
-			display: none;
+			position: relative; display: none;
+			form {
+				position: absolute; right: -20px; top: 0; z-index: 99999; min-width: 270px;
+				background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
+				fieldset {margin: 0; padding: 20px; border: none;}
+			}
+			h1 {
+				margin: 0 0 10px;
+				font-size: 18px; color: $col-key;
+			}
+			dl {
+				display: table; width: 100%; margin: 1px 0;
+				> * {
+					display: table-cell; vertical-align: middle;
+					padding: 3px 0;
+				}
+				dt {
+					width: 95px;
+					font-size: 12px; color: #333;
+					label {display: inline;}
+				}
+				dd {
+					margin: 0 0 0 100px;
+					input[type=number] {
+						margin: 0; padding: 6px 6px;
+						font-size: 12px; color: #111;
+						border: 1px solid #c4c7c8; border-radius: 2px;
+						box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+					}
+					span {
+						padding-left: 5px;
+						font-size: 12px; color: #333;
+					}
+				}
+			}
+			nav {
+				&:after {content: ''; display: block; clear: both;}
+				span {
+					display: block; width: 50%; float: left;
+					&:first-child {padding-right: 1px;}
+				}
+				button {
+					margin: 0; padding: 12px 0; width: 100%;
+					font-size: 12px; color: #fff;
+					background: $col-blur; border: none; cursor: pointer;
+					-webkit-appearance: none;
+					&[type=submit] {background: $col-key;}
+				}
+			}
 		}
 	}
 	.gridster {
@@ -78,7 +131,58 @@ body, input, select, textarea {
 /* Sidebar */
 #sidebar {
 	position: fixed; z-index: 9999;
+	padding: 0;
 	right: 0; top: 0; bottom: 0; width: 240px;
 	background: $col-key;
-
+	.nav-top {
+		position: absolute; z-index: 2; left: 0; right: 0; top: 0;
+		background: $col-key;
+		.wrap {
+			margin: 30px 15px 10px;
+			border: 1px solid #919193;
+			border-color: rgba(255,255,255,.3);
+			border-radius: 3px;
+			&:after {content: ''; display: block; clear: both;}
+		}
+		button {
+			margin: 0; padding: 0;
+			position: relative; float: left; width: 33.33333%; height: 30px;
+			background: none;
+			border-width: 0 0 0 1px; border-style: solid;
+			border-color: #919193; border-color: rgba(255,255,255,.3);
+			cursor: pointer;
+			&:first-child {border-width: 0;}
+		}
+		i {
+			display: block; position: absolute;
+			left: 50%; top: 50%;
+		}
+	}
+	.upload-files {
+		height: 100%; margin: 0; padding: 75px 15px 0;
+		overflow-x: hidden; overflow-y: auto43243;
+		ul {
+			margin: 0 -5px; padding: 0; list-style: none;
+			&:after {content: ''; display: block; clear: both;}
+		}
+		li {
+			float: left; width: 33.33333%; padding: 5px;
+			span {
+				position: relative; display: block; height: 60px;
+				background: rgba(0,0,0,.2);
+				background-size: cover;
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				text-indent: -9999px;
+				cursor: pointer;
+				&:hover {
+					&:after {
+						content: ''; position: absolute;
+						left: 0; right: 0; top: 0; bottom: 0;
+						border: 4px solid #fff;
+					}
+				}
+			}
+		}
+	}
 }
