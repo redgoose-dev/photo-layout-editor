@@ -1,13 +1,17 @@
 var App = React.createClass({
 
+	displayName: 'photo-layout-editor',
+
 	/**
   * render
   */
 	render: function () {
-		return "aaa";
+		return React.createElement(
+			"div",
+			{ className: "ple-editor" },
+			React.createElement(Header, null),
+			React.createElement(Container, null),
+			React.createElement(Sidebar, null)
+		);
 	}
 });
-
-//<Header />
-//<Container />
-//<Sidebar />

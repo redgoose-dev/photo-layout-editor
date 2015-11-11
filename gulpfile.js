@@ -18,7 +18,7 @@ gulp.task('react', function(){
 gulp.task('javascript', function(){
 	gulp.src('src/js/**/*.js')
 		.pipe(sourcemaps.init())
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(concat('PhotoLayoutEditor.min.js', { newLine: '\n' }))
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest('dist/js/'));
@@ -35,7 +35,7 @@ gulp.task('react_and_javascript', function(callback){
 
 // watch react and javascript
 gulp.task('react_and_javascript:watch', function(){
-	gulp.watch(['src/jsx/*.jsx'], ['react_and_javascript']);
+	gulp.watch(['src/jsx/**/*.jsx'], ['react_and_javascript']);
 });
 
 

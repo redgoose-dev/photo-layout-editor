@@ -4,9 +4,11 @@
   "description": "Photo layout editor p/g",
   "dependencies": {
     "jquery": "^2.1.4",
-    "react": "^0.14.2"
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2"
   },
   "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.0.18",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
     "gulp-concat": "^2.6.0",

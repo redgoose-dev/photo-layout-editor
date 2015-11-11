@@ -4,91 +4,21 @@
 <meta charset="UTF-8">
 <title>Photo layout editor program</title>
 <link rel="stylesheet" href="./dist/css/PhotoLayoutEditor.css"/>
+<script src="./node_modules/react/dist/react.js"></script>
+<script src="./node_modules/react-dom/dist/react-dom.js"></script>
 <script src="./node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-<main class="ple-editor" id="photoLayoutEditor">
+<main id="photoLayoutEditor"></main>
 
-	<!-- Container -->
-	<div id="container">
-		<nav class="nav-top">
-			<div class="block">
-				<button type="button"><i class="sp-ico ico-setting abs">Setting</i></button>
-				<article class="form">
-					<form action="#">
-						<fieldset>
-							<legend class="blind">Settings form</legend>
-							<h1>Settings</h1>
-							<dl>
-								<dt><label for="frm-name">Min Width</label></dt>
-								<dd><input type="number" name="width" id="frm-name" min="1" max="999"/><span>px</span></dd>
-							</dl>
-							<dl>
-								<dt><label for="frm-height">Min Height</label></dt>
-								<dd><input type="number" name="height" id="frm-height" min="1" max="999"/><span>px</span></dd>
-							</dl>
-							<dl>
-								<dt><label for="frm-max-col">Max Column</label></dt>
-								<dd><input type="number" name="max_col" id="frm-max-col" min="1" max="99"/><span>ea</span></dd>
-							</dl>
-							<dl>
-								<dt><label for="frm-outer-margin">Outer Margin</label></dt>
-								<dd><input type="number" name="outer-margin" id="frm-outer-margin" min="1" max="500"/><span>px</span></dd>
-							</dl>
-							<dl>
-								<dt><label for="frm-inner-margin">Inner Margin</label></dt>
-								<dd><input type="number" name="inner-margin" id="frm-inner-margin" min="1" max="500"/><span>px</span></dd>
-							</dl>
-						</fieldset>
-						<nav>
-							<span><button type="reset">Reset</button></span>
-							<span><button type="submit">Apply</button></span>
-						</nav>
-					</form>
-				</article>
-			</div>
-			<div class="block">
-				<button type="button"><i class="sp-ico ico-arrow-random abs">Random block</i></button>
-			</div>
-			<div class="block">
-				<button type="button"><i class="sp-ico ico-plus abs">Add block</i></button>
-			</div>
-		</nav>
-		<div class="gridster">
-			.gridster
-		</div>
-		<nav class="nav-bottom">
-			<button type="button" data-action="generate">
-				<i class="sp-ico ico-check"></i>
-				<span>Generate</span>
-			</button>
-		</nav>
-	</div>
-	<!-- // Container -->
-
-	<!-- Sidebar -->
-	<aside id="sidebar">
-		<nav class="nav-top">
-			<div class="wrap">
-				<button type="button"><i class="sp-ico ico-arrow-left abs">Moving the image to grid block</i></button>
-				<button type="button"><i class="sp-ico ico-upload abs">upload image</i></button>
-				<button type="button"><i class="sp-ico ico-trash abs">remove image</i></button>
-			</div>
-		</nav>
-		<div class="upload-files">
-			<ul>
-				<li><span style="background-image: url('./assets/img/tmp-simg-01.jpg')">.img</span></li>
-				<li><span style="background-image: url('./assets/img/tmp-simg-02.jpg')">.img</span></li>
-				<li><span style="background-image: url('./assets/img/tmp-simg-03.jpg')">.img</span></li>
-				<li><span style="background-image: url('./assets/img/tmp-simg-04.jpg')">.img</span></li>
-			</ul>
-		</div>
-	</aside>
-	<!-- // Sidebar -->
-</main>
 <script src="./dist/js/PhotoLayoutEditor.min.js"></script>
 <script>
-
+ReactDOM.render(
+	React.createElement(
+		App
+	),
+	document.getElementById('photoLayoutEditor')
+);
 </script>
 </body>
 </html>
