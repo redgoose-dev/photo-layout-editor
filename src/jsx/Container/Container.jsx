@@ -9,9 +9,9 @@ var Container = React.createClass({
 	{
 		return (
 			<div className="ple-container">
-                <Container_NavTop />
-                <Container_Gridster />
-                <Container_NavBottom />
+				<Container_NavTop />
+				<Container_Gridster />
+				<Container_NavBottom />
 			</div>
 		);
 	}

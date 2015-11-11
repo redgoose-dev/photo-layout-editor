@@ -1,212 +1,88 @@
 var Container_NavTop = React.createClass({
 
-  displayName: 'Nav-top',
+	displayName: 'Nav-top',
 
-  /**
-   * render
-   */
-  render: function () {
-    return React.createElement(
-      "nav",
-      { className: "nav-top" },
-      React.createElement(
-        "div",
-        { className: "block" },
-        React.createElement(
-          "button",
-          { type: "button" },
-          React.createElement(
-            "i",
-            { className: "sp-ico ico-setting abs" },
-            "Setting"
-          )
-        ),
-        React.createElement(
-          "article",
-          { className: "form" },
-          React.createElement(
-            "form",
-            { action: "#" },
-            React.createElement(
-              "fieldset",
-              null,
-              React.createElement(
-                "legend",
-                { className: "blind" },
-                "Settings form"
-              ),
-              React.createElement(
-                "h1",
-                null,
-                "Settings"
-              ),
-              React.createElement(
-                "dl",
-                null,
-                React.createElement(
-                  "dt",
-                  null,
-                  React.createElement(
-                    "label",
-                    { htmlhtmlFor: "frm-name" },
-                    "Min Width"
-                  )
-                ),
-                React.createElement(
-                  "dd",
-                  null,
-                  React.createElement("input", { type: "number", name: "width", id: "frm-name", min: "1", max: "999" }),
-                  React.createElement(
-                    "span",
-                    null,
-                    "px"
-                  )
-                )
-              ),
-              React.createElement(
-                "dl",
-                null,
-                React.createElement(
-                  "dt",
-                  null,
-                  React.createElement(
-                    "label",
-                    { htmlFor: "frm-height" },
-                    "Min Height"
-                  )
-                ),
-                React.createElement(
-                  "dd",
-                  null,
-                  React.createElement("input", { type: "number", name: "height", id: "frm-height", min: "1", max: "999" }),
-                  React.createElement(
-                    "span",
-                    null,
-                    "px"
-                  )
-                )
-              ),
-              React.createElement(
-                "dl",
-                null,
-                React.createElement(
-                  "dt",
-                  null,
-                  React.createElement(
-                    "label",
-                    { htmlFor: "frm-max-col" },
-                    "Max Column"
-                  )
-                ),
-                React.createElement(
-                  "dd",
-                  null,
-                  React.createElement("input", { type: "number", name: "max_col", id: "frm-max-col", min: "1", max: "99" }),
-                  React.createElement(
-                    "span",
-                    null,
-                    "ea"
-                  )
-                )
-              ),
-              React.createElement(
-                "dl",
-                null,
-                React.createElement(
-                  "dt",
-                  null,
-                  React.createElement(
-                    "label",
-                    { htmlFor: "frm-outer-margin" },
-                    "Outer Margin"
-                  )
-                ),
-                React.createElement(
-                  "dd",
-                  null,
-                  React.createElement("input", { type: "number", name: "outer-margin", id: "frm-outer-margin", min: "1", max: "500" }),
-                  React.createElement(
-                    "span",
-                    null,
-                    "px"
-                  )
-                )
-              ),
-              React.createElement(
-                "dl",
-                null,
-                React.createElement(
-                  "dt",
-                  null,
-                  React.createElement(
-                    "label",
-                    { htmlFor: "frm-inner-margin" },
-                    "Inner Margin"
-                  )
-                ),
-                React.createElement(
-                  "dd",
-                  null,
-                  React.createElement("input", { type: "number", name: "inner-margin", id: "frm-inner-margin", min: "1", max: "500" }),
-                  React.createElement(
-                    "span",
-                    null,
-                    "px"
-                  )
-                )
-              )
-            ),
-            React.createElement(
-              "nav",
-              null,
-              React.createElement(
-                "span",
-                null,
-                React.createElement(
-                  "button",
-                  { type: "reset" },
-                  "Reset"
-                )
-              ),
-              React.createElement(
-                "span",
-                null,
-                React.createElement(
-                  "button",
-                  { type: "submit" },
-                  "Apply"
-                )
-              )
-            )
-          )
-        )
-      ),
-      React.createElement(
-        "div",
-        { className: "block" },
-        React.createElement(
-          "button",
-          { type: "button" },
-          React.createElement(
-            "i",
-            { className: "sp-ico ico-arrow-random abs" },
-            "Random block"
-          )
-        )
-      ),
-      React.createElement(
-        "div",
-        { className: "block" },
-        React.createElement(
-          "button",
-          { type: "button" },
-          React.createElement(
-            "i",
-            { className: "sp-ico ico-plus abs" },
-            "Add block"
-          )
-        )
-      )
-    );
-  }
+	getInitialState: function () {
+		return {
+			show_form: false
+		};
+	},
+
+	/**
+  * CLICK EVENTS
+  */
+
+	/**
+  * Toggle setting form
+  */
+	toggleSetting: function () {
+		if (!this.state.show_form == true) {
+			// TODO : document에 클릭이벤트를 걸어서 누르면 폼이 닫히게 이벤트 걸기
+		}
+		this.setState({ show_form: !this.state.show_form });
+	},
+
+	/**
+  * Action shuffle blocks
+  */
+	actShuffleBlocks: function () {
+		log('action shuffle blocks');
+	},
+
+	/**
+  * Action add blocks
+  */
+	actAddBlocks: function () {
+		log('action add blocks');
+	},
+
+	/**
+  * RENDER
+  */
+	render: function () {
+		return React.createElement(
+			'nav',
+			{ className: 'nav-top' },
+			React.createElement(
+				'div',
+				{ className: 'block' + (this.state.show_form ? ' is-active' : '') },
+				React.createElement(
+					'button',
+					{ type: 'button', onClick: this.toggleSetting },
+					React.createElement(
+						'i',
+						{ className: 'sp-ico ico-setting abs' },
+						'Setting'
+					)
+				),
+				React.createElement(Container_NavTop_Form, null)
+			),
+			React.createElement(
+				'div',
+				{ className: 'block' },
+				React.createElement(
+					'button',
+					{ type: 'button', onClick: this.actShuffleBlocks },
+					React.createElement(
+						'i',
+						{ className: 'sp-ico ico-arrow-random abs' },
+						'Random block'
+					)
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'block' },
+				React.createElement(
+					'button',
+					{ type: 'button', onClick: this.actAddBlocks },
+					React.createElement(
+						'i',
+						{ className: 'sp-ico ico-plus abs' },
+						'Add block'
+					)
+				)
+			)
+		);
+	}
 });

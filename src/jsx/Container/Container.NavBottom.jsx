@@ -2,6 +2,11 @@ var Container_NavBottom = React.createClass({
 
 	displayName : 'Nav-bottom',
 
+	actGenerator : function()
+	{
+		log('ACTION GENERATE');
+	},
+
 	/**
 	 * render
 	 */
@@ -9,7 +14,7 @@ var Container_NavBottom = React.createClass({
 	{
 		return (
             <nav className="nav-bottom">
-        		<button type="button" data-action="generate">
+        		<button type="button" onClick={this.actGenerator}>
         			<i className="sp-ico ico-check"></i>
         			<span>Generate</span>
         		</button>
