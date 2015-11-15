@@ -2,6 +2,10 @@ var Container_NavTop_Form = React.createClass({
 
 	displayName : 'Form',
 
+	propTypes : {
+		update : React.PropTypes.func
+	},
+
 	getInitialState : function()
 	{
 		return {
@@ -13,11 +17,15 @@ var Container_NavTop_Form = React.createClass({
 		};
 	},
 
-	onSubmit : function(e)
+	submit : function()
 	{
-		var form = e.target;
-		log(form.action);
+		this.props.update(this.state);
 		return false;
+	},
+
+	reset : function()
+	{
+		this.setState(this.getInitialState());
 	},
 
 	/**
@@ -26,8 +34,8 @@ var Container_NavTop_Form = React.createClass({
 	render : function()
 	{
 		return (
-			<article className="form">
-				<form action="#" onSubmit={this.onSubmit}>
+			<article className="form" id="settings">
+				<form method="post">
 					<fieldset>
 						<legend className="blind">Settings form</legend>
 						<h1>Settings</h1>
@@ -84,8 +92,8 @@ var Container_NavTop_Form = React.createClass({
 						</dl>
 					</fieldset>
 					<nav>
-						<span><button type="reset">Reset</button></span>
-						<span><button type="submit">Apply</button></span>
+						<span><button type="reset" onClick={this.reset}>Reset</button></span>
+						<span><button type="button" className="submit" onClick={this.submit}>Apply</button></span>
 					</nav>
 				</form>
 			</article>

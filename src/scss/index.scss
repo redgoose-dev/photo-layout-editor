@@ -109,7 +109,7 @@ body, input, select, textarea {
 					font-size: 12px; color: #fff;
 					background: $col-blur; border: none; cursor: pointer;
 					-webkit-appearance: none;
-					&[type=submit] {background: $col-key;}
+					&.submit {background: $col-key;}
 				}
 			}
 		}
@@ -148,7 +148,7 @@ body, input, select, textarea {
 			border-radius: 3px;
 			&:after {content: ''; display: block; clear: both;}
 		}
-		button {
+		button, span {
 			margin: 0; padding: 0;
 			position: relative; float: left; width: 33.33333%; height: 30px;
 			background: none;
@@ -156,6 +156,19 @@ body, input, select, textarea {
 			border-color: #919193; border-color: rgba(255,255,255,.3);
 			cursor: pointer;
 			&:first-child {border-width: 0;}
+		}
+		input[type=file] {
+			position: absolute; left: -40px; top: 0; z-index: 3;
+			//width: 100%;
+			height: 100%;
+			//opacity: 0;
+			//outline: none;
+			white-space: nowrap;
+			cursor: pointer;
+			-webkit-user-select: none;
+			&::-webkit-file-upload-button {
+				visibility: hidden;
+			}
 		}
 		i {
 			display: block; position: absolute;

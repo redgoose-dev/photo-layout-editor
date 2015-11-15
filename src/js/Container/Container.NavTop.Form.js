@@ -2,6 +2,10 @@ var Container_NavTop_Form = React.createClass({
 
 	displayName: 'Form',
 
+	propTypes: {
+		update: React.PropTypes.func
+	},
+
 	getInitialState: function () {
 		return {
 			width: 100,
@@ -12,10 +16,13 @@ var Container_NavTop_Form = React.createClass({
 		};
 	},
 
-	onSubmit: function (e) {
-		var form = e.target;
-		log(form.action);
+	submit: function () {
+		this.props.update(this.state);
 		return false;
+	},
+
+	reset: function () {
+		this.setState(this.getInitialState());
 	},
 
 	/**
@@ -24,10 +31,10 @@ var Container_NavTop_Form = React.createClass({
 	render: function () {
 		return React.createElement(
 			"article",
-			{ className: "form" },
+			{ className: "form", id: "settings" },
 			React.createElement(
 				"form",
-				{ action: "#", onSubmit: this.onSubmit },
+				{ method: "post" },
 				React.createElement(
 					"fieldset",
 					null,
@@ -181,7 +188,7 @@ var Container_NavTop_Form = React.createClass({
 						null,
 						React.createElement(
 							"button",
-							{ type: "reset" },
+							{ type: "reset", onClick: this.reset },
 							"Reset"
 						)
 					),
@@ -190,7 +197,7 @@ var Container_NavTop_Form = React.createClass({
 						null,
 						React.createElement(
 							"button",
-							{ type: "submit" },
+							{ type: "button", className: "submit", onClick: this.submit },
 							"Apply"
 						)
 					)

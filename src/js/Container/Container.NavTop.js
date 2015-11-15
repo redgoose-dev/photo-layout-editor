@@ -15,9 +15,16 @@ var Container_NavTop = React.createClass({
 	/**
   * Toggle setting form
   */
-	toggleSetting: function () {
+	toggleSetting: function (e) {
+		var self = this;
 		if (!this.state.show_form == true) {
-			// TODO : document에 클릭이벤트를 걸어서 누르면 폼이 닫히게 이벤트 걸기
+			$(document).on('click', function (e) {
+				if (!$(e.target).closest('#settings').length) {
+					e.preventDefault();
+					$(this).off('click');
+					self.setState({ show_form: false });
+				}
+			});
 		}
 		this.setState({ show_form: !this.state.show_form });
 	},
@@ -48,21 +55,21 @@ var Container_NavTop = React.createClass({
 				{ className: 'block' + (this.state.show_form ? ' is-active' : '') },
 				React.createElement(
 					'button',
-					{ type: 'button', onClick: this.toggleSetting },
+					{ type: 'button', title: 'Edit preference', onClick: this.toggleSetting },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-setting abs' },
 						'Setting'
 					)
 				),
-				React.createElement(Container_NavTop_Form, null)
+				React.createElement(Container_NavTop_Form, { update: this.props.update })
 			),
 			React.createElement(
 				'div',
 				{ className: 'block' },
 				React.createElement(
 					'button',
-					{ type: 'button', onClick: this.actShuffleBlocks },
+					{ type: 'button', title: 'Shuffle block', onClick: this.actShuffleBlocks },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-arrow-random abs' },
@@ -75,7 +82,7 @@ var Container_NavTop = React.createClass({
 				{ className: 'block' },
 				React.createElement(
 					'button',
-					{ type: 'button', onClick: this.actAddBlocks },
+					{ type: 'button', title: 'Add block', onClick: this.actAddBlocks },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-plus abs' },

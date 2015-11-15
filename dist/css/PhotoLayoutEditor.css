@@ -109,7 +109,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .nav-top .form nav button { margin: 0; padding: 12px 0; width: 100%; font-size: 12px; color: #fff; background: #999999; border: none; cursor: pointer; -webkit-appearance: none; }
 
-.ple-container .nav-top .form nav button[type=submit] { background: #626164; }
+.ple-container .nav-top .form nav button.submit { background: #626164; }
 
 .ple-container .gridster { background: #c5c5c7; clear: both; }
 
@@ -132,9 +132,13 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .nav-top .wrap:after { content: ''; display: block; clear: both; }
 
-.ple-sidebar .nav-top button { margin: 0; padding: 0; position: relative; float: left; width: 33.33333%; height: 30px; background: none; border-width: 0 0 0 1px; border-style: solid; border-color: #919193; border-color: rgba(255, 255, 255, 0.3); cursor: pointer; }
+.ple-sidebar .nav-top button, .ple-sidebar .nav-top span { margin: 0; padding: 0; position: relative; float: left; width: 33.33333%; height: 30px; background: none; border-width: 0 0 0 1px; border-style: solid; border-color: #919193; border-color: rgba(255, 255, 255, 0.3); cursor: pointer; }
 
-.ple-sidebar .nav-top button:first-child { border-width: 0; }
+.ple-sidebar .nav-top button:first-child, .ple-sidebar .nav-top span:first-child { border-width: 0; }
+
+.ple-sidebar .nav-top input[type=file] { position: absolute; left: -40px; top: 0; z-index: 3; height: 100%; white-space: nowrap; cursor: pointer; -webkit-user-select: none; }
+
+.ple-sidebar .nav-top input[type=file]::-webkit-file-upload-button { visibility: hidden; }
 
 .ple-sidebar .nav-top i { display: block; position: absolute; left: 50%; top: 50%; }
 

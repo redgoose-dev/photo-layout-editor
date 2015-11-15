@@ -15,7 +15,7 @@ var Container_NavBottom = React.createClass({
 			{ className: 'nav-bottom' },
 			React.createElement(
 				'button',
-				{ type: 'button', onClick: this.actGenerator },
+				{ type: 'button', title: 'Generate export', onClick: this.props.generate },
 				React.createElement('i', { className: 'sp-ico ico-check' }),
 				React.createElement(
 					'span',

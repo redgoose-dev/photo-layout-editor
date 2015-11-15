@@ -2,6 +2,20 @@ var Container = React.createClass({
 
 	displayName : 'Container',
 
+	updatePreference : function(params)
+	{
+		log('trigger update setting');
+		log(params);
+	},
+
+	/**
+	 * Generate
+	 */
+	generate : function()
+	{
+		log('generate output');
+	},
+
 	/**
 	 * render
 	 */
@@ -9,9 +23,9 @@ var Container = React.createClass({
 	{
 		return (
 			<div className="ple-container">
-				<Container_NavTop />
+				<Container_NavTop update={this.updatePreference} />
 				<Container_Gridster />
-				<Container_NavBottom />
+				<Container_NavBottom generate={this.generate} />
 			</div>
 		);
 	}
