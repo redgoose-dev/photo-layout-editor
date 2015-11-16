@@ -2,7 +2,11 @@ var Sidebar_Nav = React.createClass({
 
 	displayName: 'Navigation',
 
-	// TODO : 이미지 업로드 만들기
+	getInitialState: function () {
+		return {
+			inputFile: React.createElement('input', { type: 'file', onChange: this.upload, multiple: true })
+		};
+	},
 
 	/**
   * Attach images
@@ -15,12 +19,14 @@ var Sidebar_Nav = React.createClass({
   * Upload images
   */
 	upload: function (e) {
+		// TODO : 업로드된 이미지 데이터를 Sidebar 컴포넌트에 등록하기
 		for (var i = 0; i < e.target.files.length; i++) {
 			log(e.target.files[i]);
 		}
-		e.target.select();
-		log(document.selection);
-		//document.selection.clear();
+
+		// reset input[type=file]
+		var $input = $(this.refs.inputFile);
+		$input.replaceWith($input.val('').clone(true));
 	},
 
 	/**
@@ -52,7 +58,7 @@ var Sidebar_Nav = React.createClass({
 				React.createElement(
 					'span',
 					{ title: 'upload images' },
-					React.createElement('input', { type: 'file', onChange: this.upload, multiple: true }),
+					React.createElement('input', { type: 'file', ref: 'inputFile', onChange: this.upload, multiple: true }),
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-upload abs' },

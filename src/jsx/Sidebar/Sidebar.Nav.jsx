@@ -2,7 +2,12 @@ var Sidebar_Nav = React.createClass({
 
 	displayName : 'Navigation',
 
-	// TODO : 이미지 업로드 만들기
+	getInitialState : function()
+	{
+		return {
+			inputFile : <input type="file" onChange={this.upload} multiple />
+		};
+	},
 
 	/**
 	 * Attach images
@@ -17,13 +22,15 @@ var Sidebar_Nav = React.createClass({
 	 */
 	upload : function(e)
 	{
+		// TODO : 업로드된 이미지 데이터를 Sidebar 컴포넌트에 등록하기
 		for (var i=0; i<e.target.files.length; i++)
 		{
 			log(e.target.files[i]);
 		}
-		e.target.select();
-		log(document.selection);
-		//document.selection.clear();
+
+		// reset input[type=file]
+		var $input = $(this.refs.inputFile);
+		$input.replaceWith($input.val('').clone(true));
 	},
 
 	/**
@@ -46,7 +53,7 @@ var Sidebar_Nav = React.createClass({
 						<i className="sp-ico ico-arrow-left abs">Moving the image to grid block</i>
 					</button>
 					<span title="upload images">
-						<input type="file" onChange={this.upload} multiple />
+						<input type="file" ref="inputFile" onChange={this.upload} multiple />
 						<i className="sp-ico ico-upload abs">upload images</i>
 					</span>
 					<button type="button" title="remove images" onClick={this.remove}>

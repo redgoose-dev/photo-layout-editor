@@ -2,6 +2,30 @@ var Sidebar = React.createClass({
 
 	displayName : 'Sidebar',
 
+	getInitialState : function()
+	{
+		return {
+			uploadImages : [
+				{
+					on : false,
+					style : { backgroundImage : 'url(./assets/img/tmp-simg-01.jpg)' }
+				},
+				{
+					on : false,
+					style : { backgroundImage : 'url(./assets/img/tmp-simg-02.jpg)' }
+				},
+				{
+					on : false,
+					style : { backgroundImage : 'url(./assets/img/tmp-simg-03.jpg)' }
+				},
+				{
+					on : false,
+					style : { backgroundImage : 'url(./assets/img/tmp-simg-04.jpg)' }
+				}
+			]
+		};
+	},
+
 	upload : function()
 	{
 		log('upload file');
@@ -17,6 +41,11 @@ var Sidebar = React.createClass({
 		log('attach file');
 	},
 
+	update : function(data)
+	{
+		this.setState({ uploadImages : data });
+	},
+
 	/**
 	 * render
 	 */
@@ -25,7 +54,7 @@ var Sidebar = React.createClass({
 		return (
 			<aside className="ple-sidebar">
                 <Sidebar_Nav upload={this.upload} remove={this.remove} attach={this.attach} />
-                <Sidebar_UploadFiles />
+                <Sidebar_UploadFiles uploadImages={this.state.uploadImages} update={this.update} />
 			</aside>
 		);
 	}
