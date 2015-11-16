@@ -18,19 +18,21 @@ var Sidebar_UploadFiles = React.createClass({
 	{
 		var self = this;
 		var CTRL = 17;
+		var CMD = 91;
 		function onKeydown(e)
 		{
-			if (e.keyCode == CTRL)
+			if (e.keyCode == CTRL || e.keyCode == CMD)
 			{
 				self.setState({ is_multiSelect: true });
-				$(window).off('keydown');
+				$(this).off('keydown').on('keyup', onKeyUp);
 			}
 		}
-
-		$(window).on('keydown', onKeydown).on('keyup', function(){
+		function onKeyUp(e)
+		{
 			self.setState({ is_multiSelect: false });
-			$(this).on('keydown', onKeydown);
-		});
+			$(this).off('keyup').on('keydown', onKeydown);
+		}
+		$(window).on('keydown', onKeydown);
 	},
 
 	onSelect : function(e)

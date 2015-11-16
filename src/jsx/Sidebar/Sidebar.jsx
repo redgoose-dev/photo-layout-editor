@@ -2,6 +2,19 @@ var Sidebar = React.createClass({
 
 	displayName : 'Sidebar',
 
+	propTypes : {
+		uploadScript : React.PropTypes.string
+	},
+
+	uploader : new Uploader(),
+
+	getDefaultProps : function()
+	{
+		return {
+			uploadScript : null
+		};
+	},
+
 	getInitialState : function()
 	{
 		return {
@@ -26,9 +39,27 @@ var Sidebar = React.createClass({
 		};
 	},
 
-	upload : function()
+	/**
+	 * upload images
+	 *
+	 * @Param {Files} array
+	 */
+	upload : function(files)
 	{
-		log('upload file');
+		var result = null;
+		if (this.props.uploadScript)
+		{
+			this.uploader.external(this.props.uploadScript, files, function(data){
+				log(data);
+			});
+		}
+		else
+		{
+			this.uploader.local(files, function(data){
+				log(data);
+			});
+		}
+		// TODO : 위에 스크립트를 사용하여 {on, style: {backgroundImage}} 형식의 데이터를 만들어내는게 목표
 	},
 
 	remove : function()

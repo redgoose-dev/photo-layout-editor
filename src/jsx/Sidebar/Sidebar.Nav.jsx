@@ -22,15 +22,18 @@ var Sidebar_Nav = React.createClass({
 	 */
 	upload : function(e)
 	{
-		// TODO : 업로드된 이미지 데이터를 Sidebar 컴포넌트에 등록하기
+		var uploadFiles = [];
 		for (var i=0; i<e.target.files.length; i++)
 		{
-			log(e.target.files[i]);
+			uploadFiles.push(e.target.files[i]);
 		}
 
 		// reset input[type=file]
 		var $input = $(this.refs.inputFile);
 		$input.replaceWith($input.val('').clone(true));
+
+		// send sidebar component
+		this.props.upload(uploadFiles);
 	},
 
 	/**

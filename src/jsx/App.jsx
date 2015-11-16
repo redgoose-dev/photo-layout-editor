@@ -11,7 +11,7 @@ var App = React.createClass({
 			<div className="ple-editor">
 				<Header />
 				<Container />
-				<Sidebar />
+				<Sidebar uploadScript={this.props.uploadScript}/>
 			</div>
 		);
 	}
