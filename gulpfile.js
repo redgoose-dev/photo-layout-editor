@@ -23,6 +23,10 @@ gulp.task('javascript', function(){
 		.pipe(sourcemaps.write('../maps'))
 		.pipe(gulp.dest('dist/js/'));
 });
+// watch javascript
+gulp.task('javascript:watch', function(){
+	gulp.watch(['src/js/**/*.js'], ['javascript']);
+});
 
 // react and javascript
 gulp.task('react_and_javascript', function(callback){

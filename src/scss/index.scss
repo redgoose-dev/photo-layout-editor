@@ -139,6 +139,9 @@ body, input, select, textarea {
 	padding: 0;
 	right: 0; top: 0; bottom: 0; width: $sidebar-width;
 	background: $col-key;
+	&.loading {
+
+	}
 	.nav-top {
 		position: absolute; z-index: 2; left: 0; right: 0; top: 0;
 		background: $col-key;
@@ -186,9 +189,11 @@ body, input, select, textarea {
 		li {
 			float: left; width: 33.33333%; padding: 5px;
 			span {
-				position: relative; display: block; height: 60px;
+				position: relative; display: block;
+				width:100%; height: 60px;
 				background-size: cover;
-				background: rgba(0, 0, 0, .2) no-repeat 50% 50%;
+				background-repeat: no-repeat;
+				background-position: 0 0;
 				text-indent: -9999px;
 				cursor: pointer;
 				&.on {

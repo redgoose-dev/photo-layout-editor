@@ -14,7 +14,6 @@ function Uploader()
 		var result = [];
 		reader.onload = function(e)
 		{
-			// TODO : 로컬스토리지에 올리기
 			result.push(e.target.result);
 
 			// check last queue

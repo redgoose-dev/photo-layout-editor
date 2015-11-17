@@ -152,7 +152,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .upload-files li { float: left; width: 33.33333%; padding: 5px; }
 
-.ple-sidebar .upload-files li span { position: relative; display: block; height: 60px; background-size: cover; background: rgba(0, 0, 0, 0.2) no-repeat 50% 50%; text-indent: -9999px; cursor: pointer; }
+.ple-sidebar .upload-files li span { position: relative; display: block; width: 100%; height: 60px; background-size: cover; background-repeat: no-repeat; background-position: 0 0; text-indent: -9999px; cursor: pointer; }
 
 .ple-sidebar .upload-files li span.on:after { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border: 4px solid #fff; }
 
