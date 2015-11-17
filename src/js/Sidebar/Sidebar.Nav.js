@@ -33,13 +33,6 @@ var Sidebar_Nav = React.createClass({
 	},
 
 	/**
-  * Remove images
-  */
-	remove: function () {
-		log('remove image');
-	},
-
-	/**
   * render
   */
 	render: function () {
@@ -70,7 +63,7 @@ var Sidebar_Nav = React.createClass({
 				),
 				React.createElement(
 					'button',
-					{ type: 'button', title: 'remove images', onClick: this.remove },
+					{ type: 'button', title: 'remove images', onClick: this.props.remove },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-trash abs' },

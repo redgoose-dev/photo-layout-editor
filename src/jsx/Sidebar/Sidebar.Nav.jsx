@@ -37,14 +37,6 @@ var Sidebar_Nav = React.createClass({
 	},
 
 	/**
-	 * Remove images
-	 */
-	remove : function()
-	{
-		log('remove image');
-	},
-
-	/**
 	 * render
 	 */
 	render : function()
@@ -59,7 +51,7 @@ var Sidebar_Nav = React.createClass({
 						<input type="file" ref="inputFile" onChange={this.upload} multiple />
 						<i className="sp-ico ico-upload abs">upload images</i>
 					</span>
-					<button type="button" title="remove images" onClick={this.remove}>
+					<button type="button" title="remove images" onClick={this.props.remove}>
 						<i className="sp-ico ico-trash abs">remove images</i>
 					</button>
 				</div>

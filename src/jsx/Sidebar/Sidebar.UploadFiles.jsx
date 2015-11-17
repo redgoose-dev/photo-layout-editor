@@ -72,7 +72,9 @@ var Sidebar_UploadFiles = React.createClass({
 
 		return (
             <div className="upload-files">
-        		<ul ref="items">{items}</ul>
+				<div className="wrap">
+        			<ul ref="items">{items}</ul>
+				</div>
         	</div>
 		);
 	}

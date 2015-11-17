@@ -144,7 +144,9 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .nav-top i { display: block; position: absolute; left: 50%; top: 50%; }
 
-.ple-sidebar .upload-files { height: 100%; margin: 0; padding: 75px 15px 0; overflow-x: hidden; overflow-y: auto; }
+.ple-sidebar .upload-files { height: 100%; margin: 0; padding: 75px 0 0; }
+
+.ple-sidebar .upload-files .wrap { height: 100%; padding: 0 15px; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #626164; }
 
 .ple-sidebar .upload-files ul { margin: 0 -5px; padding: 0; list-style: none; }
 
@@ -152,7 +154,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .upload-files li { float: left; width: 33.33333%; padding: 5px; }
 
-.ple-sidebar .upload-files li span { position: relative; display: block; width: 100%; height: 60px; background-size: cover; background-repeat: no-repeat; background-position: 0 0; text-indent: -9999px; cursor: pointer; }
+.ple-sidebar .upload-files li span { position: relative; display: block; width: 100%; height: 63px; background-size: cover; background-repeat: no-repeat; background-position: 0 0; background-color: #fff; text-indent: -9999px; cursor: pointer; }
 
 .ple-sidebar .upload-files li span.on:after { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border: 4px solid #fff; }
 

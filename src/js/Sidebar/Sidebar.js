@@ -62,11 +62,18 @@ var Sidebar = React.createClass({
 				self.setState({ uploadImages: result });
 			});
 		}
-		// TODO : 위에 스크립트를 사용하여 {on, style: {backgroundImage}} 형식의 데이터를 만들어내는게 목표
 	},
 
 	remove: function () {
-		log('remove file');
+		if (!this.state.uploadImages.length) {
+			alert('이미지가 없습니다.');
+			return;
+		}
+
+		var selectedKey = [];
+		this.state.uploadImages.forEach(function (o, k) {
+			log(o);
+		});
 	},
 
 	attach: function () {
