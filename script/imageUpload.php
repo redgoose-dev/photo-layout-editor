@@ -9,17 +9,16 @@ $files = $_FILES['files'];
 $count = count($files['name']);
 $copyFiles = [];
 
+$uploadDir = $_SERVER['DOCUMENT_ROOT'].'/git/PhotoLayoutEditor/upload';
+$uploadUrl = './upload';
+
 
 // check directory
-if ($_POST['dir'] && is_dir($_SERVER['DOCUMENT_ROOT'].$_POST['dir']))
-{
-	$dir = $_SERVER['DOCUMENT_ROOT'].$_POST['dir'];
-}
-else
+if (!$uploadDir || !is_dir($uploadDir))
 {
 	echo urlencode(json_encode([
 		'state' => 'error',
-		'message' => 'not upload directory'
+		'message' => 'not exist "'.$uploadDir.'" directory'
 	]));
 	exit;
 }
@@ -40,9 +39,9 @@ for ($i=0; $i<$count; $i++)
 {
 	if ($files['tmp_name'][$i])
 	{
-		move_uploaded_file($files['tmp_name'][$i], $dir.'/'.$files['name'][$i]);
+		move_uploaded_file($files['tmp_name'][$i], $uploadDir.'/'.$files['name'][$i]);
 		$copyFiles[] = [
-			'loc' => $_POST['url'].'/'.$files['name'][$i],
+			'loc' => $uploadUrl.'/'.$files['name'][$i],
 			'type' => $files['type'][$i],
 			'size' => $files['size'][$i],
 			'name' => $files['name'][$i]

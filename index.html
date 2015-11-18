@@ -14,13 +14,11 @@
 
 <script src="./dist/js/PhotoLayoutEditor.min.js"></script>
 <script>
-ReactDOM.render(
+var app = ReactDOM.render(
 	React.createElement(
 		App,
 		{
-			uploadScript : './script/imageUpload.php',
-			uploadDir : '/git/PhotoLayoutEditor/upload',
-			uploadUrl : './upload'
+			//uploadScript : './script/imageUpload.php'
 		}
 	),
 	document.getElementById('photoLayoutEditor')
