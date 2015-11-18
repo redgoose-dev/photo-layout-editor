@@ -41,15 +41,33 @@ var Sidebar = React.createClass({
 	upload: function (files) {
 		var self = this;
 		var result = null;
+		var uploadFiles = [];
+
+		for (var i = 0; i < files.length; i++) {
+			uploadFiles.push(files[i]);
+		}
 
 		// on loading
+		this.setState({ is_loading: true });
+
+		// action upload
 		if (this.props.uploadScript) {
-			this.uploader.external(this.props.uploadScript, files, function (data) {
-				log(data);
+			// is external script upload
+			this.uploader.external(this.props.uploadScript, this.props.uploadDir, this.props.uploadUrl, uploadFiles, function (response) {
+				self.setState({ is_loading: false });
+
+				if (response.state == 'success') {
+					var data = response.images;
+					log(data);
+					// TODO : 받은 이미지 데이터로 목록에 삽입하기
+				} else {
+						log(response.message);
+					}
 			});
 		} else {
+			// is local upload
 			this.setState({ is_loading: true });
-			this.uploader.local(files, function (data) {
+			this.uploader.local(uploadFiles, function (data) {
 				var result = self.state.uploadImages;
 				self.setState({ is_loading: false });
 
@@ -65,15 +83,30 @@ var Sidebar = React.createClass({
 	},
 
 	remove: function () {
+		var self = this;
+		var selectedKeys = [];
+
 		if (!this.state.uploadImages.length) {
 			alert('이미지가 없습니다.');
 			return;
 		}
 
-		var selectedKey = [];
 		this.state.uploadImages.forEach(function (o, k) {
-			log(o);
+			if (o.on) {
+				selectedKeys.push(k);
+			}
 		});
+
+		if (selectedKeys.length) {
+			selectedKeys.forEach(function (o) {
+				delete self.state.uploadImages[o];
+			});
+			this.setState({ uploadImages: self.state.uploadImages });
+		} else {
+			if (confirm('선택된 사진이 없습니다. 전부 삭제할까요?')) {
+				this.setState({ uploadImages: [] });
+			}
+		}
 	},
 
 	attach: function () {

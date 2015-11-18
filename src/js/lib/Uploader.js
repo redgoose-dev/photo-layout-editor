@@ -35,11 +35,76 @@ function Uploader()
 	 * External upload
 	 *
 	 * @Param {String} script
+	 * @Param {String} dir
+	 * @Param {String} url
 	 * @Param {Array} files
+	 * @Param {Function} complete
 	 * @Return {Array}
 	 */
-	this.external = function(script, files)
+	this.external = function(script, dir, url, files, complete)
 	{
-		log('external upload');
+		var xhr = new XMLHttpRequest();
+
+		if (typeof FormData === 'function' || typeof FormData === 'object')
+		{
+			var formData = new FormData();
+
+			for (var i=0; i<files.length; i++)
+			{
+				formData.append('files[]', files[i]);
+			}
+			formData.append('dir', dir);
+			formData.append('url', url);
+
+			xhr.open('post', script, true);
+			xhr.addEventListener('load', function(e){
+				var response = null;
+				if (e.target.readyState == 4)
+				{
+					switch (e.target.status)
+					{
+						case 200:
+							try {
+								var result = JSON.parse(decodeURIComponent(e.target.responseText.replace(/\+/g, '%20')));
+								complete(result);
+							} catch(e) {
+								complete({
+									'state' : 'error',
+									'message' : e.target.responseText
+								});
+							}
+							break;
+						case 404:
+							response = {
+								state : 'error',
+								message : '404 - File not found'
+							};
+							break;
+						case 403:
+							response = {
+								state : 'error',
+								message : '403 - Forbidden file type'
+							};
+							break;
+						default:
+							response = {
+								state : 'error',
+								message : 'Unknown Error'
+							};
+							break;
+					}
+				}
+				else
+				{
+					response = {
+						state : 'error',
+						message : 'Unknown Error'
+					};
+				}
+			});
+			xhr.send(formData);
+		}
+
+		return null;
 	}
 }

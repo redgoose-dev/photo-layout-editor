@@ -19,17 +19,11 @@ var Sidebar_Nav = React.createClass({
   * Upload images
   */
 	upload: function (e) {
-		var uploadFiles = [];
-		for (var i = 0; i < e.target.files.length; i++) {
-			uploadFiles.push(e.target.files[i]);
-		}
+		this.props.upload(e.target.files);
 
 		// reset input[type=file]
 		var $input = $(this.refs.inputFile);
 		$input.replaceWith($input.val('').clone(true));
-
-		// send sidebar component
-		this.props.upload(uploadFiles);
 	},
 
 	/**
@@ -44,7 +38,7 @@ var Sidebar_Nav = React.createClass({
 				{ className: 'wrap' },
 				React.createElement(
 					'button',
-					{ type: 'button', title: 'attach images', onClick: this.attachImages },
+					{ type: 'button', title: 'attach images', onClick: this.props.attach },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-arrow-left abs' },
