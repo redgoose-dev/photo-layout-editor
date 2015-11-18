@@ -40,6 +40,9 @@ var Sidebar_Nav = React.createClass({
         			<button type="button" title="attach images" onClick={this.props.attach}>
 						<i className="sp-ico ico-arrow-left abs">Moving the image to grid block</i>
 					</button>
+					<button type="button" title="toggle select" onClick={this.props.toggleSelect}>
+						<i className="sp-ico ico-select abs">Toggle all select</i>
+					</button>
 					<span title="upload images">
 						<input type="file" ref="inputFile" onChange={this.upload} multiple />
 						<i className="sp-ico ico-upload abs">upload images</i>

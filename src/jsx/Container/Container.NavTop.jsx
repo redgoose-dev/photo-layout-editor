@@ -62,7 +62,10 @@ var Container_NavTop = React.createClass({
         			<button type="button" title="Edit preference" onClick={this.toggleSetting}>
 						<i className="sp-ico ico-setting abs">Setting</i>
 					</button>
-					<Container_NavTop_Form update={this.props.update} />
+					<Container_NavTop_Form
+						update={this.props.update}
+						reset={this.props.reset}
+						preference={this.props.preference}/>
         		</div>
         		<div className="block">
         			<button type="button" title="Shuffle block" onClick={this.actShuffleBlocks}>

@@ -1,28 +1,28 @@
 var Container_NavTop_Form = React.createClass({
 
 	displayName: 'Form',
+	form: null,
 
 	propTypes: {
 		update: React.PropTypes.func
 	},
 
 	getInitialState: function () {
-		return {
-			width: 100,
-			height: 100,
-			max_col: 5,
-			outer_margin: 10,
-			inner_margin: 10
-		};
+		return {};
 	},
 
-	submit: function () {
-		this.props.update(this.state);
-		return false;
+	componentDidMount: function () {
+		this.form = ReactDOM.findDOMNode(this.refs.form);
 	},
 
-	reset: function () {
-		this.setState(this.getInitialState());
+	update: function () {
+		this.props.update({
+			width: parseInt(this.form.width.value),
+			height: parseInt(this.form.height.value),
+			max_col: parseInt(this.form.max_col.value),
+			outer_margin: parseInt(this.form.outer_margin.value),
+			inner_margin: parseInt(this.form.inner_margin.value)
+		});
 	},
 
 	/**
@@ -34,7 +34,7 @@ var Container_NavTop_Form = React.createClass({
 			{ className: "form", id: "settings" },
 			React.createElement(
 				"form",
-				{ method: "post" },
+				{ method: "post", ref: "form" },
 				React.createElement(
 					"fieldset",
 					null,
@@ -66,7 +66,7 @@ var Container_NavTop_Form = React.createClass({
 							React.createElement("input", {
 								type: "number", name: "width", id: "frm_name",
 								min: "1", max: "999", maxLength: "3",
-								defaultValue: this.state.width,
+								defaultValue: this.props.preference.width,
 								required: true }),
 							React.createElement(
 								"span",
@@ -93,7 +93,7 @@ var Container_NavTop_Form = React.createClass({
 							React.createElement("input", {
 								type: "number", name: "height", id: "frm_height",
 								min: "1", max: "999",
-								defaultValue: this.state.height }),
+								defaultValue: this.props.preference.height }),
 							React.createElement(
 								"span",
 								null,
@@ -119,7 +119,7 @@ var Container_NavTop_Form = React.createClass({
 							React.createElement("input", {
 								type: "number", name: "max_col", id: "frm_max_col",
 								min: "1", max: "99",
-								defaultValue: this.state.max_col }),
+								defaultValue: this.props.preference.max_col }),
 							React.createElement(
 								"span",
 								null,
@@ -145,7 +145,7 @@ var Container_NavTop_Form = React.createClass({
 							React.createElement("input", {
 								type: "number", name: "outer_margin", id: "frm_outer_margin",
 								min: "1", max: "500",
-								defaultValue: this.state.outer_margin }),
+								defaultValue: this.props.preference.outer_margin }),
 							React.createElement(
 								"span",
 								null,
@@ -171,7 +171,7 @@ var Container_NavTop_Form = React.createClass({
 							React.createElement("input", {
 								type: "number", name: "inner_margin", id: "frm_inner_margin",
 								min: "1", max: "500",
-								defaultValue: this.state.inner_margin }),
+								defaultValue: this.props.preference.inner_margin }),
 							React.createElement(
 								"span",
 								null,
@@ -188,7 +188,7 @@ var Container_NavTop_Form = React.createClass({
 						null,
 						React.createElement(
 							"button",
-							{ type: "reset", onClick: this.reset },
+							{ type: "reset", onClick: this.props.reset },
 							"Reset"
 						)
 					),
@@ -197,7 +197,7 @@ var Container_NavTop_Form = React.createClass({
 						null,
 						React.createElement(
 							"button",
-							{ type: "button", className: "submit", onClick: this.submit },
+							{ type: "button", className: "submit", onClick: this.update },
 							"Apply"
 						)
 					)

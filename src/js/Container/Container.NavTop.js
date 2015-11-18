@@ -62,7 +62,10 @@ var Container_NavTop = React.createClass({
 						'Setting'
 					)
 				),
-				React.createElement(Container_NavTop_Form, { update: this.props.update })
+				React.createElement(Container_NavTop_Form, {
+					update: this.props.update,
+					reset: this.props.reset,
+					preference: this.props.preference })
 			),
 			React.createElement(
 				'div',

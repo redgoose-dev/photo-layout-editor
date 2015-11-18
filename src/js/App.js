@@ -2,6 +2,10 @@ var App = React.createClass({
 
 	displayName: 'photo-layout-editor',
 
+	attachIames: function (images) {
+		this.refs.Container.updateAttachImages(images);
+	},
+
 	/**
   * render
   */
@@ -10,8 +14,8 @@ var App = React.createClass({
 			"div",
 			{ className: "ple-editor" },
 			React.createElement(Header, null),
-			React.createElement(Container, null),
-			React.createElement(Sidebar, { uploadScript: this.props.uploadScript, uploadDir: this.props.uploadDir, uploadUrl: this.props.uploadUrl })
+			React.createElement(Container, { ref: "Container" }),
+			React.createElement(Sidebar, { uploadScript: this.props.uploadScript, attachImages: this.attachIames })
 		);
 	}
 });

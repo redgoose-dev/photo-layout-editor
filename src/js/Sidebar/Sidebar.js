@@ -18,15 +18,19 @@ var Sidebar = React.createClass({
 		return {
 			uploadImages: [{
 				on: false,
+				image: './assets/img/tmp-simg-01.jpg',
 				style: { backgroundImage: 'url(./assets/img/tmp-simg-01.jpg)' }
 			}, {
 				on: false,
+				image: './assets/img/tmp-simg-02.jpg',
 				style: { backgroundImage: 'url(./assets/img/tmp-simg-02.jpg)' }
 			}, {
 				on: false,
+				image: './assets/img/tmp-simg-03.jpg',
 				style: { backgroundImage: 'url(./assets/img/tmp-simg-03.jpg)' }
 			}, {
 				on: false,
+				image: './assets/img/tmp-simg-04.jpg',
 				style: { backgroundImage: 'url(./assets/img/tmp-simg-04.jpg)' }
 			}],
 			is_loading: false
@@ -58,11 +62,20 @@ var Sidebar = React.createClass({
 
 				if (response.state == 'success') {
 					var data = response.images;
-					log(data);
-					// TODO : 받은 이미지 데이터로 목록에 삽입하기
+
+					data.forEach(function (o) {
+						self.state.uploadImages.push({
+							on: false,
+							image: o.loc,
+							style: { backgroundImage: 'url(' + o.loc + ')' }
+						});
+					});
+					self.setState({
+						uploadImages: self.state.uploadImages
+					});
 				} else {
-						log(response.message);
-					}
+					log(response.message);
+				}
 			});
 		} else {
 			// is local upload
@@ -74,6 +87,7 @@ var Sidebar = React.createClass({
 				data.forEach(function (o) {
 					result.push({
 						on: false,
+						image: o,
 						style: { backgroundImage: 'url(' + o + ')' }
 					});
 				});
@@ -110,7 +124,28 @@ var Sidebar = React.createClass({
 	},
 
 	attach: function () {
-		log('attach file');
+		var items = [];
+		this.state.uploadImages.forEach(function (o) {
+			if (o.on) {
+				items.push(o.image);
+			}
+		});
+		if (items.length) {
+			this.props.attachImages(items);
+		} else {
+			alert('please select image');
+			return false;
+		}
+	},
+
+	toggleSelect: function () {
+		var items = this.state.uploadImages;
+		var $items = $(ReactDOM.findDOMNode(this.refs.files));
+		var sw = $items.find('span.on').length > 0;
+		items.forEach(function (o) {
+			o.on = !sw;
+		});
+		this.setState({ uploadImages: items });
 	},
 
 	update: function (data) {
@@ -124,8 +159,8 @@ var Sidebar = React.createClass({
 		return React.createElement(
 			'aside',
 			{ className: 'ple-sidebar' + (this.state.is_loading ? ' loading' : '') },
-			React.createElement(Sidebar_Nav, { upload: this.upload, remove: this.remove, attach: this.attach }),
-			React.createElement(Sidebar_UploadFiles, { uploadImages: this.state.uploadImages, update: this.update })
+			React.createElement(Sidebar_Nav, { ref: 'nav', upload: this.upload, remove: this.remove, attach: this.attach, toggleSelect: this.toggleSelect }),
+			React.createElement(Sidebar_UploadFiles, { ref: 'files', uploadImages: this.state.uploadImages, update: this.update })
 		);
 	}
 });

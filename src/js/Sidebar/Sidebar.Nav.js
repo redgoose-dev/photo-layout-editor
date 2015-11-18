@@ -46,6 +46,15 @@ var Sidebar_Nav = React.createClass({
 					)
 				),
 				React.createElement(
+					'button',
+					{ type: 'button', title: 'toggle select', onClick: this.props.toggleSelect },
+					React.createElement(
+						'i',
+						{ className: 'sp-ico ico-select abs' },
+						'Toggle all select'
+					)
+				),
+				React.createElement(
 					'span',
 					{ title: 'upload images' },
 					React.createElement('input', { type: 'file', ref: 'inputFile', onChange: this.upload, multiple: true }),

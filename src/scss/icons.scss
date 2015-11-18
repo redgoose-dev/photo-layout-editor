@@ -38,8 +38,14 @@
 	width: 13px; height: 17px; background-position: -162px 0;
 	&.abs {margin-left: -6px; margin-top: -9px;}
 }
+
 .ico-pencel {width: 18px; height: 18px; background-position: 0 -38px;}
 .ico-trash2 {width: 14px; height: 18px; background-position: -28px -38px;}
 .ico-document {width: 18px; height: 18px; background-position: -52px -38px;}
 .ico-close {width: 18px; height: 18px; background-position: -80px -38px;}
 .ico-check2 {width: 16px; height: 14px; background-position: -108px -38px;}
+
+.ico-select {
+	width: 18px; height: 16px; background-position: 0 -76px;
+	&.abs {margin-left: -9px; margin-top: -8px;}
+}

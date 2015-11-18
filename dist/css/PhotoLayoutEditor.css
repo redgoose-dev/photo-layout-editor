@@ -40,6 +40,10 @@
 
 .ico-check2 { width: 16px; height: 14px; background-position: -108px -38px; }
 
+.ico-select { width: 18px; height: 16px; background-position: 0 -76px; }
+
+.ico-select.abs { margin-left: -9px; margin-top: -8px; }
+
 @font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 300; src: local("Noto Sans Light"), local("Noto Sans Light"), local("Noto Sans Light"); src: url(../../assets/fonts/NotoSans-Light.eot); src: url(../../assets/fonts/NotoSans-Light.eot?#iefix) format("embedded-opentype"), url(../../assets/fonts/NotoSans-Light.woff) format("woff"), url(../../assets/fonts/NotoSans-Light.otf) format("truetype"); }
 
 @font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 400; src: local("Noto Sans Regular"), local("Noto Sans Regular"), local("Noto Sans Regular"); src: url(../../assets/fonts/NotoSans-Regular.eot); src: url(../../assets/fonts/NotoSans-Regular.eot?#iefix) format("embedded-opentype"), url(../../assets/fonts/NotoSans-Regular.woff) format("woff"), url(../../assets/fonts/NotoSans-Regular.otf) format("truetype"); }
@@ -62,7 +66,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 /* Header */
 .ple-header { margin-right: 240px; }
 
-.ple-header h1 { margin: -5px 0 0; font-size: 36px; color: #626164; font-weight: 500; letter-spacing: -1px; }
+.ple-header h1 { margin: -5px 0 0; font-size: 36px; color: #49484b; font-weight: 500; letter-spacing: -1px; }
 
 .ple-header p { margin: 3px 0 0; font-size: 12px; color: #555; }
 
@@ -115,6 +119,10 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .gridster { background: #c5c5c7; clear: both; }
 
+.ple-container .gridster ul { margin: 0; padding: 0; list-style: none; }
+
+.ple-container .gridster li { background: #fff; }
+
 .ple-container .nav-bottom { margin: 30px 0; text-align: center; }
 
 .ple-container .nav-bottom button { margin: 0; padding: 15px 34px; border: none; background: #626164; font-size: 0; cursor: pointer; }
@@ -134,7 +142,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .nav-top .wrap:after { content: ''; display: block; clear: both; }
 
-.ple-sidebar .nav-top button, .ple-sidebar .nav-top span { margin: 0; padding: 0; position: relative; float: left; width: 33.33333%; height: 30px; background: none; border-width: 0 0 0 1px; border-style: solid; border-color: #919193; border-color: rgba(255, 255, 255, 0.3); cursor: pointer; }
+.ple-sidebar .nav-top button, .ple-sidebar .nav-top span { margin: 0; padding: 0; position: relative; float: left; width: 25%; height: 30px; background: none; border-width: 0 0 0 1px; border-style: solid; border-color: #919193; border-color: rgba(255, 255, 255, 0.3); cursor: pointer; }
 
 .ple-sidebar .nav-top button:first-child, .ple-sidebar .nav-top span:first-child { border-width: 0; }
 
@@ -156,6 +164,6 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-sidebar .upload-files li span { position: relative; display: block; width: 100%; height: 63px; background-size: cover; background-repeat: no-repeat; background-position: 0 0; background-color: #fff; text-indent: -9999px; cursor: pointer; }
 
-.ple-sidebar .upload-files li span.on:after { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border: 4px solid #fff; }
+.ple-sidebar .upload-files li span.on:after { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; border: 4px solid #FE455F; }
 
 /*# sourceMappingURL=../maps/PhotoLayoutEditor.css.map */

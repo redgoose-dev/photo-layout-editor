@@ -31,7 +31,7 @@ body, input, select, textarea {
 	margin-right: $sidebar-width;
 	h1 {
 		margin: -5px 0 0;
-		font-size: 36px; color: #626164; font-weight: 500;
+		font-size: 36px; color: #49484b; font-weight: 500;
 		letter-spacing: -1px;
 	}
 	p {
@@ -118,6 +118,8 @@ body, input, select, textarea {
 	.gridster {
 		background: $col-bg-blur;
 		clear: both;
+		ul {margin:0; padding:0; list-style: none;}
+		li {background: #fff;}
 	}
 	.nav-bottom {
 		margin: 30px 0; text-align: center;
@@ -154,7 +156,7 @@ body, input, select, textarea {
 		}
 		button, span {
 			margin: 0; padding: 0;
-			position: relative; float: left; width: 33.33333%; height: 30px;
+			position: relative; float: left; width: 25%; height: 30px;
 			background: none;
 			border-width: 0 0 0 1px; border-style: solid;
 			border-color: #919193; border-color: rgba(255,255,255,.3);
@@ -206,7 +208,8 @@ body, input, select, textarea {
 					&:after {
 						content: ''; position: absolute;
 						left: 0; right: 0; top: 0; bottom: 0;
-						border: 4px solid #fff;
+						border: 4px solid #FE455F;
+
 					}
 				}
 			}
