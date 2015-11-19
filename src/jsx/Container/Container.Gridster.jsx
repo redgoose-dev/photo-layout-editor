@@ -8,12 +8,20 @@ var Container_Gridster = React.createClass({
 	{
 		var $gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 
+		var margin = this.props.preference.inner_margin * 0.5;
 		$gridster.children('ul').gridster({
-			widget_margins: [10, 10],
-			widget_base_dimensions: [140, 140]
+			widget_margins: [margin, margin],
+			widget_base_dimensions: [this.props.preference.width, this.props.preference.height]
 		});
-		log($gridster);
+
 		// TODO : 플러그인 세팅
+	},
+
+	updatePreference : function(params)
+	{
+		// TODO : 환경설정에서 넘어온 값으로 gridster 업데이트 하기. 아니면 플러그인 옵션에서 컨테이너 사이즈 조절 할 수 있는지 확인해보기
+		log('update preference');
+		log(this.props.preference);
 	},
 
 	/**
@@ -21,6 +29,13 @@ var Container_Gridster = React.createClass({
 	 */
 	render : function()
 	{
+		// act action
+		if (typeof this[this.props.action] === 'function')
+		{
+			this[this.props.action]();
+		}
+
+		// TODO : gridster 속에 한번 싸야할거 같다. 중앙정렬 할 수 있도록..
 		return (
             <div ref="gridster" className="gridster">
 				<ul>

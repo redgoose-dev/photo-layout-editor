@@ -34,6 +34,12 @@ var Container_NavTop = React.createClass({
 		this.setState({ show_form : !this.state.show_form });
 	},
 
+	closeSetting : function()
+	{
+		$(document).off('click');
+		this.setState({ show_form : false });
+	},
+
 	/**
 	 * Action shuffle blocks
 	 */

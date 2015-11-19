@@ -12,7 +12,9 @@ var Container = React.createClass({
 				max_col : 5,
 				outer_margin : 10,
 				inner_margin : 10
-			}
+			},
+			action : null,
+			dynamicParameter : {}
 		};
 	},
 
@@ -23,13 +25,14 @@ var Container = React.createClass({
 
 	updatePreference : function(params)
 	{
-		log(params);
-		// TODO : params 값을 토대로 gridster 갱신하기
+		this.setState({ preference : params, action: 'updatePreference' });
+		//this.refs.gridster.updatePreference(params);
+		//this.refs.navTop.closeSetting();
 	},
 
 	resetPreference : function()
 	{
-		this.setState({ preference : this.originalPreference });
+		this.setState({ preference : this.originalPreference, action : null });
 	},
 
 	updateAttachImages : function(items)
@@ -54,11 +57,17 @@ var Container = React.createClass({
 		return (
 			<div className="ple-container">
 				<Container_NavTop
+					ref="navTop"
 					update={this.updatePreference}
 					reset={this.resetPreference}
-					preference={this.state.preference} />
-				<Container_Gridster preference={this.state.preference} />
-				<Container_NavBottom generate={this.generate} />
+					preference={this.state.preference}/>
+				<Container_Gridster
+					ref="gridster"
+					preference={this.state.preference}
+					action={this.state.action}
+					dynamicParameter={this.state.dynamicParameter}/>
+				<Container_NavBottom
+					generate={this.generate} />
 			</div>
 		);
 	}
