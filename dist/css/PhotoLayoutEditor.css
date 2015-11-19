@@ -117,11 +117,13 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .nav-top .form nav button.submit { background: #626164; }
 
-.ple-container .gridster { background: #c5c5c7; clear: both; }
+.ple-container .gridster-wrap { clear: both; padding: 30px 15px; background: #c5c5c7; }
 
-.ple-container .gridster ul { margin: 0; padding: 0; list-style: none; }
+.ple-container .gridster { margin: 0 auto; background: #fff; }
 
-.ple-container .gridster li { background: #fff; }
+.ple-container .gridster ul { padding: 0; list-style: none; }
+
+.ple-container .gridster li { background: #999999; cursor: pointer; }
 
 .ple-container .nav-bottom { margin: 30px 0; text-align: center; }
 

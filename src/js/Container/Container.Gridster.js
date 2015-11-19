@@ -2,25 +2,61 @@ var Container_Gridster = React.createClass({
 
 	displayName: 'Gridster',
 
+	$gridster: null,
 	gridster: null,
 
 	componentDidMount: function () {
-		var $gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
+		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
+		this.create();
+		// TODO : 랜덤으로 블럭을 추가하는 함수 실행
+	},
 
-		var margin = this.props.preference.inner_margin * 0.5;
-		$gridster.children('ul').gridster({
-			widget_margins: [margin, margin],
-			widget_base_dimensions: [this.props.preference.width, this.props.preference.height]
-		});
+	getGridsterWidth: function () {},
 
-		// TODO : 플러그인 세팅
+	create: function () {
+		var preference = this.props.preference;
+		var innnerMargin = preference.inner_margin * 0.5;
+		var outerMargin = innnerMargin + preference.outer_margin;
+
+		this.$gridster.css('padding', outerMargin + 'px');
+		this.gridster = this.$gridster.append('<ul/>').children('ul').gridster({
+			widget_margins: [innnerMargin, innnerMargin],
+			widget_base_dimensions: [preference.width, preference.height]
+		}).data('gridster');
+
+		// TODO : 가로 계산하는 함수 만들기 ㅠㅠ
+	},
+
+	clear: function () {
+		this.$gridster.children().remove();
+		this.$gridster.removeClass('ready').removeAttr('style');
+		log(this.$gridster);
 	},
 
 	updatePreference: function (params) {
-		// TODO : 환경설정에서 넘어온 값으로 gridster 업데이트 하기. 아니면 플러그인 옵션에서 컨테이너 사이즈 조절 할 수 있는지 확인해보기
-		log('update preference');
-		log(this.props.preference);
+		var self = this;
+
+		this.clear();
+
+		//log(this.$gridster.html());
+		//this.gridster.destroy(true);
+		//this.create();
 	},
+
+	block: function (params) {
+		if (!params.sizeX || !params.sizeY) return false;
+
+		var $li = $('<li></li>');
+		//$li.on('click', function(){ log('hello') });
+
+		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
+	},
+
+	addBlock: function () {
+		this.block({ sizeX: 1, sizeY: 1 });
+	},
+
+	shuffleBlocks: function () {},
 
 	/**
   * render
@@ -34,23 +70,8 @@ var Container_Gridster = React.createClass({
 		// TODO : gridster 속에 한번 싸야할거 같다. 중앙정렬 할 수 있도록..
 		return React.createElement(
 			'div',
-			{ ref: 'gridster', className: 'gridster' },
-			React.createElement(
-				'ul',
-				null,
-				React.createElement('li', { 'data-row': '1', 'data-col': '1', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '2', 'data-col': '1', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '3', 'data-col': '1', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '1', 'data-col': '2', 'data-sizex': '2', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '2', 'data-col': '2', 'data-sizex': '2', 'data-sizey': '2' }),
-				React.createElement('li', { 'data-row': '1', 'data-col': '4', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '2', 'data-col': '4', 'data-sizex': '2', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '3', 'data-col': '4', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '1', 'data-col': '5', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '3', 'data-col': '5', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '1', 'data-col': '6', 'data-sizex': '1', 'data-sizey': '1' }),
-				React.createElement('li', { 'data-row': '2', 'data-col': '6', 'data-sizex': '1', 'data-sizey': '2' })
-			)
+			{ className: 'gridster-wrap' },
+			React.createElement('div', { ref: 'gridster', className: 'gridster' })
 		);
 	}
 });

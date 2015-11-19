@@ -19,11 +19,11 @@ var Container = React.createClass({
 
 	componentDidMount: function () {
 		this.originalPreference = this.state.preference;
+		this.gridster = this.refs.gridster;
 	},
 
 	updatePreference: function (params) {
 		this.setState({ preference: params, action: 'updatePreference' });
-		//this.refs.gridster.updatePreference(params);
 		//this.refs.navTop.closeSetting();
 	},
 
@@ -34,6 +34,14 @@ var Container = React.createClass({
 	updateAttachImages: function (items) {
 		log('act import');
 		log(items);
+	},
+
+	actAddBlcok: function () {
+		this.refs.gridster.addBlock();
+	},
+
+	actShuffleBlocks: function () {
+		this.refs.gridster.shuffleBlocks();
 	},
 
 	/**
@@ -54,6 +62,8 @@ var Container = React.createClass({
 				ref: 'navTop',
 				update: this.updatePreference,
 				reset: this.resetPreference,
+				actAddBlock: this.actAddBlcok,
+				actShuffleBlocks: this.actShuffleBlocks,
 				preference: this.state.preference }),
 			React.createElement(Container_Gridster, {
 				ref: 'gridster',

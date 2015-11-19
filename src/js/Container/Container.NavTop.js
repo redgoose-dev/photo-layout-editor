@@ -77,7 +77,7 @@ var Container_NavTop = React.createClass({
 				{ className: 'block' },
 				React.createElement(
 					'button',
-					{ type: 'button', title: 'Shuffle block', onClick: this.actShuffleBlocks },
+					{ type: 'button', title: 'Shuffle block', onClick: this.props.actShuffleBlocks },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-arrow-random abs' },
@@ -90,7 +90,7 @@ var Container_NavTop = React.createClass({
 				{ className: 'block' },
 				React.createElement(
 					'button',
-					{ type: 'button', title: 'Add block', onClick: this.actAddBlocks },
+					{ type: 'button', title: 'Add block', onClick: this.props.actAddBlock },
 					React.createElement(
 						'i',
 						{ className: 'sp-ico ico-plus abs' },

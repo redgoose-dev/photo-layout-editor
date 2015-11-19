@@ -74,12 +74,12 @@ var Container_NavTop = React.createClass({
 						preference={this.props.preference}/>
         		</div>
         		<div className="block">
-        			<button type="button" title="Shuffle block" onClick={this.actShuffleBlocks}>
+        			<button type="button" title="Shuffle block" onClick={this.props.actShuffleBlocks}>
 						<i className="sp-ico ico-arrow-random abs">Random block</i>
 					</button>
         		</div>
         		<div className="block">
-        			<button type="button" title="Add block" onClick={this.actAddBlocks}>
+        			<button type="button" title="Add block" onClick={this.props.actAddBlock}>
 						<i className="sp-ico ico-plus abs">Add block</i>
 					</button>
         		</div>
