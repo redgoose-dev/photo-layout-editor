@@ -117,7 +117,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .nav-top .form nav button.submit { background: #626164; }
 
-.ple-container .gridster-wrap { clear: both; padding: 30px 15px; background: #c5c5c7; }
+.ple-container .gridster-wrap { clear: both; padding: 30px; background: #c5c5c7; }
 
 .ple-container .gridster { margin: 0 auto; background: #fff; }
 

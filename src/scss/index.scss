@@ -116,11 +116,12 @@ body, input, select, textarea {
 		}
 	}
 	.gridster-wrap {
-		clear: both; padding: 30px 15px;
+		clear: both; padding: 30px;
 		background: $col-bg-blur;
 	}
 	.gridster {
-		margin: 0 auto; background: #fff;
+		margin: 0 auto;
+		background: #fff;
 		ul {padding:0; list-style: none;}
 		li {background: $col-blur; cursor: pointer;}
 	}

@@ -4,14 +4,16 @@ var Container_Gridster = React.createClass({
 
 	$gridster : null,
 	gridster : null,
+	saveBlocks : null,
 
 	componentDidMount : function()
 	{
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 		this.create();
-		// TODO : 랜덤으로 블럭을 추가하는 함수 실행
+		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
 	},
 
+	// gridster 컨테이너 가로사이즈 구하기
 	getGridsterWidth : function()
 	{
 
@@ -23,10 +25,34 @@ var Container_Gridster = React.createClass({
 		var innnerMargin = preference.inner_margin * 0.5;
 		var outerMargin = innnerMargin + preference.outer_margin;
 
-		this.$gridster.css('padding', outerMargin+'px');
-		this.gridster = this.$gridster.append('<ul/>').children('ul').gridster({
+		// set styles
+		this.$gridster.css('padding', outerMargin+'px').append('<ul/>');
+
+		// restore blocks
+		if (this.saveBlocks)
+		{
+			this.saveBlocks.each(function(k, o){
+				if (parseInt($(o).attr('data-col')) > preference.max_col)
+				{
+					$(o).attr('data-col', preference.max_col);
+				}
+				if (parseInt($(o).attr('data-sizex')) > preference.max_scale)
+				{
+					$(o).attr('data-sizex', preference.max_scale);
+				}
+				if (parseInt($(o).attr('data-sizey')) > preference.max_scale)
+				{
+					$(o).attr('data-sizey', preference.max_scale);
+				}
+			});
+			this.$gridster.children('ul').append(this.saveBlocks);
+		}
+
+		// init gridster
+		this.gridster = this.$gridster.children('ul').gridster({
 			widget_margins: [innnerMargin, innnerMargin],
-			widget_base_dimensions: [preference.width, preference.height]
+			widget_base_dimensions: [preference.width, preference.height],
+			max_cols : preference.max_col
 		}).data('gridster');
 
 		// TODO : 가로 계산하는 함수 만들기 ㅠㅠ
@@ -34,9 +60,11 @@ var Container_Gridster = React.createClass({
 
 	clear : function()
 	{
+		this.$gridster.find('li').removeAttr('style class');
+		this.saveBlocks = $(this.$gridster.children('ul').html());
+		this.gridster.destroy(true);
 		this.$gridster.children().remove();
 		this.$gridster.removeClass('ready').removeAttr('style');
-		log(this.$gridster);
 	},
 
 	updatePreference : function(params)
@@ -44,30 +72,56 @@ var Container_Gridster = React.createClass({
 		var self = this;
 
 		this.clear();
-
-		//log(this.$gridster.html());
-		//this.gridster.destroy(true);
-		//this.create();
+		this.create();
 	},
 
 	block : function(params)
 	{
 		if (!params.sizeX || !params.sizeY) return false;
 
-		var $li = $('<li></li>');
+		var $li = $('<li>' + ((params.text) ? params.text : '') + '</li>');
 		//$li.on('click', function(){ log('hello') });
 
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
 	},
 
-	addBlock : function()
+	randomAddBlocks : function(count, max_width, max_height)
 	{
-		this.block({ sizeX : 1, sizeY : 1 });
+		for (var i=0; i<count; i++)
+		{
+			this.block({
+				text : i,
+				sizeX : getRandomRange(1, max_width),
+				sizeY : getRandomRange(1, max_height)
+			});
+		}
+	},
+
+	addBlock : function(x, y)
+	{
+		x = x || 1;
+		y = y || 1;
+		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
+		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
+		this.block({ sizeX : x, sizeY : y });
 	},
 
 	shuffleBlocks : function()
 	{
+		var self = this;
 
+		this.clear();
+
+		this.saveBlocks.each(function(k, o){
+			$(o).attr({
+				'data-col' : getRandomRange(1, self.props.preference.max_col),
+				'data-row' : getRandomRange(1, 2),
+				'data-sizex' : getRandomRange(1, self.props.preference.max_scale),
+				'data-sizey' : getRandomRange(1, self.props.preference.max_scale)
+			});
+		});
+
+		this.create();
 	},
 
 	/**
@@ -81,7 +135,6 @@ var Container_Gridster = React.createClass({
 			this[this.props.action]();
 		}
 
-		// TODO : gridster 속에 한번 싸야할거 같다. 중앙정렬 할 수 있도록..
 		return (
             <div className="gridster-wrap">
 				<div ref="gridster" className="gridster"></div>

@@ -20,6 +20,7 @@ var Container_NavTop_Form = React.createClass({
 			width: parseInt(this.form.width.value),
 			height: parseInt(this.form.height.value),
 			max_col: parseInt(this.form.max_col.value),
+			max_scale: parseInt(this.form.max_scale.value),
 			outer_margin: parseInt(this.form.outer_margin.value),
 			inner_margin: parseInt(this.form.inner_margin.value)
 		});
@@ -124,6 +125,32 @@ var Container_NavTop_Form = React.createClass({
 								"span",
 								null,
 								"ea"
+							)
+						)
+					),
+					React.createElement(
+						"dl",
+						null,
+						React.createElement(
+							"dt",
+							null,
+							React.createElement(
+								"label",
+								{ htmlFor: "frm_max_scale" },
+								"Max Scale"
+							)
+						),
+						React.createElement(
+							"dd",
+							null,
+							React.createElement("input", {
+								type: "number", name: "max_scale", id: "frm_max_scale",
+								min: "1", max: "99",
+								defaultValue: this.props.preference.max_scale }),
+							React.createElement(
+								"span",
+								null,
+								"x"
 							)
 						)
 					),

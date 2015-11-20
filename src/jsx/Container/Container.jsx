@@ -10,6 +10,7 @@ var Container = React.createClass({
 				width : 100,
 				height : 100,
 				max_col : 5,
+				max_scale : 2,
 				outer_margin : 10,
 				inner_margin : 10
 			},
@@ -27,7 +28,7 @@ var Container = React.createClass({
 	updatePreference : function(params)
 	{
 		this.setState({ preference : params, action: 'updatePreference' });
-		//this.refs.navTop.closeSetting();
+		this.refs.navTop.closeSetting();
 	},
 
 	resetPreference : function()
