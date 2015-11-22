@@ -187,13 +187,19 @@ var Sidebar = React.createClass({
 		this.setState({ uploadImages : data });
 	},
 
+
 	/**
 	 * render
 	 */
 	render : function()
 	{
 		return (
-			<aside className={'ple-sidebar' + ((this.state.is_loading) ? ' loading' : '')}>
+			<aside className={ 'ple-sidebar' + ((this.state.is_loading) ? ' loading' : '') }>
+				<button type="button" onClick={this.props.toggleSidebar} className="toggle">
+					<span>
+						<i className={'sp-ico abs' + ((this.props.show) ? ' ico-arrow-right2' : ' ico-arrow-left2')}>Toggle sidebar</i>
+					</span>
+				</button>
                 <Sidebar_Nav ref="nav" upload={this.upload} remove={this.remove} attach={this.attach} toggleSelect={this.toggleSelect} />
                 <Sidebar_UploadFiles ref="files" uploadImages={this.state.uploadImages} update={this.update} />
 			</aside>

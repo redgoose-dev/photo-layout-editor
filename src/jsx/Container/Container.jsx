@@ -52,6 +52,11 @@ var Container = React.createClass({
 		this.refs.gridster.shuffleBlocks();
 	},
 
+	actGridster : function()
+	{
+		this.setState({ action : 'init' });
+	},
+
 	/**
 	 * Generate
 	 */
@@ -78,6 +83,7 @@ var Container = React.createClass({
 					ref="gridster"
 					preference={this.state.preference}
 					action={this.state.action}
+					resizeWidth={this.props.resizeWidth}
 					dynamicParameter={this.state.dynamicParameter}/>
 				<Container_NavBottom
 					generate={this.generate} />

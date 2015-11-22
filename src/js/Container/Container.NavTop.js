@@ -4,7 +4,8 @@ var Container_NavTop = React.createClass({
 
 	getInitialState: function () {
 		return {
-			show_form: false
+			show_form: false,
+			fix: false
 		};
 	},
 
@@ -48,53 +49,67 @@ var Container_NavTop = React.createClass({
 		log('action add blocks');
 	},
 
+	scrollEvent: function () {
+		var windowTop = $(window).scrollTop();
+		var $el = $(ReactDOM.findDOMNode(this));
+		if ($el.offset().top < windowTop) {
+			this.setState({ fix: true });
+		} else {
+			this.setState({ fix: false });
+		}
+	},
+
 	/**
   * RENDER
   */
 	render: function () {
 		return React.createElement(
-			'nav',
-			{ className: 'nav-top' },
+			'div',
+			{ className: 'nav-top-wrap' },
 			React.createElement(
-				'div',
-				{ className: 'block' + (this.state.show_form ? ' is-active' : '') },
+				'nav',
+				{ className: 'nav-top' + (this.state.fix ? ' fix' : '') },
 				React.createElement(
-					'button',
-					{ type: 'button', title: 'Edit preference', onClick: this.toggleSetting },
+					'div',
+					{ className: 'block' + (this.state.show_form ? ' is-active' : '') },
 					React.createElement(
-						'i',
-						{ className: 'sp-ico ico-setting abs' },
-						'Setting'
+						'button',
+						{ type: 'button', title: 'Edit preference', onClick: this.toggleSetting },
+						React.createElement(
+							'i',
+							{ className: 'sp-ico ico-setting abs' },
+							'Setting'
+						)
+					),
+					React.createElement(Container_NavTop_Form, {
+						update: this.props.update,
+						reset: this.props.reset,
+						preference: this.props.preference })
+				),
+				React.createElement(
+					'div',
+					{ className: 'block' },
+					React.createElement(
+						'button',
+						{ type: 'button', title: 'Shuffle block', onClick: this.props.actShuffleBlocks },
+						React.createElement(
+							'i',
+							{ className: 'sp-ico ico-arrow-random abs' },
+							'Random block'
+						)
 					)
 				),
-				React.createElement(Container_NavTop_Form, {
-					update: this.props.update,
-					reset: this.props.reset,
-					preference: this.props.preference })
-			),
-			React.createElement(
-				'div',
-				{ className: 'block' },
 				React.createElement(
-					'button',
-					{ type: 'button', title: 'Shuffle block', onClick: this.props.actShuffleBlocks },
+					'div',
+					{ className: 'block' },
 					React.createElement(
-						'i',
-						{ className: 'sp-ico ico-arrow-random abs' },
-						'Random block'
-					)
-				)
-			),
-			React.createElement(
-				'div',
-				{ className: 'block' },
-				React.createElement(
-					'button',
-					{ type: 'button', title: 'Add block', onClick: this.props.actAddBlock },
-					React.createElement(
-						'i',
-						{ className: 'sp-ico ico-plus abs' },
-						'Add block'
+						'button',
+						{ type: 'button', title: 'Add block', onClick: this.props.actAddBlock },
+						React.createElement(
+							'i',
+							{ className: 'sp-ico ico-plus abs' },
+							'Add block'
+						)
 					)
 				)
 			)

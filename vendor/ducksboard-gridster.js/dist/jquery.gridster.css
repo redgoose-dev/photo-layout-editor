@@ -7,12 +7,7 @@
 }
 
 .gridster > * {
-    margin: 0 auto;
-    -webkit-transition: height .4s, width .4s;
-    -moz-transition: height .4s, width .4s;
-    -o-transition: height .4s, width .4s;
-    -ms-transition: height .4s, width .4s;
-    transition: height .4s, width .4s;
+    margin: 0;
 }
 
 .gridster .gs-w {

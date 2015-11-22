@@ -159,6 +159,19 @@ var Sidebar = React.createClass({
 		return React.createElement(
 			'aside',
 			{ className: 'ple-sidebar' + (this.state.is_loading ? ' loading' : '') },
+			React.createElement(
+				'button',
+				{ type: 'button', onClick: this.props.toggleSidebar, className: 'toggle' },
+				React.createElement(
+					'span',
+					null,
+					React.createElement(
+						'i',
+						{ className: 'sp-ico abs' + (this.props.show ? ' ico-arrow-right2' : ' ico-arrow-left2') },
+						'Toggle sidebar'
+					)
+				)
+			),
 			React.createElement(Sidebar_Nav, { ref: 'nav', upload: this.upload, remove: this.remove, attach: this.attach, toggleSelect: this.toggleSelect }),
 			React.createElement(Sidebar_UploadFiles, { ref: 'files', uploadImages: this.state.uploadImages, update: this.update })
 		);

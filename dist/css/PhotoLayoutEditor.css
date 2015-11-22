@@ -44,6 +44,14 @@
 
 .ico-select.abs { margin-left: -9px; margin-top: -8px; }
 
+.ico-arrow-left2 { width: 7px; height: 12px; background-position: -28px -76px; }
+
+.ico-arrow-left2.abs { margin-left: -4px; margin-top: -6px; }
+
+.ico-arrow-right2 { width: 7px; height: 12px; background-position: -45px -76px; }
+
+.ico-arrow-right2.abs { margin-left: -4px; margin-top: -6px; }
+
 @font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 300; src: local("Noto Sans Light"), local("Noto Sans Light"), local("Noto Sans Light"); src: url(../../assets/fonts/NotoSans-Light.eot); src: url(../../assets/fonts/NotoSans-Light.eot?#iefix) format("embedded-opentype"), url(../../assets/fonts/NotoSans-Light.woff) format("woff"), url(../../assets/fonts/NotoSans-Light.otf) format("truetype"); }
 
 @font-face { font-family: 'Noto Sans'; font-style: normal; font-weight: 400; src: local("Noto Sans Regular"), local("Noto Sans Regular"), local("Noto Sans Regular"); src: url(../../assets/fonts/NotoSans-Regular.eot); src: url(../../assets/fonts/NotoSans-Regular.eot?#iefix) format("embedded-opentype"), url(../../assets/fonts/NotoSans-Regular.woff) format("woff"), url(../../assets/fonts/NotoSans-Regular.otf) format("truetype"); }
@@ -54,30 +62,40 @@
 
 *, *:before, *:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
-body { margin: 0; min-width: 768px; padding: 0; font-size: 14px; color: #333; line-height: 1.428; }
+body { margin: 0; padding: 0; font-size: 14px; color: #333; line-height: 1.428; }
 
 body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 /* Attributes */
 .blind { position: absolute !important; overflow: hidden !important; visibility: hidden !important; width: 0 !important; height: 0 !important; font-size: 0 !important; line-height: 0 !important; }
 
-.ple-editor { padding: 30px; }
+.ple-editor { padding: 30px 0 30px 30px; }
+
+.ple-editor .ple-container, .ple-editor .ple-header { margin-right: 30px; -webkit-transition: margin-right 0.3s ease-in-out; transition: margin-right 0.3s ease-in-out; }
+
+.ple-editor.on-sidebar .ple-container, .ple-editor.on-sidebar .ple-header { margin-right: 270px; }
+
+.ple-editor.on-sidebar .ple-sidebar { -webkit-transform: translateX(-240px); transform: translateX(-240px); }
 
 /* Header */
-.ple-header { margin-right: 240px; }
-
 .ple-header h1 { margin: -5px 0 0; font-size: 36px; color: #49484b; font-weight: 500; letter-spacing: -1px; }
 
 .ple-header p { margin: 3px 0 0; font-size: 12px; color: #555; }
 
 /* Container */
-.ple-container { margin-right: 240px; }
+.ple-container { margin: 20px 0 0; }
 
-.ple-container .nav-top { float: right; height: 43px; }
+.ple-container .nav-top-wrap { position: relative; height: 43px; }
 
-.ple-container .nav-top .block { float: left; margin-left: 1px; }
+.ple-container .nav-top-wrap:after { content: ''; display: block; clear: both; }
 
-.ple-container .nav-top .block > button { display: block; position: relative; margin: 0; padding: 0; width: 42px; height: 42px; border: none; background: #c5c5c7; cursor: pointer; }
+.ple-container .nav-top { position: absolute; top: 0; height: 43px; z-index: 1000; }
+
+.ple-container .nav-top.fix { position: fixed; top: 0; }
+
+.ple-container .nav-top .block { float: left; margin-right: 1px; }
+
+.ple-container .nav-top .block > button { display: block; position: relative; margin: 0; padding: 0; width: 42px; height: 42px; border: none; background: #999999; cursor: pointer; }
 
 .ple-container .nav-top .block > button i { position: absolute; display: block; left: 50%; top: 50%; }
 
@@ -87,7 +105,7 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .nav-top .form { position: relative; display: none; }
 
-.ple-container .nav-top .form form { position: absolute; right: -20px; top: 0; z-index: 99999; min-width: 270px; background: #fff; box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.4); }
+.ple-container .nav-top .form form { position: absolute; left: -5px; top: 0; z-index: 99999; min-width: 270px; background: #fff; box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.4); }
 
 .ple-container .nav-top .form form fieldset { margin: 0; padding: 20px; border: none; }
 
@@ -117,13 +135,13 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 
 .ple-container .nav-top .form nav button.submit { background: #626164; }
 
-.ple-container .gridster-wrap { clear: both; padding: 30px; background: #c5c5c7; }
+.ple-container .gridster-wrap { padding: 30px; background: #c5c5c7; }
 
 .ple-container .gridster { margin: 0 auto; background: #fff; }
 
 .ple-container .gridster ul { padding: 0; list-style: none; }
 
-.ple-container .gridster li { background: #999999; cursor: pointer; }
+.ple-container .gridster li { background: #ddd; cursor: pointer; }
 
 .ple-container .nav-bottom { margin: 30px 0; text-align: center; }
 
@@ -136,7 +154,17 @@ body, input, select, textarea { font-family: 'Noto Sans', sans-serif; }
 .ple-container .nav-bottom button span { font-weight: bold; font-size: 15px; color: #fff; }
 
 /* Sidebar */
-.ple-sidebar { position: fixed; z-index: 9999; padding: 0; right: 0; top: 0; bottom: 0; width: 240px; background: #626164; }
+.ple-sidebar { position: fixed; z-index: 9999; right: -240px; top: 0; bottom: 0; width: 240px; padding: 0; background: #626164; -webkit-transition: -webkit-transform 0.3s ease-in-out; transition: transform 0.3s ease-in-out; -webkit-transform: translateX(0); transform: translateX(0); }
+
+.ple-sidebar .toggle { position: absolute; left: -25px; top: 20px; z-index: 10; padding: 10px 5px; margin: 0; border: none; cursor: pointer; background: transparent; }
+
+.ple-sidebar .toggle span { display: block; width: 20px; height: 70px; background: #4e4e4e; border-top-left-radius: 3px; border-bottom-left-radius: 3px; box-shadow: inset -1px 0 6px rgba(0, 0, 0, 0.4); }
+
+.ple-sidebar .toggle i { position: absolute; left: 50%; top: 50%; display: block; }
+
+.ple-editor.on-sidebar .ple-sidebar .toggle i { width: 7px; height: 12px; background-position: -45px -76px; }
+
+.ple-editor.on-sidebar .ple-sidebar .toggle i.abs { margin-left: -4px; margin-top: -6px; }
 
 .ple-sidebar .nav-top { position: absolute; z-index: 2; left: 0; right: 0; top: 0; background: #626164; }
 

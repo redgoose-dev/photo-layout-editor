@@ -1,9 +1,50 @@
 var App = React.createClass({
 
 	displayName: 'photo-layout-editor',
+	saveWidth: 0,
+	$editor: null,
+	$sidebar: null,
+	show_sidebar: localStorage.getItem('sidebar') != 'false',
+
+	getInitialState: function () {
+		return {};
+	},
+
+	componentDidMount: function () {
+		this.$editor = $(ReactDOM.findDOMNode(this.refs.editor));
+		this.$sidebar = $(ReactDOM.findDOMNode(this.refs.sidebar));
+
+		var self = this;
+
+		$(window).on('scroll', function (e) {
+			self.refs.container.refs.navTop.scrollEvent();
+		});
+
+		if (this.show_sidebar) {
+			this.$editor.addClass('on-sidebar');
+		}
+
+		this.refs.container.actGridster();
+	},
 
 	attachIames: function (images) {
-		this.refs.Container.updateAttachImages(images);
+		this.refs.container.updateAttachImages(images);
+	},
+
+	toggleSidebar: function () {
+		var bool = !this.show_sidebar;
+		localStorage.setItem('sidebar', bool);
+		this.show_sidebar = bool;
+
+		this.saveWidth = bool ? this.saveWidth + this.$sidebar.width() : this.saveWidth - this.$sidebar.width();
+
+		this.$editor.toggleClass('on-sidebar');
+		this.$editor.css('min-width', this.saveWidth);
+	},
+
+	resizeWidth: function (width) {
+		this.saveWidth = this.show_sidebar ? width : width - this.$sidebar.width();
+		this.$editor.css('min-width', this.saveWidth);
 	},
 
 	/**
@@ -11,11 +52,18 @@ var App = React.createClass({
   */
 	render: function () {
 		return React.createElement(
-			"div",
-			{ className: "ple-editor" },
+			'div',
+			{ ref: 'editor', className: 'ple-editor' },
 			React.createElement(Header, null),
-			React.createElement(Container, { ref: "Container" }),
-			React.createElement(Sidebar, { uploadScript: this.props.uploadScript, attachImages: this.attachIames })
+			React.createElement(Container, {
+				ref: 'container',
+				resizeWidth: this.resizeWidth }),
+			React.createElement(Sidebar, {
+				ref: 'sidebar',
+				uploadScript: this.props.uploadScript,
+				show: this.state.show_sidebar,
+				toggleSidebar: this.toggleSidebar,
+				attachImages: this.attachIames })
 		);
 	}
 });

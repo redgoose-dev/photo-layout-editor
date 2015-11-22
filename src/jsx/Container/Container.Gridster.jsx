@@ -9,14 +9,6 @@ var Container_Gridster = React.createClass({
 	componentDidMount : function()
 	{
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
-		this.create();
-		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
-	},
-
-	// gridster 컨테이너 가로사이즈 구하기
-	getGridsterWidth : function()
-	{
-
 	},
 
 	create : function()
@@ -48,14 +40,34 @@ var Container_Gridster = React.createClass({
 			this.$gridster.children('ul').append(this.saveBlocks);
 		}
 
+		// resize wrap width
+		this.resizeWrapWidth();
+
 		// init gridster
 		this.gridster = this.$gridster.children('ul').gridster({
 			widget_margins: [innnerMargin, innnerMargin],
 			widget_base_dimensions: [preference.width, preference.height],
-			max_cols : preference.max_col
+			max_cols : preference.max_col,
+			resize : {
+				enabled : true
+				,max_size : [preference.max_scale, preference.max_scale]
+			}
 		}).data('gridster');
+	},
 
-		// TODO : 가로 계산하는 함수 만들기 ㅠㅠ
+	resizeWrapWidth : function()
+	{
+		var preference = this.props.preference;
+		var width = (preference.width * preference.max_col) + ((preference.max_col) * preference.inner_margin);
+		this.$gridster.width(width);
+
+		var margin_gridster = parseInt(this.$gridster.parent().css('padding-left')) * 2;
+		var margin_editor = parseInt($('.ple-editor').css('padding')) * 2;
+		var width_sidebar = $('.ple-sidebar').width();
+		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
+
+		this.props.resizeWidth(bodyWidth);
+		//$('main').css('min-width', bodyWidth + 'px');
 	},
 
 	clear : function()
@@ -67,10 +79,14 @@ var Container_Gridster = React.createClass({
 		this.$gridster.removeClass('ready').removeAttr('style');
 	},
 
+	init : function()
+	{
+		this.create();
+		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
+	},
+
 	updatePreference : function(params)
 	{
-		var self = this;
-
 		this.clear();
 		this.create();
 	},
@@ -90,7 +106,6 @@ var Container_Gridster = React.createClass({
 		for (var i=0; i<count; i++)
 		{
 			this.block({
-				text : i,
 				sizeX : getRandomRange(1, max_width),
 				sizeY : getRandomRange(1, max_height)
 			});
@@ -123,6 +138,7 @@ var Container_Gridster = React.createClass({
 
 		this.create();
 	},
+
 
 	/**
 	 * render

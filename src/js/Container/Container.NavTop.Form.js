@@ -15,7 +15,8 @@ var Container_NavTop_Form = React.createClass({
 		this.form = ReactDOM.findDOMNode(this.refs.form);
 	},
 
-	update: function () {
+	update: function (e) {
+		e.preventDefault();
 		this.props.update({
 			width: parseInt(this.form.width.value),
 			height: parseInt(this.form.height.value),
@@ -35,7 +36,7 @@ var Container_NavTop_Form = React.createClass({
 			{ className: "form", id: "settings" },
 			React.createElement(
 				"form",
-				{ method: "post", ref: "form" },
+				{ method: "post", ref: "form", onSubmit: this.update },
 				React.createElement(
 					"fieldset",
 					null,
@@ -224,7 +225,7 @@ var Container_NavTop_Form = React.createClass({
 						null,
 						React.createElement(
 							"button",
-							{ type: "button", className: "submit", onClick: this.update },
+							{ type: "submit", className: "submit" },
 							"Apply"
 						)
 					)

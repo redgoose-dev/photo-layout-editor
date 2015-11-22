@@ -17,8 +17,9 @@ var Container_NavTop_Form = React.createClass({
 		this.form = ReactDOM.findDOMNode(this.refs.form);
 	},
 
-	update : function()
+	update : function(e)
 	{
+		e.preventDefault();
 		this.props.update({
 			width : parseInt(this.form.width.value),
 			height : parseInt(this.form.height.value),
@@ -36,7 +37,7 @@ var Container_NavTop_Form = React.createClass({
 	{
 		return (
 			<article className="form" id="settings">
-				<form method="post" ref="form">
+				<form method="post" ref="form" onSubmit={this.update}>
 					<fieldset>
 						<legend className="blind">Settings form</legend>
 						<h1>Settings</h1>
@@ -104,7 +105,7 @@ var Container_NavTop_Form = React.createClass({
 					</fieldset>
 					<nav>
 						<span><button type="reset" onClick={this.props.reset}>Reset</button></span>
-						<span><button type="button" className="submit" onClick={this.update}>Apply</button></span>
+						<span><button type="submit" className="submit">Apply</button></span>
 					</nav>
 				</form>
 			</article>
