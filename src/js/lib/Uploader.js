@@ -1,11 +1,11 @@
-function Uploader()
+module.exports = function Uploader()
 {
 	/**
 	 * Local upload
 	 *
-	 * @Param {Array} files
-	 * @Param {Function} complete
-	 * @Return {Array}
+	 * @param {Array} files
+	 * @param {Function} complete
+	 * @return {Array}
 	 */
 	this.local = function(files, complete)
 	{
@@ -34,12 +34,12 @@ function Uploader()
 	/**
 	 * External upload
 	 *
-	 * @Param {String} script
-	 * @Param {String} dir
-	 * @Param {String} url
-	 * @Param {Array} files
-	 * @Param {Function} complete
-	 * @Return {Array}
+	 * @param {String} script
+	 * @param {String} dir
+	 * @param {String} url
+	 * @param {Array} files
+	 * @param {Function} complete
+	 * @return {Array}
 	 */
 	this.external = function(script, dir, url, files, complete)
 	{
@@ -107,4 +107,4 @@ function Uploader()
 
 		return null;
 	}
-}
+};

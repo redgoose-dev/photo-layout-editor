@@ -1,8 +1,8 @@
-var Sidebar_Nav = React.createClass({
+module.exports = React.createClass({
 
 	displayName : 'Navigation',
 
-	getInitialState : function()
+	getInitialState()
 	{
 		return {
 			inputFile : <input type="file" onChange={this.upload} multiple />
@@ -12,15 +12,17 @@ var Sidebar_Nav = React.createClass({
 	/**
 	 * Attach images
 	 */
-	attachImages : function()
+	attachImages()
 	{
 		log('attach image to grid block');
 	},
 
 	/**
 	 * Upload images
+	 *
+	 * @param {Event} e
 	 */
-	upload : function(e)
+	upload(e)
 	{
 		this.props.upload(e.target.files);
 
@@ -32,7 +34,7 @@ var Sidebar_Nav = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
             <nav className="nav-top">
@@ -55,4 +57,3 @@ var Sidebar_Nav = React.createClass({
 		);
 	}
 });
-// <button type="button" onClick={this.upload}></button>

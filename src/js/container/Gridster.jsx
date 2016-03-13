@@ -1,4 +1,6 @@
-var Container_Gridster = React.createClass({
+const util = require('../lib/util.js');
+
+module.exports = React.createClass({
 
 	displayName : 'Gridster',
 
@@ -6,16 +8,19 @@ var Container_Gridster = React.createClass({
 	gridster : null,
 	saveBlocks : null,
 
-	componentDidMount : function()
+	componentDidMount()
 	{
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 	},
 
-	create : function()
+	/**
+	 * Create block
+	 */
+	create()
 	{
-		var preference = this.props.preference;
-		var innnerMargin = preference.inner_margin * 0.5;
-		var outerMargin = innnerMargin + preference.outer_margin;
+		var pref = this.props.preference;
+		var innnerMargin = pref.inner_margin * 0.5;
+		var outerMargin = innnerMargin + pref.outer_margin;
 
 		// set styles
 		this.$gridster.css('padding', outerMargin+'px').append('<ul/>');
@@ -23,18 +28,18 @@ var Container_Gridster = React.createClass({
 		// restore blocks
 		if (this.saveBlocks)
 		{
-			this.saveBlocks.each(function(k, o){
-				if (parseInt($(o).attr('data-col')) > preference.max_col)
+			this.saveBlocks.each((k, o) => {
+				if (parseInt($(o).attr('data-col')) > pref.max_col)
 				{
-					$(o).attr('data-col', preference.max_col);
+					$(o).attr('data-col', pref.max_col);
 				}
-				if (parseInt($(o).attr('data-sizex')) > preference.max_scale)
+				if (parseInt($(o).attr('data-sizex')) > pref.max_scale)
 				{
-					$(o).attr('data-sizex', preference.max_scale);
+					$(o).attr('data-sizex', pref.max_scale);
 				}
-				if (parseInt($(o).attr('data-sizey')) > preference.max_scale)
+				if (parseInt($(o).attr('data-sizey')) > pref.max_scale)
 				{
-					$(o).attr('data-sizey', preference.max_scale);
+					$(o).attr('data-sizey', pref.max_scale);
 				}
 			});
 			this.$gridster.children('ul').append(this.saveBlocks);
@@ -46,19 +51,22 @@ var Container_Gridster = React.createClass({
 		// init gridster
 		this.gridster = this.$gridster.children('ul').gridster({
 			widget_margins: [innnerMargin, innnerMargin],
-			widget_base_dimensions: [preference.width, preference.height],
-			max_cols : preference.max_col,
+			widget_base_dimensions: [pref.width, pref.height],
+			max_cols : pref.max_col,
 			resize : {
 				enabled : true
-				,max_size : [preference.max_scale, preference.max_scale]
+				,max_size : [pref.max_scale, pref.max_scale]
 			}
 		}).data('gridster');
 	},
 
-	resizeWrapWidth : function()
+	/**
+	 * Resize container
+	 */
+	resizeWrapWidth()
 	{
-		var preference = this.props.preference;
-		var width = (preference.width * preference.max_col) + ((preference.max_col) * preference.inner_margin);
+		var pref = this.props.preference;
+		var width = (pref.width * pref.max_col) + ((pref.max_col) * pref.inner_margin);
 		this.$gridster.width(width);
 
 		var margin_gridster = parseInt(this.$gridster.parent().css('padding-left')) * 2;
@@ -67,10 +75,12 @@ var Container_Gridster = React.createClass({
 		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
 
 		this.props.resizeWidth(bodyWidth);
-		//$('main').css('min-width', bodyWidth + 'px');
 	},
 
-	clear : function()
+	/**
+	 * Clear blocks
+	 */
+	clear()
 	{
 		this.$gridster.find('li').removeAttr('style class');
 		this.saveBlocks = $(this.$gridster.children('ul').html());
@@ -79,60 +89,85 @@ var Container_Gridster = React.createClass({
 		this.$gridster.removeClass('ready').removeAttr('style');
 	},
 
-	init : function()
+	/**
+	 * Init gridster
+	 */
+	init()
 	{
 		this.create();
 		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
 	},
 
-	updatePreference : function(params)
+	/**
+	 * Update preference
+	 */
+	updatePreference()
 	{
 		this.clear();
 		this.create();
 	},
 
-	block : function(params)
+	/**
+	 * Make block
+	 *
+	 * @param {object} params
+	 */
+	block(params)
 	{
 		if (!params.sizeX || !params.sizeY) return false;
 
 		var $li = $('<li>' + ((params.text) ? params.text : '') + '</li>');
-		//$li.on('click', function(){ log('hello') });
 
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
 	},
 
-	randomAddBlocks : function(count, max_width, max_height)
+	/**
+	 * Random add blocks
+	 *
+	 * @param {int} count
+	 * @param {int} max_width
+	 * @param {int} max_height
+	 */
+	randomAddBlocks(count, max_width, max_height)
 	{
 		for (var i=0; i<count; i++)
 		{
 			this.block({
-				sizeX : getRandomRange(1, max_width),
-				sizeY : getRandomRange(1, max_height)
+				sizeX : util.getRandomRange(1, max_width),
+				sizeY : util.getRandomRange(1, max_height),
+				text : i.toString()
 			});
 		}
 	},
 
-	addBlock : function(x, y)
+	/**
+	 * Add block
+	 *
+	 * @param {int} x
+	 * @param {int} y
+	 */
+	addBlock(x, y)
 	{
 		x = x || 1;
 		y = y || 1;
 		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
 		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
-		this.block({ sizeX : x, sizeY : y });
+		this.block({ sizeX : x, sizeY : y, text : 'add' });
 	},
 
-	shuffleBlocks : function()
+	/**
+	 * Shuffle blocks
+	 */
+	shuffleBlocks()
 	{
-		var self = this;
-
 		this.clear();
 
-		this.saveBlocks.each(function(k, o){
+		this.saveBlocks.each((k, o) => {
 			$(o).attr({
-				'data-col' : getRandomRange(1, self.props.preference.max_col),
-				'data-row' : getRandomRange(1, 2),
-				'data-sizex' : getRandomRange(1, self.props.preference.max_scale),
-				'data-sizey' : getRandomRange(1, self.props.preference.max_scale)
+				'data-col' : util.getRandomRange(1, this.props.preference.max_col),
+				'data-row' : util.getRandomRange(1, 2),
+				'data-sizex' : util.getRandomRange(1, this.props.preference.max_scale),
+				'data-sizey' : util.getRandomRange(1, this.props.preference.max_scale)
 			});
 		});
 
@@ -143,7 +178,7 @@ var Container_Gridster = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		// act action
 		if (typeof this[this.props.action] === 'function')

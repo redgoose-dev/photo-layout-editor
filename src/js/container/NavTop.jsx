@@ -1,8 +1,12 @@
-var Container_NavTop = React.createClass({
+// init components
+const NavTopForm = require('./NavTop.Form.jsx');
 
-	displayName : 'Nav-top',
 
-	getInitialState : function()
+module.exports = React.createClass({
+
+	displayName : 'NavTop',
+
+	getInitialState()
 	{
 		return {
 			show_form : false,
@@ -18,7 +22,7 @@ var Container_NavTop = React.createClass({
 	/**
 	 * Toggle setting form
 	 */
-	toggleSetting : function(e)
+	toggleSetting()
 	{
 		var self = this;
 		if (!this.state.show_form == true)
@@ -35,29 +39,19 @@ var Container_NavTop = React.createClass({
 		this.setState({ show_form : !this.state.show_form });
 	},
 
-	closeSetting : function()
+	/**
+	 * Close setting layer
+	 */
+	closeSetting()
 	{
 		$(document).off('click');
 		this.setState({ show_form : false });
 	},
 
 	/**
-	 * Action shuffle blocks
+	 * Play scroll event
 	 */
-	actShuffleBlocks : function()
-	{
-		log('action shuffle blocks')
-	},
-
-	/**
-	 * Action add blocks
-	 */
-	actAddBlocks : function()
-	{
-		log('action add blocks')
-	},
-
-	scrollEvent : function()
+	scrollEvent()
 	{
 		var windowTop = $(window).scrollTop();
 		var $el = $(ReactDOM.findDOMNode(this));
@@ -74,7 +68,7 @@ var Container_NavTop = React.createClass({
 	/**
 	 * RENDER
 	 */
-	render : function()
+	render()
 	{
 		return (
 			<div className="nav-top-wrap">
@@ -83,7 +77,7 @@ var Container_NavTop = React.createClass({
 						<button type="button" title="Edit preference" onClick={this.toggleSetting}>
 							<i className="sp-ico ico-setting abs">Setting</i>
 						</button>
-						<Container_NavTop_Form
+						<NavTopForm
 							update={this.props.update}
 							reset={this.props.reset}
 							preference={this.props.preference}/>

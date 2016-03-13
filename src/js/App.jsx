@@ -1,4 +1,14 @@
-var App = React.createClass({
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+
+// init components
+const Header = require('./header/Header.jsx');
+const Container = require('./container/Container.jsx');
+const Sidebar = require('./sidebar/Sidebar.jsx');
+
+
+// App
+const App = React.createClass({
 
 	displayName : 'photo-layout-editor',
 	saveWidth : 0,
@@ -6,36 +16,45 @@ var App = React.createClass({
 	$sidebar : null,
 	show_sidebar : (localStorage.getItem('sidebar') != 'false'),
 
-	getInitialState : function()
+	getInitialState()
 	{
 		return {};
 	},
 
-	componentDidMount : function()
+	componentDidMount()
 	{
 		this.$editor = $(ReactDOM.findDOMNode(this.refs.editor));
 		this.$sidebar = $(ReactDOM.findDOMNode(this.refs.sidebar));
 
-		var self = this;
-
-		$(window).on('scroll', function(e){
-			self.refs.container.refs.navTop.scrollEvent();
+		// scroll event
+		$(window).on('scroll', (e) => {
+			this.refs.container.refs.navTop.scrollEvent();
 		});
 
+		// show sidebar
 		if (this.show_sidebar)
 		{
 			this.$editor.addClass('on-sidebar');
 		}
 
+		// play gridster
 		this.refs.container.actGridster();
 	},
 
-	attachIames : function(images)
+	/**
+	 * Attach images
+	 *
+	 * @param {array} images
+	 */
+	attachImages(images)
 	{
 		this.refs.container.updateAttachImages(images);
 	},
 
-	toggleSidebar : function()
+	/**
+	 * Toggle side bar
+	 */
+	toggleSidebar()
 	{
 		var bool = !this.show_sidebar;
 		localStorage.setItem('sidebar', bool);
@@ -47,7 +66,12 @@ var App = React.createClass({
 		this.$editor.css('min-width', this.saveWidth);
 	},
 
-	resizeWidth : function(width)
+	/**
+	 * Resize container width
+	 *
+	 * @param {int} width
+	 */
+	resizeWidth(width)
 	{
 		this.saveWidth = (this.show_sidebar) ? width : width - this.$sidebar.width();
 		this.$editor.css('min-width', this.saveWidth);
@@ -56,7 +80,7 @@ var App = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
 			<div ref="editor" className="ple-editor">
@@ -66,11 +90,16 @@ var App = React.createClass({
 					resizeWidth={this.resizeWidth}/>
 				<Sidebar
 					ref="sidebar"
-					uploadScript={this.props.uploadScript}
+					uploadScript={preference.uploadScript}
 					show={this.state.show_sidebar}
 					toggleSidebar={this.toggleSidebar}
-					attachImages={this.attachIames}/>
+					attachImages={this.attachImages}
+					defaultUploadFiles={preference.defaultUploadFiles}/>
 			</div>
 		);
 	}
 });
+
+
+// render App
+ReactDOM.render(<App/>, document.getElementById('app'));

@@ -1,9 +1,14 @@
-var Container = React.createClass({
+const NavTop = require('./NavTop.jsx');
+const Gridster = require('./Gridster.jsx');
+const NavBottom = require('./NavBottom.jsx');
+
+
+module.exports = React.createClass({
 
 	displayName : 'Container',
 	originalPreference : {},
 
-	getInitialState : function()
+	getInitialState()
 	{
 		return {
 			preference : {
@@ -19,40 +24,62 @@ var Container = React.createClass({
 		};
 	},
 
-	componentDidMount : function()
+	componentDidMount()
 	{
 		this.originalPreference = this.state.preference;
 		this.gridster = this.refs.gridster;
 	},
 
-	updatePreference : function(params)
+	/**
+	 * Update preference
+	 *
+	 * @param {object} params
+	 */
+	updatePreference(params)
 	{
 		this.setState({ preference : params, action: 'updatePreference' });
 		this.refs.navTop.closeSetting();
 	},
 
-	resetPreference : function()
+	/**
+	 * Reset preference
+	 */
+	resetPreference()
 	{
 		this.setState({ preference : this.originalPreference, action : null });
 	},
 
-	updateAttachImages : function(items)
+	/**
+	 * Update attach images
+	 *
+	 * @param {array} items
+	 */
+	updateAttachImages(items)
 	{
 		log('act import');
 		log(items);
 	},
 
-	actAddBlcok : function()
+	/**
+	 * Play add block
+	 */
+	actAddBlcok()
 	{
 		this.refs.gridster.addBlock();
 	},
 
-	actShuffleBlocks : function()
+	/**
+	 * Play shuffle blocks
+	 */
+	actShuffleBlocks()
 	{
 		this.refs.gridster.shuffleBlocks();
 	},
 
-	actGridster : function()
+	/**
+	 * Play Gridster
+	 */
+	actGridster()
 	{
 		this.setState({ action : 'init' });
 	},
@@ -60,7 +87,7 @@ var Container = React.createClass({
 	/**
 	 * Generate
 	 */
-	generate : function()
+	generate()
 	{
 		log('generate output');
 	},
@@ -68,24 +95,24 @@ var Container = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
 			<div className="ple-container">
-				<Container_NavTop
+				<NavTop
 					ref="navTop"
 					update={this.updatePreference}
 					reset={this.resetPreference}
 					actAddBlock={this.actAddBlcok}
 					actShuffleBlocks={this.actShuffleBlocks}
 					preference={this.state.preference}/>
-				<Container_Gridster
+				<Gridster
 					ref="gridster"
 					preference={this.state.preference}
 					action={this.state.action}
 					resizeWidth={this.props.resizeWidth}
 					dynamicParameter={this.state.dynamicParameter}/>
-				<Container_NavBottom
+				<NavBottom
 					generate={this.generate} />
 			</div>
 		);

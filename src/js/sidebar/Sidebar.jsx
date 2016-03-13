@@ -1,58 +1,59 @@
-var Sidebar = React.createClass({
+const Uploader = require('../lib/Uploader.js');
+const Nav = require('./Nav.jsx');
+const UploadFiles = require('./UploadFiles.jsx');
+
+
+module.exports = React.createClass({
 
 	displayName : 'Sidebar',
 
 	propTypes : {
-		uploadScript : React.PropTypes.string
+		uploadScript : React.PropTypes.string,
+		defaultUploadFiles : React.PropTypes.array
 	},
 
 	uploader : new Uploader(),
 
-	getDefaultProps : function()
+	getDefaultProps()
 	{
 		return {
 			uploadScript : null
 		};
 	},
 
-	getInitialState : function()
+	getInitialState()
 	{
 		return {
-			uploadImages : [
-				{
-					on : false,
-					image : './assets/img/tmp-simg-01.jpg',
-					style : { backgroundImage : 'url(./assets/img/tmp-simg-01.jpg)' }
-				},
-				{
-					on : false,
-					image : './assets/img/tmp-simg-02.jpg',
-					style : { backgroundImage : 'url(./assets/img/tmp-simg-02.jpg)' }
-				},
-				{
-					on : false,
-					image : './assets/img/tmp-simg-03.jpg',
-					style : { backgroundImage : 'url(./assets/img/tmp-simg-03.jpg)' }
-				},
-				{
-					on : false,
-					image : './assets/img/tmp-simg-04.jpg',
-					style : { backgroundImage : 'url(./assets/img/tmp-simg-04.jpg)' }
-				}
-			],
+			uploadImages : this.importImages(this.props.defaultUploadFiles),
 			is_loading : false
 		};
 	},
 
 	/**
+	 * Import images
+	 *
+	 * @param {array} files
+	 * @return {array}
+	 * */
+	importImages(files)
+	{
+		files = files || [];
+		return files.map((o) => {
+			return {
+				on : false,
+				image : o,
+				style : { backgroundImage : 'url(' + o + ')' }
+			};
+		});
+	},
+
+	/**
 	 * upload images
 	 *
-	 * @Param {Files} array
+	 * @Param {Files} files
 	 */
-	upload : function(files)
+	upload(files)
 	{
-		var self = this;
-		var result = null;
 		var uploadFiles = [];
 
 		for (var i=0; i<files.length; i++)
@@ -72,22 +73,22 @@ var Sidebar = React.createClass({
 				this.props.uploadDir,
 				this.props.uploadUrl,
 				uploadFiles,
-				function(response){
-					self.setState({ is_loading : false });
+				(response) => {
+					this.setState({ is_loading : false });
 
 					if (response.state == 'success')
 					{
 						var data = response.images;
 
-						data.forEach(function(o){
-							self.state.uploadImages.push({
+						data.forEach((o) => {
+							this.state.uploadImages.push({
 								on : false,
 								image : o.loc,
 								style : { backgroundImage : 'url(' + o.loc + ')' }
 							});
 						});
-						self.setState({
-							uploadImages : self.state.uploadImages
+						this.setState({
+							uploadImages : this.state.uploadImages
 						});
 					}
 					else
@@ -101,25 +102,24 @@ var Sidebar = React.createClass({
 		{
 			// is local upload
 			this.setState({ is_loading : true });
-			this.uploader.local(uploadFiles, function(data){
-				var result = self.state.uploadImages;
-				self.setState({ is_loading : false });
+			this.uploader.local(uploadFiles, (data) => {
+				var result = this.state.uploadImages;
+				this.setState({ is_loading : false });
 
-				data.forEach(function(o){
+				data.forEach((o) => {
 					result.push({
 						on : false,
 						image : o,
 						style : { backgroundImage : 'url(' + o + ')' }
 					});
 				});
-				self.setState({ uploadImages : result });
+				this.setState({ uploadImages : result });
 			});
 		}
 	},
 
-	remove : function()
+	remove()
 	{
-		var self = this;
 		var selectedKeys = [];
 
 		if (!this.state.uploadImages.length)
@@ -128,7 +128,7 @@ var Sidebar = React.createClass({
 			return;
 		}
 
-		this.state.uploadImages.forEach(function(o, k){
+		this.state.uploadImages.forEach((o, k) => {
 			if (o.on)
 			{
 				selectedKeys.push(k);
@@ -137,10 +137,10 @@ var Sidebar = React.createClass({
 
 		if (selectedKeys.length)
 		{
-			selectedKeys.forEach(function(o){
-				delete self.state.uploadImages[o];
+			selectedKeys.forEach((o) => {
+				delete this.state.uploadImages[o];
 			});
-			this.setState({ uploadImages : self.state.uploadImages });
+			this.setState({ uploadImages : this.state.uploadImages });
 		}
 		else
 		{
@@ -151,10 +151,10 @@ var Sidebar = React.createClass({
 		}
 	},
 
-	attach : function()
+	attach()
 	{
 		var items = [];
-		this.state.uploadImages.forEach(function(o){
+		this.state.uploadImages.forEach((o) => {
 			if (o.on)
 			{
 				items.push(o.image);
@@ -171,18 +171,18 @@ var Sidebar = React.createClass({
 		}
 	},
 
-	toggleSelect : function()
+	toggleSelect()
 	{
 		var items = this.state.uploadImages;
 		var $items = $(ReactDOM.findDOMNode(this.refs.files));
 		var sw = ($items.find('span.on').length > 0);
-		items.forEach(function(o){
+		items.forEach((o) => {
 			o.on = (!sw);
 		});
 		this.setState({ uploadImages : items });
 	},
 
-	update : function(data)
+	update(data)
 	{
 		this.setState({ uploadImages : data });
 	},
@@ -191,7 +191,7 @@ var Sidebar = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
 			<aside className={ 'ple-sidebar' + ((this.state.is_loading) ? ' loading' : '') }>
@@ -200,8 +200,14 @@ var Sidebar = React.createClass({
 						<i className={'sp-ico abs' + ((this.props.show) ? ' ico-arrow-right2' : ' ico-arrow-left2')}>Toggle sidebar</i>
 					</span>
 				</button>
-                <Sidebar_Nav ref="nav" upload={this.upload} remove={this.remove} attach={this.attach} toggleSelect={this.toggleSelect} />
-                <Sidebar_UploadFiles ref="files" uploadImages={this.state.uploadImages} update={this.update} />
+                <Nav ref="nav"
+					 upload={this.upload}
+					 remove={this.remove}
+					 attach={this.attach}
+					 toggleSelect={this.toggleSelect} />
+                <UploadFiles ref="files"
+							 uploadImages={this.state.uploadImages}
+							 update={this.update} />
 			</aside>
 		);
 	}

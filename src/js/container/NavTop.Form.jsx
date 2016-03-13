@@ -1,23 +1,23 @@
-var Container_NavTop_Form = React.createClass({
+module.exports = React.createClass({
 
-	displayName : 'Form',
+	displayName : 'NavTop-Form',
 	form : null,
 
 	propTypes : {
 		update : React.PropTypes.func
 	},
 
-	getInitialState : function()
+	getInitialState()
 	{
 		return {};
 	},
 
-	componentDidMount : function()
+	componentDidMount()
 	{
 		this.form = ReactDOM.findDOMNode(this.refs.form);
 	},
 
-	update : function(e)
+	update(e)
 	{
 		e.preventDefault();
 		this.props.update({
@@ -33,7 +33,7 @@ var Container_NavTop_Form = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
 			<article className="form" id="settings">

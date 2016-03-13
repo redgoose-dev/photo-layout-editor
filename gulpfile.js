@@ -1,66 +1,121 @@
+var log = function(o) { console.log(o); }
+
+// log modules
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var scss = require('gulp-sass');
-var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
-var babel = require('gulp-babel');
-var runSequence = require('run-sequence');
+var uglify = require('gulp-uglify');
+var scss = require('gulp-sass');
+var rename = require('gulp-rename');
+
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 
-// compile jsx
-gulp.task('react', function(){
-	return gulp.src('src/jsx/**/*.jsx')
-		.pipe(babel())
-		.pipe(gulp.dest('src/js/'));
+// set directory
+var src = './src';
+var dist = './dist';
+var maps = 'maps';
+
+
+// set vendor files
+var minifis = {
+	js : [
+		'./node_modules/fastclick/lib/fastclick.js'
+	]
+};
+var vendors = {
+	js : [
+		'./node_modules/react/dist/react.js',
+		'./node_modules/react-dom/dist/react-dom.min.js',
+		'./node_modules/jquery/dist/jquery.min.js',
+		'./node_modules/imagesloaded/imagesloaded.pkgd.min.js',
+		'./node_modules/fastclick/lib/fastclick.min.js',
+		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js'
+	],
+	css : [
+		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css'
+	]
+};
+
+
+// Minify files
+gulp.task('minify', function(){
+	if (minifis.js.length)
+	{
+		minifis.js.forEach(function(o){
+			var dir = o.substring(0,o.lastIndexOf("/")+1);
+			gulp.src(o)
+				.pipe(uglify())
+				.pipe(rename({ suffix : '.min' }))
+				.pipe(gulp.dest(dir));
+		});
+	}
+	if (minifis.css.length)
+	{
+		minifis.css.forEach(function(o){
+			var dir = o.substring(0,o.lastIndexOf("/")+1);
+			gulp.src(o)
+				.pipe(scss({
+					outputStyle: 'compressed'
+				}).on('error', scss.logError))
+				.pipe(rename({ suffix : '.min' }))
+				.pipe(gulp.dest(dir));
+		});
+	}
 });
 
-// concat javascript files
-gulp.task('javascript', function(){
-	gulp.src('src/js/**/*.js')
-		.pipe(sourcemaps.init())
-		//.pipe(uglify())
-		.pipe(concat('PhotoLayoutEditor.min.js', { newLine: '\n' }))
-		.pipe(sourcemaps.write('../maps'))
-		.pipe(gulp.dest('dist/js/'));
-});
-// watch javascript
-gulp.task('javascript:watch', function(){
-	gulp.watch(['src/js/**/*.js'], ['javascript']);
-});
 
-// react and javascript
-gulp.task('react_and_javascript', function(callback){
-	runSequence(
-		'react',
-		['javascript'],
-		callback
-	);
-});
+// build vendor files
+gulp.task('vendor', function(){
+	gulp.src(vendors.js)
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(concat('vendor.pkgd.js', { newLine: '\n\n' }))
+		.pipe(sourcemaps.write(maps))
+		.pipe(gulp.dest(dist + '/js'));
 
-// watch react and javascript
-gulp.task('react_and_javascript:watch', function(){
-	gulp.watch(['src/jsx/**/*.jsx'], ['react_and_javascript']);
-});
-
-
-// scss to css
-gulp.task('scss', function(){
-	gulp.src([ 'src/scss/index.scss' ])
+	gulp.src(vendors.css)
 		.pipe(sourcemaps.init())
 		.pipe(scss({
-			outputStyle: 'compact'
-			//outputStyle: 'compressed'
+			outputStyle: 'compressed'
 		}).on('error', scss.logError))
-		.pipe(concat('PhotoLayoutEditor.css', { newLine: '\n' }))
-		.pipe(sourcemaps.write('../maps'))
-		.pipe(gulp.dest('dist/css/'));
+		.pipe(concat('vendor.pkgd.css', { newLine: '\n\n' }))
+		.pipe(sourcemaps.write(maps))
+		.pipe(gulp.dest(dist + '/css'));
+});
+
+
+// build javascript
+gulp.task('js.app', function(){
+	browserify(src + '/js/App.jsx', { debug: true })
+		.transform(babelify, { presets : ['es2015', 'react'] })
+		.bundle()
+		.pipe(source('app.pkgd.js'))
+		.pipe(buffer())
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+		.pipe(sourcemaps.write('maps'))
+		.pipe(gulp.dest(dist + '/js'));
+});
+gulp.task('js.app:watch', function(){
+	gulp.watch([src + '/js/**/*.jsx'], ['js.app']);
+});
+
+
+// build scss
+gulp.task('scss', function(){
+	gulp.src(src + '/scss/app.scss')
+		.pipe(sourcemaps.init())
+		.pipe(scss({
+			//outputStyle : 'compact'
+			outputStyle: 'compressed'
+		}).on('error', scss.logError))
+		.pipe(rename({ suffix: '.pkgd' }))
+		.pipe(sourcemaps.write(maps))
+		.pipe(gulp.dest(dist + '/css'));
 });
 gulp.task('scss:watch', function(){
-	gulp.watch([ 'src/scss/index.scss' ], ['scss']);
-});
-
-
-// default
-gulp.task('default', function(){
-    console.log('hello');
+	gulp.watch(src + '/scss/*.scss', ['scss']);
 });

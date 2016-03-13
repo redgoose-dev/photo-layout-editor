@@ -1,6 +1,6 @@
-var Header = React.createClass({
+module.exports = React.createClass({
 
-	displayName : 'header',
+	displayName : 'Header',
 
 	componentDidMount : function()
 	{

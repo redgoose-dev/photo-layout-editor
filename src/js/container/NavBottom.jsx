@@ -1,8 +1,8 @@
-var Container_NavBottom = React.createClass({
+module.exports = React.createClass({
 
 	displayName : 'Nav-bottom',
 
-	actGenerator : function()
+	actGenerator()
 	{
 		log('ACTION GENERATE');
 	},
@@ -10,7 +10,7 @@ var Container_NavBottom = React.createClass({
 	/**
 	 * render
 	 */
-	render : function()
+	render()
 	{
 		return (
             <nav className="nav-bottom">
