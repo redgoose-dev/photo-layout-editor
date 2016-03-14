@@ -48,7 +48,7 @@ const App = React.createClass({
 	 */
 	attachImages(images)
 	{
-		this.refs.container.updateAttachImages(images);
+		this.refs.container.refs.gridster.attachImages(images);
 	},
 
 	/**
@@ -84,7 +84,7 @@ const App = React.createClass({
 	{
 		return (
 			<div ref="editor" className="ple-editor">
-				<Header />
+				<Header ref="header" />
 				<Container
 					ref="container"
 					resizeWidth={this.resizeWidth}/>
@@ -102,4 +102,4 @@ const App = React.createClass({
 
 
 // render App
-ReactDOM.render(<App/>, document.getElementById('app'));
+window.app = ReactDOM.render(<App/>, document.getElementById('app'));

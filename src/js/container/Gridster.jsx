@@ -134,8 +134,7 @@ module.exports = React.createClass({
 		{
 			this.block({
 				sizeX : util.getRandomRange(1, max_width),
-				sizeY : util.getRandomRange(1, max_height),
-				text : i.toString()
+				sizeY : util.getRandomRange(1, max_height)
 			});
 		}
 	},
@@ -152,7 +151,7 @@ module.exports = React.createClass({
 		y = y || 1;
 		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
 		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
-		this.block({ sizeX : x, sizeY : y, text : 'add' });
+		this.block({ sizeX : x, sizeY : y });
 	},
 
 	/**
@@ -174,6 +173,54 @@ module.exports = React.createClass({
 		this.create();
 	},
 
+	/**
+	 * Attach images
+	 *
+	 * @param {array} images
+	 */
+	attachImages(images)
+	{
+		var $block = this.$gridster.find('li').not('.attached');
+
+		if (images.length > $block.length)
+		{
+			let total = images.length - $block.length;
+			for (let i=0; i<total; i++)
+			{
+				this.addBlock();
+			}
+			$block = this.$gridster.find('li').not('.attached');
+		}
+
+		var baskets = [];
+		$block.each((k, o) => {
+			if (!$(o).children('figure').length && k < images.length)
+			{
+				baskets.push(o);
+			}
+		});
+
+		baskets.forEach((o, k) => {
+			this.assignImage($(o), images[k]);
+		});
+	},
+
+	/**
+	 * Assign image
+	 *
+	 * @param {object} $target
+	 * @param {string} image
+	 */
+	assignImage($target, image)
+	{
+		var $figure = $('<figure/>');
+		$figure.css({
+			'background-image' : 'url(' + image + ')',
+			'background-position' : '50% 50%',
+			'background-size' : 'cover'
+		});
+		$target.addClass('attached').prepend($figure);
+	},
 
 	/**
 	 * render
@@ -188,7 +235,7 @@ module.exports = React.createClass({
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster"></div>
+				<div ref="gridster" className="gridster" id="gridster"></div>
         	</div>
 		);
 	}

@@ -50,17 +50,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Update attach images
-	 *
-	 * @param {array} items
-	 */
-	updateAttachImages(items)
-	{
-		log('act import');
-		log(items);
-	},
-
-	/**
 	 * Play add block
 	 */
 	actAddBlcok()

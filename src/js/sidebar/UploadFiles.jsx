@@ -8,6 +8,9 @@ module.exports = React.createClass({
 	},
 	is_multiSelect : false,
 
+	$gridster : null,
+	dragTarget : null,
+
 	getInitialState()
 	{
 		return {}
@@ -32,8 +35,15 @@ module.exports = React.createClass({
 		};
 
 		$(window).on('keydown', onKeydown);
+
+		this.$gridster = $('.gridster');
 	},
 
+	/**
+	 * on select item
+	 *
+	 * @param {event} e
+	 */
 	onSelect(e)
 	{
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
@@ -54,6 +64,44 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * on drag start
+	 *
+	 * @param {event} e
+	 */
+	onDragStart(e)
+	{
+		this.$gridster.find('li').on('dragover', (e) => {
+			e.preventDefault();
+			$(e.currentTarget).addClass('hover');
+		}).on('dragleave', (e) => {
+			e.preventDefault();
+			$(e.currentTarget).removeClass('hover');
+		}).on('drop', (e) => {
+			e.preventDefault();
+			this.dragTarget = e.currentTarget;
+		});
+	},
+
+	/**
+	 * on drag end
+	 *
+	 * @param {event} e
+	 */
+	onDragEnd(e)
+	{
+		this.$gridster.find('li')
+			.removeClass('hover')
+			.off('dragover dragleave drop');
+
+		if (this.dragTarget)
+		{
+			let img = this.props.uploadImages[parseInt(e.currentTarget.getAttribute('data-key'))].image;
+			window.app.refs.container.refs.gridster.assignImage($(this.dragTarget), img);
+			this.dragTarget = null;
+		}
+	},
+
+	/**
 	 * render
 	 */
 	render()
@@ -63,7 +111,10 @@ module.exports = React.createClass({
 		// make item elements
 		this.props.uploadImages.forEach((item, key) => {
 			items.push(
-				<li key={key} data-key={key} onClick={this.onSelect}>
+				<li key={key} data-key={key} draggable="true"
+					onClick={this.onSelect}
+					onDragStart={this.onDragStart}
+					onDragEnd={this.onDragEnd}>
 					<span style={item.style} className={(item.on) ? 'on' : ''}>.img</span>
 				</li>
 			);
