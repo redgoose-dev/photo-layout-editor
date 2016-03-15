@@ -13,6 +13,8 @@ $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/git/PhotoLayoutEditor/upload';
 $uploadUrl = './upload';
 
 
+// TODO : `upload` 디렉토리가 없으면 만들기
+
 // check directory
 if (!$uploadDir || !is_dir($uploadDir))
 {

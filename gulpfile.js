@@ -8,10 +8,7 @@ var uglify = require('gulp-uglify');
 var scss = require('gulp-sass');
 var rename = require('gulp-rename');
 
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
+var webpack = require('webpack-stream');
 
 
 // set directory
@@ -87,23 +84,6 @@ gulp.task('vendor', function(){
 });
 
 
-// build javascript
-gulp.task('js.app', function(){
-	browserify(src + '/js/App.jsx', { debug: true })
-		.transform(babelify, { presets : ['es2015', 'react'] })
-		.bundle()
-		.pipe(source('app.pkgd.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(sourcemaps.write('maps'))
-		.pipe(gulp.dest(dist + '/js'));
-});
-gulp.task('js.app:watch', function(){
-	gulp.watch([src + '/js/**/*.jsx'], ['js.app']);
-});
-
-
 // build scss
 gulp.task('scss', function(){
 	gulp.src(src + '/scss/app.scss')
@@ -119,3 +99,11 @@ gulp.task('scss', function(){
 gulp.task('scss:watch', function(){
 	gulp.watch(src + '/scss/*.scss', ['scss']);
 });
+
+
+//gulp.task('js', function() {
+//	return gulp.src(src + '/js/App.jsx')
+//		//.pipe(webpack())
+//		.pipe(webpack( require('./webpack.config.js') ))
+//		.pipe(gulp.dest(dist + '/js/'));
+//});
