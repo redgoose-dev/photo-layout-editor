@@ -11,7 +11,7 @@ body {
 	font-size: 14px; color: #333; line-height: 1.428;
 }
 body, input, select, textarea {
-	font-family: 'Noto Sans', sans-serif;
+	font-family: 'Apple SD Gothic Neo', 'Noto Sans', 'MalgunGothic', 'Helvetica Neue', sans-serif;
 }
 
 
@@ -43,19 +43,19 @@ body, input, select, textarea {
 .ple-header {
 	h1 {
 		margin: -5px 0 0;
-		font-size: 36px; color: #49484b; font-weight: 500;
-		letter-spacing: -1px;
+		font-size: 36px; color: #222;
+		font-family: $font-eng;
 	}
 	p {
 		margin: 3px 0 0;
-		font-size: 12px; color: #555;
+		font-size: 13px; color: #555;
 	}
 }
 
 
 /* Container */
 .ple-container {
-	margin: 20px 0 0;
+	margin: 30px 0 0;
 	.nav-top-wrap {
 		position: relative; height: 43px;
 		&:after {content: ''; display: block; clear: both;}
@@ -67,6 +67,7 @@ body, input, select, textarea {
 		&.fix {position: fixed; top: 0;}
 		.block {
 			float: left; margin-right: 1px;
+			display: none;
 			> button {
 				display: block; position: relative;
 				margin: 0; padding: 0; width: 42px; height: 42px;
@@ -79,6 +80,11 @@ body, input, select, textarea {
 			&.is-active {
 				> button {background: $col-key;}
 				.form {display: block;}
+			}
+			&.is-show {display: block;}
+			&.for-item {
+				> button {background: $col-active;}
+				&.show {display: block;}
 			}
 		}
 		.form {
@@ -133,24 +139,23 @@ body, input, select, textarea {
 			}
 		}
 	}
-	.gridster-wrap {padding: 30px; background: $col-bg-blur;}
+	.gridster-wrap {padding: 50px 30px; background: $col-bg-blur;}
 	.gridster {
 		margin: 0 auto;
 		background: #fff;
+		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
 		ul {padding:0; list-style: none;}
 		li {
 			background: #ddd; cursor: pointer; overflow: hidden;
-			&:hover:before, &.hover:before {
-				content: ''; position: absolute;
-				left: 0; right: 0; top: 0; bottom: 0;
-				border: 3px solid lightseagreen;
-			}
 			&.selected {
 				&:after {
-					content: ''; position: absolute;
+					content: ''; position: absolute; z-index: 2;
 					left: 0; right: 0; top: 0; bottom: 0;
-					border: 2px solid orangered;
+					border: 4px solid $col-active;
 				}
+			}
+			.gs-resize-handle {
+				//z-index: 20;
 			}
 			figure {
 				margin: 0;
@@ -202,13 +207,10 @@ body, input, select, textarea {
 			border-top-left-radius: 3px; border-bottom-left-radius: 3px;
 			box-shadow: inset -1px 0 6px rgba(0,0,0,.4);
 		}
-		i {
-			position: absolute; left: 50%; top: 50%;
-			display: block;
-		}
+		i {display: block; position: absolute; left: 50%; top: 50%;}
 		.ple-editor.on-sidebar & {
 			i {
-				width: 7px; height: 12px; background-position: -45px -76px;
+				width: 7px; height: 12px; background-position: -112px 0;
 				&.abs {margin-left: -4px; margin-top: -6px;}
 			}
 		}
@@ -218,28 +220,23 @@ body, input, select, textarea {
 		background: $col-key;
 		.wrap {
 			margin: 30px 15px 10px;
-			border: 1px solid #919193;
-			border-color: rgba(255,255,255,.3);
 			border-radius: 3px;
+			background: #444;
 			&:after {content: ''; display: block; clear: both;}
 		}
 		button, span {
 			margin: 0; padding: 0;
-			position: relative; float: left; width: 25%; height: 30px;
-			background: none;
+			position: relative; float: left; width: 25%; height: 36px;
 			border-width: 0 0 0 1px; border-style: solid;
-			border-color: #919193; border-color: rgba(255,255,255,.3);
-			cursor: pointer;
+			border-color: #626164; border-color: rgba(255,255,255,.3);
+			background: none; cursor: pointer;
 			&:first-child {border-width: 0;}
 		}
 		input[type=file] {
 			position: absolute; left: 0; top: 0; z-index: 3;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-			outline: none;
-			white-space: nowrap;
-			cursor: pointer;
+			width: 100%; height: 100%;
+			opacity: 0; outline: none;
+			white-space: nowrap; cursor: pointer;
 			-webkit-user-select: none;
 			&::-webkit-file-upload-button {
 				visibility: hidden;
@@ -277,7 +274,7 @@ body, input, select, textarea {
 					&:after {
 						content: ''; position: absolute;
 						left: 0; right: 0; top: 0; bottom: 0;
-						border: 4px solid #FE455F;
+						border: 3px solid $col-active;
 
 					}
 				}

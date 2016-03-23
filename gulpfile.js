@@ -101,9 +101,8 @@ gulp.task('scss:watch', function(){
 });
 
 
-//gulp.task('js', function() {
-//	return gulp.src(src + '/js/App.jsx')
-//		//.pipe(webpack())
-//		.pipe(webpack( require('./webpack.config.js') ))
-//		.pipe(gulp.dest(dist + '/js/'));
-//});
+gulp.task('js', function() {
+	return gulp.src(src + '/js/App.jsx')
+		.pipe(webpack( require('./webpack.config.js') ))
+		.pipe(gulp.dest(dist + '/js/'));
+});

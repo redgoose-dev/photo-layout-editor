@@ -197,7 +197,7 @@ module.exports = React.createClass({
 			<aside className={ 'ple-sidebar' + ((this.state.is_loading) ? ' loading' : '') }>
 				<button type="button" onClick={this.props.toggleSidebar} className="toggle">
 					<span>
-						<i className={'sp-ico abs' + ((this.props.show) ? ' ico-arrow-right2' : ' ico-arrow-left2')}>Toggle sidebar</i>
+						<i className={'sp-ico abs' + ((this.props.show) ? ' ico-arrow-right' : ' ico-arrow-left')}>Toggle sidebar</i>
 					</span>
 				</button>
                 <Nav ref="nav"

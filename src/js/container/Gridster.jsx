@@ -5,12 +5,14 @@ module.exports = React.createClass({
 	displayName : 'Gridster',
 
 	$gridster : null,
+	$wrap : null,
 	gridster : null,
 	saveBlocks : null,
 
 	componentDidMount()
 	{
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
+		this.$wrap = this.$gridster.parent();
 	},
 
 	/**
@@ -58,6 +60,15 @@ module.exports = React.createClass({
 				,max_size : [pref.max_scale, pref.max_scale]
 			}
 		}).data('gridster');
+
+		// init block event
+		if (this.$gridster.find('li').length)
+		{
+			this.initBlockEvent(this.$gridster.find('li'));
+		}
+
+		// act unselected
+		this.unSelectBlock();
 	},
 
 	/**
@@ -118,7 +129,71 @@ module.exports = React.createClass({
 
 		var $li = $('<li>' + ((params.text) ? params.text : '') + '</li>');
 
+		// add gridster
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
+
+		// init event
+		this.initBlockEvent($li);
+	},
+
+	/**
+	 * Init block event
+	 *
+	 * @param {object} $block
+	 */
+	initBlockEvent($block)
+	{
+		var self = this;
+
+		$block.on('click', function(e){
+			var $block = $(e.currentTarget);
+			var $blocks = self.$gridster.find('li');
+			var className = 'selected';
+
+			e.stopPropagation();
+
+			if ($block.hasClass('selected'))
+			{
+				$block.removeClass(className);
+				self.props.selectBlock(null);
+			}
+			else
+			{
+				$blocks.removeClass(className);
+				$block.addClass(className);
+				self.props.selectBlock($blocks.filter('.' + className));
+				self.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', function(e){
+					$blocks.removeClass(className);
+					self.props.selectBlock(null);
+					$(this).off('click.gridsterBlock');
+				});
+			}
+		});
+	},
+
+	/**
+	 * Remove block
+	 */
+	removeBlock()
+	{
+		this.gridster.remove_widget( this.$gridster.find('li.selected') );
+		this.unSelectBlock();
+	},
+	
+	duplicateBlock()
+	{
+		log('duplicate block');
+	},
+
+	/**
+	 * unselect block
+	 *
+	 */
+	unSelectBlock()
+	{
+		setTimeout(() => {
+			this.$wrap.trigger('click.gridsterBlock');
+		}, 50);
 	},
 
 	/**
@@ -218,8 +293,11 @@ module.exports = React.createClass({
 			'background-image' : 'url(' + image + ')',
 			'background-position' : '50% 50%',
 			'background-size' : 'cover'
-		});
+		}).attr('data-image', image);
 		$target.addClass('attached').prepend($figure);
+
+		// act unselected
+		this.unSelectBlock();
 	},
 
 	/**

@@ -40,7 +40,7 @@ module.exports = React.createClass({
             <nav className="nav-top">
         		<div className="wrap">
         			<button type="button" title="attach images" onClick={this.props.attach}>
-						<i className="sp-ico ico-arrow-left abs">Moving the image to grid block</i>
+						<i className="sp-ico ico-reply abs">Moving the image to grid block</i>
 					</button>
 					<button type="button" title="toggle select" onClick={this.props.toggleSelect}>
 						<i className="sp-ico ico-select abs">Toggle all select</i>

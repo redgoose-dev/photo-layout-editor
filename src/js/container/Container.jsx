@@ -50,22 +50,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Play add block
-	 */
-	actAddBlcok()
-	{
-		this.refs.gridster.addBlock();
-	},
-
-	/**
-	 * Play shuffle blocks
-	 */
-	actShuffleBlocks()
-	{
-		this.refs.gridster.shuffleBlocks();
-	},
-
-	/**
 	 * Play Gridster
 	 */
 	actGridster()
@@ -82,6 +66,51 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * On select block
+	 * 
+	 */
+	onSelectBlock($el)
+	{
+		this.refs.navTop.onSelect($el);
+	},
+
+	topNavControl(e, action)
+	{
+		var type = '';
+		if (e)
+		{
+			type = e.currentTarget.getAttribute('data-type');
+		}
+		else
+		{
+			if (!action) return false;
+			type = action;
+		}
+
+		switch(type)
+		{
+			case 'shuffle':
+				this.refs.gridster.shuffleBlocks();
+				break;
+			case 'addBlock':
+				this.refs.gridster.addBlock();
+				break;
+			case 'edit':
+				log('act edit');
+				break;
+			case 'empty':
+				log('act empty');
+				break;
+			case 'duplicate':
+				this.refs.gridster.duplicateBlock();
+				break;
+			case 'remove':
+				this.refs.gridster.removeBlock();
+				break;
+		}
+	},
+	
+	/**
 	 * render
 	 */
 	render()
@@ -92,14 +121,14 @@ module.exports = React.createClass({
 					ref="navTop"
 					update={this.updatePreference}
 					reset={this.resetPreference}
-					actAddBlock={this.actAddBlcok}
-					actShuffleBlocks={this.actShuffleBlocks}
+					actControl={this.topNavControl}
 					preference={this.state.preference}/>
 				<Gridster
 					ref="gridster"
 					preference={this.state.preference}
 					action={this.state.action}
 					resizeWidth={this.props.resizeWidth}
+					selectBlock={this.onSelectBlock}
 					dynamicParameter={this.state.dynamicParameter}/>
 				<NavBottom
 					generate={this.generate} />

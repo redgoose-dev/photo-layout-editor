@@ -1,18 +1,12 @@
-'use strict';
-
 module.exports = {
+	watch: true,
 	devtool: 'eval',
 	resolve: {
 		modulesDirectories: ['src/js'],
 		extensions: ['', '.jsx', '.js']
 	},
-	entry: {
-		'main': './src/js/App'
-	},
 	output: {
-		path: 'dist/js/',
-		filename: 'app.pkgd.js',
-		sourceMapFilename: 'maps/app.pkgd.js.map'
+		filename: 'app.pkgd.js'
 	},
 	externals: {
 		'jquery': '$',
