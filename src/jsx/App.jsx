@@ -5,6 +5,7 @@ const ReactDOM = require('ReactDOM');
 const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
+const Cropper = require('./cropper/Cropper.jsx');
 
 
 // App
@@ -39,16 +40,6 @@ const App = React.createClass({
 
 		// play gridster
 		this.refs.container.actGridster();
-	},
-
-	/**
-	 * Attach images
-	 *
-	 * @param {array} images
-	 */
-	attachImages(images)
-	{
-		this.refs.container.refs.gridster.attachImages(images);
 	},
 
 	/**
@@ -91,10 +82,10 @@ const App = React.createClass({
 				<Sidebar
 					ref="sidebar"
 					uploadScript={preference.uploadScript}
+					removeScript={preference.removeScript}
+					defaultImagesScript={preference.defaultImagesScript}
 					show={this.state.show_sidebar}
-					toggleSidebar={this.toggleSidebar}
-					attachImages={this.attachImages}
-					defaultUploadFiles={preference.defaultUploadFiles}/>
+					toggleSidebar={this.toggleSidebar}/>
 			</div>
 		);
 	}
@@ -103,3 +94,4 @@ const App = React.createClass({
 
 // render App
 window.app = ReactDOM.render(<App/>, document.getElementById('app'));
+window.cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));

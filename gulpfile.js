@@ -19,9 +19,8 @@ var maps = 'maps';
 
 // set vendor files
 var minifis = {
-	js : [
-		'./node_modules/fastclick/lib/fastclick.js'
-	]
+	js : [],
+	css : []
 };
 var vendors = {
 	js : [
@@ -102,7 +101,7 @@ gulp.task('scss:watch', function(){
 
 
 gulp.task('js', function() {
-	return gulp.src(src + '/js/App.jsx')
+	return gulp.src(src + '/jsx/App.jsx')
 		.pipe(webpack( require('./webpack.config.js') ))
 		.pipe(gulp.dest(dist + '/js/'));
 });

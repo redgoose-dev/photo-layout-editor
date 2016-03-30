@@ -10,14 +10,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Attach images
-	 */
-	attachImages()
-	{
-		log('attach image to grid block');
-	},
-
-	/**
 	 * Upload images
 	 *
 	 * @param {Event} e

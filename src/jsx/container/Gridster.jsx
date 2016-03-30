@@ -43,6 +43,11 @@ module.exports = React.createClass({
 				{
 					$(o).attr('data-sizey', pref.max_scale);
 				}
+				if ($(o).children('figure').length)
+				{
+					$(o).addClass('attached');
+				}
+				$(o).children('.gs-resize-handle').remove();
 			});
 			this.$gridster.children('ul').append(this.saveBlocks);
 		}
@@ -127,7 +132,7 @@ module.exports = React.createClass({
 	{
 		if (!params.sizeX || !params.sizeY) return false;
 
-		var $li = $('<li>' + ((params.text) ? params.text : '') + '</li>');
+		var $li = $('<li' + ((params.classNames) ? ' class="' + params.classNames + '"' : '') + '>' + ((params.text) ? params.text : '') + '</li>');
 
 		// add gridster
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
@@ -179,10 +184,33 @@ module.exports = React.createClass({
 		this.gridster.remove_widget( this.$gridster.find('li.selected') );
 		this.unSelectBlock();
 	},
-	
+
+	/**
+	 * Empty block
+	 */
+	emptyBlock()
+	{
+		this.$gridster.find('li.selected').each((k, v) => {
+			if ($(v).hasClass('attached'))
+			{
+				$(v).removeClass('attached').children('figure').remove();
+			}
+		});
+	},
+
+	/**
+	 * Duplicate block
+	 */
 	duplicateBlock()
 	{
-		log('duplicate block');
+		this.$gridster.find('li.selected').each((k, v) => {
+			this.block({
+				sizeX : parseInt(v.getAttribute('data-sizex')),
+				sizeY : parseInt(v.getAttribute('data-sizey')),
+				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
+				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
+			});
+		});
 	},
 
 	/**
@@ -255,20 +283,20 @@ module.exports = React.createClass({
 	 */
 	attachImages(images)
 	{
-		var $block = this.$gridster.find('li').not('.attached');
+		var $blocks = this.$gridster.find('li').not('.attached');
 
-		if (images.length > $block.length)
+		if (images.length > $blocks.length)
 		{
-			let total = images.length - $block.length;
+			let total = images.length - $blocks.length;
 			for (let i=0; i<total; i++)
 			{
 				this.addBlock();
 			}
-			$block = this.$gridster.find('li').not('.attached');
+			$blocks = this.$gridster.find('li').not('.attached');
 		}
 
 		var baskets = [];
-		$block.each((k, o) => {
+		$blocks.each((k, o) => {
 			if (!$(o).children('figure').length && k < images.length)
 			{
 				baskets.push(o);
@@ -276,8 +304,11 @@ module.exports = React.createClass({
 		});
 
 		baskets.forEach((o, k) => {
-			this.assignImage($(o), images[k]);
+			this.assignImage($(o), images[k], null);
 		});
+
+		// act unselected
+		this.unSelectBlock();
 	},
 
 	/**
@@ -285,19 +316,26 @@ module.exports = React.createClass({
 	 *
 	 * @param {object} $target
 	 * @param {string} image
+	 * @param {object} imageOptions
 	 */
-	assignImage($target, image)
+	assignImage($target, image, imageOptions)
 	{
 		var $figure = $('<figure/>');
 		$figure.css({
 			'background-image' : 'url(' + image + ')',
-			'background-position' : '50% 50%',
-			'background-size' : 'cover'
-		}).attr('data-image', image);
+			'background-position' : (imageOptions) ? imageOptions.position : '50% 50%',
+			'background-size' : (imageOptions) ? imageOptions.size : 'cover'
+		}).attr({
+			'data-image' : image,
+			'data-position' : (imageOptions) ? imageOptions.position : '50% 50%',
+			'data-size' : (imageOptions) ? imageOptions.size : 'cover'
+		});
 		$target.addClass('attached').prepend($figure);
 
-		// act unselected
-		this.unSelectBlock();
+		if ($target.hasClass('selected'))
+		{
+			this.props.selectBlock($target);
+		}
 	},
 
 	/**

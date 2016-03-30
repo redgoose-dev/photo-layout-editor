@@ -17,16 +17,30 @@ module.exports = React.createClass({
 	getDefaultProps()
 	{
 		return {
-			uploadScript : null
+			uploadScript : null,
+			removeScript : null,
+			defaultImagesScript : null,
+			show : false,
+			toggleSidebar : null
 		};
 	},
 
 	getInitialState()
 	{
 		return {
-			uploadImages : this.importImages(this.props.defaultUploadFiles),
+			uploadImages : [],
 			is_loading : false
 		};
+	},
+
+	componentDidMount()
+	{
+		$.get(this.props.defaultImagesScript, (response) => {
+			var result = JSON.parse(decodeURIComponent(response.replace(/\+/g, '%20')));
+			this.setState({
+				uploadImages : this.importImages(result)
+			})
+		});
 	},
 
 	/**
@@ -121,6 +135,8 @@ module.exports = React.createClass({
 	remove()
 	{
 		var selectedKeys = [];
+		var removeImages = [];
+		var confirmBool = false;
 
 		if (!this.state.uploadImages.length)
 		{
@@ -137,17 +153,34 @@ module.exports = React.createClass({
 
 		if (selectedKeys.length)
 		{
-			selectedKeys.forEach((o) => {
-				delete this.state.uploadImages[o];
-			});
-			this.setState({ uploadImages : this.state.uploadImages });
+			if (confirm('선택한 사진을 삭제할까요?'))
+			{
+				confirmBool = true;
+				selectedKeys.forEach((o) => {
+					removeImages.push(this.state.uploadImages[o].image);
+					delete this.state.uploadImages[o];
+				});
+				this.setState({ uploadImages : this.state.uploadImages });
+			}
 		}
 		else
 		{
 			if (confirm('선택된 사진이 없습니다. 전부 삭제할까요?'))
 			{
+				confirmBool = true;
+				removeImages = this.state.uploadImages.map((o) => {
+					return o.image;
+				});
 				this.setState({ uploadImages : [] });
 			}
+		}
+
+		// remove real files
+		if (this.props.removeScript && confirmBool && removeImages.length)
+		{
+			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
+				//log(response);
+			});
 		}
 	},
 
@@ -162,7 +195,7 @@ module.exports = React.createClass({
 		});
 		if (items.length)
 		{
-			this.props.attachImages(items);
+			window.app.refs.container.refs.gridster.attachImages(items);
 		}
 		else
 		{

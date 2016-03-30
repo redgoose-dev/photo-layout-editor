@@ -23,11 +23,6 @@ module.exports = React.createClass({
 		};
 	},
 
-
-	/**
-	 * CLICK EVENTS
-	 */
-
 	/**
 	 * Toggle setting form
 	 */
@@ -136,7 +131,7 @@ module.exports = React.createClass({
 					</div>
 					<div className={'block for-item' + ((this.state.visible.empty) ? ' is-show' : '')}>
 						<button type="button" title="Remove image in block" onClick={this.props.actControl} data-type="empty">
-							<i className="sp-ico ico-select abs">Remove image</i>
+							<i className="sp-ico ico-empty abs">Remove image</i>
 						</button>
 					</div>
 					<div className={'block for-item' + ((this.state.visible.duplicate) ? ' is-show' : '')}>

@@ -74,18 +74,14 @@ module.exports = React.createClass({
 		this.refs.navTop.onSelect($el);
 	},
 
-	topNavControl(e, action)
+	/**
+	 * Top navigation control
+	 *
+	 * @param {event} e
+	 */
+	topNavControl(e)
 	{
-		var type = '';
-		if (e)
-		{
-			type = e.currentTarget.getAttribute('data-type');
-		}
-		else
-		{
-			if (!action) return false;
-			type = action;
-		}
+		var type = e.currentTarget.getAttribute('data-type');
 
 		switch(type)
 		{
@@ -96,10 +92,22 @@ module.exports = React.createClass({
 				this.refs.gridster.addBlock();
 				break;
 			case 'edit':
-				log('act edit');
+				var $selectedItem = this.refs.gridster.$gridster.find('li.selected');
+				if ($selectedItem.length)
+				{
+					let $figure = $selectedItem.children('figure');
+					window.cropper.open({
+						$selected : $selectedItem,
+						image : {
+							url : $figure.attr('data-image'),
+							size : $figure.attr('data-size'),
+							position : $figure.attr('data-position')
+						}
+					});
+				}
 				break;
 			case 'empty':
-				log('act empty');
+				this.refs.gridster.emptyBlock();
 				break;
 			case 'duplicate':
 				this.refs.gridster.duplicateBlock();

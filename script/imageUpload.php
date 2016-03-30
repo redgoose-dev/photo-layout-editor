@@ -9,21 +9,28 @@ $files = $_FILES['files'];
 $count = count($files['name']);
 $copyFiles = [];
 
-$uploadDir = $_SERVER['DOCUMENT_ROOT'].'/git/PhotoLayoutEditor/upload';
-$uploadUrl = './upload';
+$uploadDir = '../upload';
+$uploadUrl = '../upload';
 
-
-// TODO : `upload` 디렉토리가 없으면 만들기
 
 // check directory
 if (!$uploadDir || !is_dir($uploadDir))
 {
-	echo urlencode(json_encode([
-		'state' => 'error',
-		'message' => 'not exist "'.$uploadDir.'" directory'
-	]));
-	exit;
+	$umask = umask();
+	umask(000);
+	mkdir($uploadDir, 0707);
+	umask($umask);
+
+	if (!is_dir($uploadDir))
+	{
+		echo urlencode(json_encode([
+			'state' => 'error',
+			'message' => 'not exist "'.$uploadDir.'" directory'
+		]));
+		exit;
+	}
 }
+
 
 // check file count
 if ($count < 0)
