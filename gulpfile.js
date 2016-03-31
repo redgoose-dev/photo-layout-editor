@@ -19,7 +19,9 @@ var maps = 'maps';
 
 // set vendor files
 var minifis = {
-	js : [],
+	js : [
+		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.js'
+	],
 	css : []
 };
 var vendors = {

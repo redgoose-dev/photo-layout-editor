@@ -115,6 +115,9 @@ module.exports = React.createClass({
 			case 'remove':
 				this.refs.gridster.removeBlock();
 				break;
+			case 'changeColor':
+				log('change item color');
+				break;
 		}
 	},
 	
