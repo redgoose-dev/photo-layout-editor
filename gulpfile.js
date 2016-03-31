@@ -8,10 +8,7 @@ var uglify = require('gulp-uglify');
 var scss = require('gulp-sass');
 var rename = require('gulp-rename');
 
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
+var webpack = require('webpack-stream');
 
 
 // set directory
@@ -22,17 +19,14 @@ var maps = 'maps';
 
 // set vendor files
 var minifis = {
-	js : [
-		'./node_modules/fastclick/lib/fastclick.js'
-	]
+	js : [],
+	css : []
 };
 var vendors = {
 	js : [
 		'./node_modules/react/dist/react.js',
 		'./node_modules/react-dom/dist/react-dom.min.js',
 		'./node_modules/jquery/dist/jquery.min.js',
-		'./node_modules/imagesloaded/imagesloaded.pkgd.min.js',
-		'./node_modules/fastclick/lib/fastclick.min.js',
 		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js'
 	],
 	css : [
@@ -87,23 +81,6 @@ gulp.task('vendor', function(){
 });
 
 
-// build javascript
-gulp.task('js.app', function(){
-	browserify(src + '/js/App.jsx', { debug: true })
-		.transform(babelify, { presets : ['es2015', 'react'] })
-		.bundle()
-		.pipe(source('app.pkgd.js'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(sourcemaps.write('maps'))
-		.pipe(gulp.dest(dist + '/js'));
-});
-gulp.task('js.app:watch', function(){
-	gulp.watch([src + '/js/**/*.jsx'], ['js.app']);
-});
-
-
 // build scss
 gulp.task('scss', function(){
 	gulp.src(src + '/scss/app.scss')
@@ -118,4 +95,11 @@ gulp.task('scss', function(){
 });
 gulp.task('scss:watch', function(){
 	gulp.watch(src + '/scss/*.scss', ['scss']);
+});
+
+
+gulp.task('js', function() {
+	return gulp.src(src + '/jsx/App.jsx')
+		.pipe(webpack( require('./webpack.config.js') ))
+		.pipe(gulp.dest(dist + '/js/'));
 });

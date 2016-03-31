@@ -1,7 +1,10 @@
 // Variables
+$font-eng: 'Roboto Condensed', sans-serif;
+
 $col-key: #626164;
 $col-blur: #999999;
-$col-bg-blur: #c5c5c7;
+$col-bg-blur: #eeeeee;
+$col-active: #20B292;
 
 $sidebar-width: 240px;
 $sidebar-toggle-speed : .3s;
@@ -11,47 +14,8 @@ $sidebar-toggle-speed : .3s;
 @import "icons";
 
 
+// fonts
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+
+
 // placeholders
-
-
-// web fonts
-@font-face {
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 300;
-	src: local('Noto Sans Light'), local('Noto Sans Light'), local('Noto Sans Light');
-	src: url(../../assets/fonts/NotoSans-Light.eot);
-	src: url(../../assets/fonts/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
-	url(../../assets/fonts/NotoSans-Light.woff) format('woff'),
-	url(../../assets/fonts/NotoSans-Light.otf) format('truetype');
-}
-@font-face {
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Noto Sans Regular'), local('Noto Sans Regular'), local('Noto Sans Regular');
-	src: url(../../assets/fonts/NotoSans-Regular.eot);
-	src: url(../../assets/fonts/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
-	url(../../assets/fonts/NotoSans-Regular.woff) format('woff'),
-	url(../../assets/fonts/NotoSans-Regular.otf) format('truetype');
-}
-@font-face {
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 500;
-	src: local('Noto Sans Medium'), local('Noto Sans Medium'), local('Noto Sans Medium');
-	src: url(../../assets/fonts/NotoSans-Medium.eot);
-	src: url(../../assets/fonts/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
-	url(../../assets/fonts/NotoSans-Medium.woff) format('woff'),
-	url(../../assets/fonts/NotoSans-Medium.otf) format('truetype');
-}
-@font-face {
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 700;
-	src: local('Noto Sans Bold'), local('Noto Sans Bold'), local('Noto Sans Bold');
-	src: url(../../assets/fonts/NotoSans-Bold.eot);
-	src: url(../../assets/fonts/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
-	url(../../assets/fonts/NotoSans-Bold.woff) format('woff'),
-	url(../../assets/fonts/NotoSans-Bold.otf) format('truetype');
-}

@@ -1,8 +1,8 @@
 // init icon
 %sp-ico {
-	background: transparent url('../../assets/img/sp-ico@1x.png') no-repeat;
+	background: transparent url('../img/sp-ico@1x.png') no-repeat;
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.33dppx) {
-		background-image: url('../../assets/img/sp-ico@2x.png');
+		background-image: url('../img/sp-ico@2x.png');
 		background-size: 200px 100px;
 	}
 }
@@ -13,47 +13,64 @@
 
 
 // set icon classes
+.ico-reply {
+	width: 16px; height: 13px; background-position: 0 0;
+	&.abs {margin-left: -8px; margin-top: -6px;}
+}
+.ico-select {
+	width: 16px; height: 16px; background-position: -26px 0;
+	&.abs {margin-left: -8px; margin-top: -8px;}
+}
+.ico-upload {
+	width: 12px; height: 15px; background-position: -52px 0;
+	&.abs {margin-left: -6px; margin-top: -8px;}
+}
+.ico-trash {
+	width: 12px; height: 16px; background-position: -74px 0;
+	&.abs {margin-left: -6px; margin-top: -8px;}
+}
+.ico-arrow-left {
+	width: 7px; height: 12px; background-position: -96px 0;
+	&.abs {margin-left: -4px; margin-top: -6px;}
+}
+.ico-arrow-right {
+	width: 7px; height: 12px; background-position: -112px 0;
+	&.abs {margin-left: -4px; margin-top: -6px;}
+}
+.ico-empty {
+	width: 16px; height: 16px; background-position: -130px 0;
+	&.abs {margin-left: -8px; margin-top: -8px;}
+}
+
 .ico-setting {
-	width: 16px; height: 16px; background-position: 0 0;
+	width: 16px; height: 16px; background-position: 0 -36px;
 	&.abs {margin-left: -8px; margin-top: -8px;}
 }
 .ico-arrow-random {
-	width: 18px; height: 18px; background-position: -26px 0;
-	&.abs {margin-left: -9px; margin-top: -9px;}
-}
-.ico-plus {
-	width: 16px; height: 16px; background-position: -54px 0;
+	width: 16px; height: 16px; background-position: -26px -36px;
 	&.abs {margin-left: -8px; margin-top: -8px;}
 }
-.ico-check {width: 16px; height: 14px; background-position: -80px 0;}
-.ico-arrow-left {
-	width: 18px; height: 11px; background-position: -106px 0;
-	&.abs {margin-left: -9px; margin-top: -5px;}
+.ico-plus {
+	width: 16px; height: 16px; background-position: -52px -36px;
+	&.abs {margin-left: -8px; margin-top: -8px;}
 }
-.ico-upload {
-	width: 18px; height: 17px; background-position: -134px 0;
-	&.abs {margin-left: -9px; margin-top: -9px;}
+.ico-pencel {
+	width: 16px; height: 16px; background-position: -78px -36px;
+	&.abs {margin-left: -8px; margin-top: -8px;}
 }
-.ico-trash {
-	width: 13px; height: 17px; background-position: -162px 0;
-	&.abs {margin-left: -6px; margin-top: -9px;}
+.ico-duplicate {
+	width: 14px; height: 16px; background-position: -104px -36px;
+	&.abs {margin-left: -7px; margin-top: -8px;}
 }
-
-.ico-pencel {width: 18px; height: 18px; background-position: 0 -38px;}
-.ico-trash2 {width: 14px; height: 18px; background-position: -28px -38px;}
-.ico-document {width: 18px; height: 18px; background-position: -52px -38px;}
-.ico-close {width: 18px; height: 18px; background-position: -80px -38px;}
-.ico-check2 {width: 16px; height: 14px; background-position: -108px -38px;}
-
-.ico-select {
-	width: 18px; height: 16px; background-position: 0 -76px;
-	&.abs {margin-left: -9px; margin-top: -8px;}
+.ico-close {
+	width: 14px; height: 14px; background-position: -128px -36px;
+	&.abs {margin-left: -7px; margin-top: -7px;}
 }
-.ico-arrow-left2 {
-	width: 7px; height: 12px; background-position: -28px -76px;
-	&.abs {margin-left: -4px; margin-top: -6px;}
+.ico-resize {
+	width: 14px; height: 14px; background-position: -152px -36px;
+	&.abs {margin-left: -7px; margin-top: -7px;}
 }
-.ico-arrow-right2 {
-	width: 7px; height: 12px; background-position: -45px -76px;
-	&.abs {margin-left: -4px; margin-top: -6px;}
+.ico-reduction {
+	width: 16px; height: 16px; background-position: -176px -36px;
+	&.abs {margin-left: -8px; margin-top: -8px;}
 }

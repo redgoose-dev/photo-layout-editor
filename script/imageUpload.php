@@ -9,19 +9,28 @@ $files = $_FILES['files'];
 $count = count($files['name']);
 $copyFiles = [];
 
-$uploadDir = $_SERVER['DOCUMENT_ROOT'].'/git/PhotoLayoutEditor/upload';
-$uploadUrl = './upload';
+$uploadDir = '../upload';
+$uploadUrl = '../upload';
 
 
 // check directory
 if (!$uploadDir || !is_dir($uploadDir))
 {
-	echo urlencode(json_encode([
-		'state' => 'error',
-		'message' => 'not exist "'.$uploadDir.'" directory'
-	]));
-	exit;
+	$umask = umask();
+	umask(000);
+	mkdir($uploadDir, 0707);
+	umask($umask);
+
+	if (!is_dir($uploadDir))
+	{
+		echo urlencode(json_encode([
+			'state' => 'error',
+			'message' => 'not exist "'.$uploadDir.'" directory'
+		]));
+		exit;
+	}
 }
+
 
 // check file count
 if ($count < 0)
@@ -51,8 +60,8 @@ for ($i=0; $i<$count; $i++)
 
 
 // print result
-echo urlencode(json_encode([
+echo json_encode([
 	'state' => 'success',
 	'message' => 'complete upload',
 	'images' => $copyFiles
-]));
+], JSON_PRETTY_PRINT);

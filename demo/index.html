@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Photo layout editor program</title>
+<link rel="stylesheet" href="../dist/css/vendor.pkgd.css"/>
+<link rel="stylesheet" href="../dist/css/app.pkgd.css"/>
+</head>
+<body>
+<main id="app"></main>
+<div id="cropper"></div>
+<script src="../dist/js/vendor.pkgd.js"></script>
+<script>
+function log(o){console.log(o);}
+window.preference = {
+	uploadScript : '../script/imageUpload.php',
+	removeScript : '../script/imageRemove.php',
+	defaultImagesScript : '../script/defaultImages.php'
+};
+</script>
+<script src="../dist/js/app.pkgd.js"></script>
+</body>
+</html>
