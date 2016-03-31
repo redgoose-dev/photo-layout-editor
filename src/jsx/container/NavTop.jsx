@@ -18,7 +18,8 @@ module.exports = React.createClass({
 				edit: false,
 				empty: false,
 				duplicate: false,
-				remove: false
+				remove: false,
+				palette: false
 			}
 		};
 	},
@@ -81,11 +82,9 @@ module.exports = React.createClass({
 		{
 			newVisible.duplicate = true;
 			newVisible.remove = true;
-			if ($el.length == 1 && $el.children('figure').length)
-			{
-				newVisible.edit = true;
-				newVisible.empty = true;
-			}
+			newVisible.palette = true;
+			newVisible.edit = ($el.length == 1 && $el.children('figure').length) ? true : false;
+			newVisible.empty = ($el.children('figure').length) ? true : false;
 		}
 		else
 		{
@@ -93,6 +92,7 @@ module.exports = React.createClass({
 			newVisible.remove = false;
 			newVisible.edit = false;
 			newVisible.empty = false;
+			newVisible.palette = false;
 		}
 		this.setState({ visible: newVisible });
 	},
@@ -124,25 +124,31 @@ module.exports = React.createClass({
 							<i className="sp-ico ico-plus abs">Add block</i>
 						</button>
 					</div>
-					<div className={'block for-item' + ((this.state.visible.edit) ? ' is-show' : '')}>
+					<div className={'block color-bg-key' + ((this.state.visible.edit) ? ' is-show' : '')}>
 						<button type="button" title="Edit block" onClick={this.props.actControl} data-type="edit">
 							<i className="sp-ico ico-pencel abs">Edit block</i>
 						</button>
 					</div>
-					<div className={'block for-item' + ((this.state.visible.empty) ? ' is-show' : '')}>
+					<div className={'block color-bg-key' + ((this.state.visible.empty) ? ' is-show' : '')}>
 						<button type="button" title="Remove image in block" onClick={this.props.actControl} data-type="empty">
 							<i className="sp-ico ico-empty abs">Remove image</i>
 						</button>
 					</div>
-					<div className={'block for-item' + ((this.state.visible.duplicate) ? ' is-show' : '')}>
+					<div className={'block color-bg-key' + ((this.state.visible.duplicate) ? ' is-show' : '')}>
 						<button type="button" title="Duplicate block" onClick={this.props.actControl} data-type="duplicate">
 							<i className="sp-ico ico-duplicate abs">Duplicate block</i>
 						</button>
 					</div>
-					<div className={'block for-item' + ((this.state.visible.remove) ? ' is-show' : '')}>
+					<div className={'block color-bg-key' + ((this.state.visible.remove) ? ' is-show' : '')}>
 						<button type="button" title="Remove block" onClick={this.props.actControl} data-type="remove">
 							<i className="sp-ico ico-trash abs">Remove block</i>
 						</button>
+					</div>
+					<div className={'block color-bg-key' + ((this.state.visible.palette) ? ' is-show' : '')}>
+						<button type="button" title="Change color" onClick={this.props.actControl} data-type="changeColor">
+							<i className="sp-ico ico-palette abs">Change color</i>
+						</button>
+						<div>asdads</div>
 					</div>
 				</nav>
 			</div>
