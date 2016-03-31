@@ -11,9 +11,7 @@ module.exports = {
 	externals: {
 		'jquery': '$',
 		'React': 'React',
-		'ReactDOM': 'ReactDOM',
-		'fastclick': 'fastclick',
-		'imagesLoaded': 'imagesLoaded'
+		'ReactDOM': 'ReactDOM'
 	},
 	module: {
 		loaders: [

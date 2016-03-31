@@ -36,7 +36,7 @@ module.exports = React.createClass({
 	componentDidMount()
 	{
 		$.get(this.props.defaultImagesScript, (response) => {
-			var result = JSON.parse(decodeURIComponent(response.replace(/\+/g, '%20')));
+			var result = JSON.parse(response.replace(/\+/g, '%20'));
 			this.setState({
 				uploadImages : this.importImages(result)
 			})

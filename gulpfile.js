@@ -27,8 +27,6 @@ var vendors = {
 		'./node_modules/react/dist/react.js',
 		'./node_modules/react-dom/dist/react-dom.min.js',
 		'./node_modules/jquery/dist/jquery.min.js',
-		'./node_modules/imagesloaded/imagesloaded.pkgd.min.js',
-		'./node_modules/fastclick/lib/fastclick.min.js',
 		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js'
 	],
 	css : [

@@ -60,8 +60,8 @@ for ($i=0; $i<$count; $i++)
 
 
 // print result
-echo urlencode(json_encode([
+echo json_encode([
 	'state' => 'success',
 	'message' => 'complete upload',
 	'images' => $copyFiles
-]));
+], JSON_PRETTY_PRINT);

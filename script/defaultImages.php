@@ -27,4 +27,4 @@ if (is_dir('../upload'))
 
 
 // print result
-echo urlencode(json_encode($images));
+echo json_encode($images, JSON_PRETTY_PRINT);
