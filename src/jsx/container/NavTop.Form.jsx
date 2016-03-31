@@ -87,7 +87,7 @@ module.exports = React.createClass({
 							<dd>
 								<input
 									type="number" name="outer_margin" id="frm_outer_margin"
-									min="1" max="500"
+									min="0" max="500"
 									defaultValue={this.props.preference.outer_margin}/>
 								<span>px</span>
 							</dd>
@@ -97,7 +97,7 @@ module.exports = React.createClass({
 							<dd>
 								<input
 									type="number" name="inner_margin" id="frm_inner_margin"
-									min="1" max="500"
+									min="0" max="500"
 									defaultValue={this.props.preference.inner_margin}/>
 								<span>px</span>
 							</dd>
