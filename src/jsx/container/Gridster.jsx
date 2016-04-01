@@ -8,6 +8,7 @@ module.exports = React.createClass({
 	$wrap : null,
 	gridster : null,
 	saveBlocks : null,
+	selectedClassName : 'selected',
 
 	componentDidMount()
 	{
@@ -148,31 +149,9 @@ module.exports = React.createClass({
 	 */
 	initBlockEvent($block)
 	{
-		var self = this;
-
-		$block.on('click', function(e){
-			var $block = $(e.currentTarget);
-			var $blocks = self.$gridster.find('li');
-			var className = 'selected';
-
+		$block.on('click', (e) => {
 			e.stopPropagation();
-
-			if ($block.hasClass('selected'))
-			{
-				$block.removeClass(className);
-				self.props.selectBlock(null);
-			}
-			else
-			{
-				$blocks.removeClass(className);
-				$block.addClass(className);
-				self.props.selectBlock($blocks.filter('.' + className));
-				self.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', function(e){
-					$blocks.removeClass(className);
-					self.props.selectBlock(null);
-					$(this).off('click.gridsterBlock');
-				});
-			}
+			this.selectBlock($(e.currentTarget));
 		});
 	},
 
@@ -181,7 +160,9 @@ module.exports = React.createClass({
 	 */
 	removeBlock()
 	{
-		this.gridster.remove_widget( this.$gridster.find('li.selected') );
+		this.$gridster.find('li.selected').each((k, o) => {
+			this.gridster.remove_widget(o, null, null, true);
+		});
 		this.unSelectBlock();
 	},
 
@@ -211,6 +192,53 @@ module.exports = React.createClass({
 				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
 			});
 		});
+	},
+
+	/**
+	 * Select block
+	 *
+	 * @param {object} $block
+	 */
+	selectBlock($block)
+	{
+		var $blocks = this.$gridster.find('li');
+
+		if ($block.hasClass(this.selectedClassName))
+		{
+			if (window.keyboardEvent.readySelect)
+			{
+				$block.removeClass(this.selectedClassName);
+			}
+			else
+			{
+				$blocks.removeClass(this.selectedClassName);
+			}
+
+			if (!this.$gridster.find('li.' + this.selectedClassName).length)
+			{
+				this.props.selectBlock(null);
+			}
+		}
+		else
+		{
+			if (window.keyboardEvent.readySelect)
+			{
+				$block.addClass(this.selectedClassName);
+			}
+			else
+			{
+				$blocks.removeClass(this.selectedClassName);
+				$block.addClass(this.selectedClassName);
+			}
+
+			this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
+
+			this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
+				$blocks.removeClass(this.selectedClassName);
+				this.props.selectBlock(null);
+				$(e.currentTarget).off('click.gridsterBlock');
+			});
+		}
 	},
 
 	/**

@@ -1,6 +1,9 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 
+// load libs
+const KeyboardEvent = require('./lib/KeyboardEvent.js');
+
 // init components
 const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
@@ -90,6 +93,10 @@ const App = React.createClass({
 		);
 	}
 });
+
+
+// event
+window.keyboardEvent = new KeyboardEvent();
 
 
 // render App
