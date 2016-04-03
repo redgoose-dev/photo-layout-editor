@@ -1,15 +1,19 @@
 // init components
 const NavTopForm = require('./NavTop.Form.jsx');
+const NavTopColor = require('./NavTop.Color.jsx');
 
 
 module.exports = React.createClass({
 
 	displayName : 'NavTop',
+	openForm : false,
+	EVENT_TOGGLE_FORM : 'settingForm',
 
 	getInitialState()
 	{
 		return {
-			show_form : false,
+			showForm : false,
+			showColorForm : false,
 			fix : false,
 			visible : {
 				setting : true,
@@ -27,21 +31,62 @@ module.exports = React.createClass({
 	/**
 	 * Toggle setting form
 	 */
-	toggleSetting()
+	toggleSettingForm(e)
 	{
-		var self = this;
-		if (!this.state.show_form == true)
+		// disable form
+		if (this.openForm)
 		{
-			$(document).on('click', function(e){
-				if (!$(e.target).closest('#settings').length)
-				{
-					e.preventDefault();
-					$(this).off('click');
-					self.setState({ show_form : false });
-				}
+			this.toggleFormEvent(false);
+		}
+
+		// enable form
+		if (!$(e.currentTarget).parent().hasClass('is-active'))
+		{
+			let stateName = e.currentTarget.getAttribute('data-state');
+			this.toggleFormEvent(true);
+			this.setState({ [stateName] : !this.state[stateName] });
+
+			switch(stateName)
+			{
+				case 'showForm':
+					break;
+				case 'showColorForm':
+					// TODO : 컬러 팔렛트를 열때 첫번째 블럭의 컬러값을 가져와서 폼의 컬러를 업데이트 하기
+					log('edit color');
+					break;
+			}
+		}
+	},
+
+	/**
+	 * Toggle form event
+	 *
+	 * @param {boolean} evt
+	 */
+	toggleFormEvent(evt)
+	{
+		if (evt)
+		{
+			var self = this;
+			this.openForm = true;
+
+			$(document).on('click.' + this.EVENT_TOGGLE_FORM, function(e){
+				if ($(e.target).closest('.form').length) return;
+				if ($(e.target).closest('button.toggle-form').length) return false;
+
+				self.toggleFormEvent(false);
 			});
 		}
-		this.setState({ show_form : !this.state.show_form });
+		else
+		{
+			$(document).off('click.' + this.EVENT_TOGGLE_FORM);
+			this.openForm = false;
+
+			this.setState({
+				showForm : false,
+				showColorForm : false
+			});
+		}
 	},
 
 	/**
@@ -49,8 +94,7 @@ module.exports = React.createClass({
 	 */
 	closeSetting()
 	{
-		$(document).off('click');
-		this.setState({ show_form : false });
+		this.toggleFormEvent(false);
 	},
 
 	/**
@@ -94,7 +138,12 @@ module.exports = React.createClass({
 			newVisible.empty = false;
 			newVisible.palette = false;
 		}
-		this.setState({ visible: newVisible });
+
+		this.toggleFormEvent(false);
+
+		this.setState({
+			visible: newVisible
+		});
 	},
 
 	/**
@@ -102,11 +151,23 @@ module.exports = React.createClass({
 	 */
 	render()
 	{
+		var class_form = 'block' +
+			((this.state.visible.setting) ? ' is-show' : '') +
+			((this.state.showForm) ? ' is-active' : '');
+		var class_colorForm = 'block color-bg-key' +
+			((this.state.visible.palette) ? ' is-show' : '') +
+			((this.state.showColorForm) ? ' is-active' : '');
+
 		return (
 			<div className="nav-top-wrap">
 				<nav className={'nav-top' + ((this.state.fix) ? ' fix' : '')}>
-					<div className={'block' + ((this.state.visible.setting) ? ' is-show' : '') + ((this.state.show_form) ? ' is-active' : '')}>
-						<button type="button" title="Edit preference" onClick={this.toggleSetting}>
+					<div className={ class_form }>
+						<button
+							type="button"
+							title="Edit preference"
+							className="toggle-form"
+							data-state="showForm"
+							onClick={this.toggleSettingForm}>
 							<i className="sp-ico ico-setting abs">Setting</i>
 						</button>
 						<NavTopForm
@@ -140,15 +201,20 @@ module.exports = React.createClass({
 						</button>
 					</div>
 					<div className={'block color-bg-key' + ((this.state.visible.remove) ? ' is-show' : '')}>
-						<button type="button" title="Remove block" onClick={this.props.actControl} data-type="remove">
+						<button type="button" title="Remove block" className="toggle-form" onClick={this.props.actControl} data-type="remove">
 							<i className="sp-ico ico-trash abs">Remove block</i>
 						</button>
 					</div>
-					<div className={'block color-bg-key' + ((this.state.visible.palette) ? ' is-show' : '')}>
-						<button type="button" title="Change color" onClick={this.props.actControl} data-type="changeColor">
+					<div className={ class_colorForm }>
+						<button
+							type="button"
+							title="Change color"
+							className="toggle-form"
+							data-state="showColorForm"
+							onClick={this.toggleSettingForm}>
 							<i className="sp-ico ico-palette abs">Change color</i>
 						</button>
-						<div>asdads</div>
+						<NavTopColor updateColor={this.props.updateColor} />
 					</div>
 				</nav>
 			</div>

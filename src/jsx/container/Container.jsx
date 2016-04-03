@@ -38,7 +38,9 @@ module.exports = React.createClass({
 	updatePreference(params)
 	{
 		this.setState({ preference : params, action: 'updatePreference' });
-		this.refs.navTop.closeSetting();
+		
+		// close form
+		this.refs.navTop.toggleFormEvent(false);
 	},
 
 	/**
@@ -121,6 +123,14 @@ module.exports = React.createClass({
 		}
 	},
 	
+	updateBlockColor(color)
+	{
+		this.refs.gridster.changeBlockColor(color);
+		
+		// close form
+		this.refs.navTop.toggleFormEvent(false);
+	},
+	
 	/**
 	 * render
 	 */
@@ -131,6 +141,7 @@ module.exports = React.createClass({
 				<NavTop
 					ref="navTop"
 					update={this.updatePreference}
+					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
 					actControl={this.topNavControl}
 					preference={this.state.preference}/>
