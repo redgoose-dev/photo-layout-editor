@@ -22,17 +22,21 @@ var minifis = {
 	js : [
 		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.js'
 	],
-	css : []
+	css : [
+		src + '/vendor/jquery-minicolors/jquery.minicolors.css'
+	]
 };
 var vendors = {
 	js : [
 		'./node_modules/react/dist/react.js',
 		'./node_modules/react-dom/dist/react-dom.min.js',
 		'./node_modules/jquery/dist/jquery.min.js',
-		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js'
+		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js',
+		src + '/vendor/jquery-minicolors/jquery.minicolors.min.js'
 	],
 	css : [
-		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css'
+		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css',
+		src + '/vendor/jquery-minicolors/jquery.minicolors.min.css'
 	]
 };
 

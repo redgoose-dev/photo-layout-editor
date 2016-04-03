@@ -1,6 +1,26 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 
+
+// set preference
+window.plePreference = {
+	uploadScript : '',
+	removeScript : '',
+	defaultImagesScript : '',
+	defaultSetting : {
+
+	},
+	block : {
+		defaultColor : '#DDDDDD'
+	}
+};
+if (preference)
+{
+	Object.assign(window.plePreference, preference);
+}
+// TODO : 환경설정값 좀더 손보기. gridster 설정값도 연동하기
+
+
 // load libs
 const KeyboardEvent = require('./lib/KeyboardEvent.js');
 

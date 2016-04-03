@@ -1,3 +1,5 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
 const util = require('../lib/util.js');
 
 module.exports = React.createClass({
@@ -9,6 +11,7 @@ module.exports = React.createClass({
 	gridster : null,
 	saveBlocks : null,
 	selectedClassName : 'selected',
+	defaultBlockColor : window.plePreference.block.defaultColor,
 
 	componentDidMount()
 	{
@@ -22,8 +25,8 @@ module.exports = React.createClass({
 	create()
 	{
 		var pref = this.props.preference;
-		var innnerMargin = pref.inner_margin * 0.5;
-		var outerMargin = innnerMargin + pref.outer_margin;
+		var innerMargin = pref.inner_margin * 0.5;
+		var outerMargin = innerMargin + pref.outer_margin;
 
 		// set styles
 		this.$gridster.css('padding', outerMargin+'px').append('<ul/>');
@@ -58,7 +61,7 @@ module.exports = React.createClass({
 
 		// init gridster
 		this.gridster = this.$gridster.children('ul').gridster({
-			widget_margins: [innnerMargin, innnerMargin],
+			widget_margins: [innerMargin, innerMargin],
 			widget_base_dimensions: [pref.width, pref.height],
 			max_cols : pref.max_col,
 			resize : {
@@ -133,7 +136,12 @@ module.exports = React.createClass({
 	{
 		if (!params.sizeX || !params.sizeY) return false;
 
-		var $li = $('<li' + ((params.classNames) ? ' class="' + params.classNames + '"' : '') + '>' + ((params.text) ? params.text : '') + '</li>');
+		var $li = $('<li' +
+			((params.classNames) ? ' class="' + params.classNames + '"' : '') +
+			' data-color="' + this.defaultBlockColor +
+			'" style="background: ' + this.defaultBlockColor + '">' +
+			((params.text) ? params.text : '') +
+			'</li>');
 
 		// add gridster
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
@@ -160,7 +168,7 @@ module.exports = React.createClass({
 	 */
 	removeBlock()
 	{
-		this.$gridster.find('li.selected').each((k, o) => {
+		this.$gridster.find('li.' + this.selectedClassName).each((k, o) => {
 			this.gridster.remove_widget(o, null, null, true);
 		});
 		this.unSelectBlock();
@@ -171,7 +179,7 @@ module.exports = React.createClass({
 	 */
 	emptyBlock()
 	{
-		this.$gridster.find('li.selected').each((k, v) => {
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
 			if ($(v).hasClass('attached'))
 			{
 				$(v).removeClass('attached').children('figure').remove();
@@ -184,7 +192,7 @@ module.exports = React.createClass({
 	 */
 	duplicateBlock()
 	{
-		this.$gridster.find('li.selected').each((k, v) => {
+		this.$gridster.find('li.' + selectedClassName).each((k, v) => {
 			this.block({
 				sizeX : parseInt(v.getAttribute('data-sizex')),
 				sizeY : parseInt(v.getAttribute('data-sizey')),
@@ -360,10 +368,23 @@ module.exports = React.createClass({
 		});
 		$target.addClass('attached').prepend($figure);
 
-		if ($target.hasClass('selected'))
+		if ($target.hasClass(this.selectedClassName))
 		{
 			this.props.selectBlock($target);
 		}
+	},
+
+	/**
+	 * Change block color
+	 *
+	 * @param {string} color
+	 */
+	changeBlockColor(color)
+	{
+		color = color || this.defaultBlockColor;
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+			$(v).attr('data-color', color).css('backgroundColor', color);
+		});
 	},
 
 	/**

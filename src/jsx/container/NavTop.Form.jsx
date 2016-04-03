@@ -36,7 +36,7 @@ module.exports = React.createClass({
 	render()
 	{
 		return (
-			<article className="form" id="settings">
+			<article className="form edit-setting" id="settings">
 				<form method="post" ref="form" onSubmit={this.update}>
 					<fieldset>
 						<legend className="blind">Settings form</legend>
