@@ -51,8 +51,8 @@ module.exports = React.createClass({
 				case 'showForm':
 					break;
 				case 'showColorForm':
-					// TODO : 컬러 팔렛트를 열때 첫번째 블럭의 컬러값을 가져와서 폼의 컬러를 업데이트 하기
-					log('edit color');
+					let color = $(this.props.parent.gridster.$gridster).find('li.selected').get(0).getAttribute('data-color');
+					this.refs.color.import(color);
 					break;
 			}
 		}
@@ -214,7 +214,7 @@ module.exports = React.createClass({
 							onClick={this.toggleSettingForm}>
 							<i className="sp-ico ico-palette abs">Change color</i>
 						</button>
-						<NavTopColor updateColor={this.props.updateColor} />
+						<NavTopColor ref="color" updateColor={this.props.updateColor} />
 					</div>
 				</nav>
 			</div>

@@ -100,6 +100,7 @@ module.exports = React.createClass({
 					let $figure = $selectedItem.children('figure');
 					window.cropper.open({
 						$selected : $selectedItem,
+						color : $selectedItem.attr('data-color'),
 						image : {
 							url : $figure.attr('data-image'),
 							size : $figure.attr('data-size'),
@@ -122,7 +123,12 @@ module.exports = React.createClass({
 				break;
 		}
 	},
-	
+
+	/**
+	 * Update block color
+	 *
+	 * @param {string} color
+	 */
 	updateBlockColor(color)
 	{
 		this.refs.gridster.changeBlockColor(color);
@@ -140,6 +146,7 @@ module.exports = React.createClass({
 			<div className="ple-container">
 				<NavTop
 					ref="navTop"
+					parent={this}
 					update={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
