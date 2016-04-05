@@ -1,3 +1,5 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
 const util = require('../lib/util.js');
 
 module.exports = React.createClass({
@@ -8,6 +10,8 @@ module.exports = React.createClass({
 	$wrap : null,
 	gridster : null,
 	saveBlocks : null,
+	selectedClassName : 'selected',
+	defaultBlockColor : window.plePreference.block.defaultColor,
 
 	componentDidMount()
 	{
@@ -21,8 +25,8 @@ module.exports = React.createClass({
 	create()
 	{
 		var pref = this.props.preference;
-		var innnerMargin = pref.inner_margin * 0.5;
-		var outerMargin = innnerMargin + pref.outer_margin;
+		var innerMargin = pref.inner_margin * 0.5;
+		var outerMargin = innerMargin + pref.outer_margin;
 
 		// set styles
 		this.$gridster.css('padding', outerMargin+'px').append('<ul/>');
@@ -47,6 +51,11 @@ module.exports = React.createClass({
 				{
 					$(o).addClass('attached');
 				}
+				if ($(o).attr('data-color'))
+				{
+					$(o).css('background-color', $(o).attr('data-color'));
+				}
+
 				$(o).children('.gs-resize-handle').remove();
 			});
 			this.$gridster.children('ul').append(this.saveBlocks);
@@ -57,7 +66,7 @@ module.exports = React.createClass({
 
 		// init gridster
 		this.gridster = this.$gridster.children('ul').gridster({
-			widget_margins: [innnerMargin, innnerMargin],
+			widget_margins: [innerMargin, innerMargin],
 			widget_base_dimensions: [pref.width, pref.height],
 			max_cols : pref.max_col,
 			resize : {
@@ -132,7 +141,12 @@ module.exports = React.createClass({
 	{
 		if (!params.sizeX || !params.sizeY) return false;
 
-		var $li = $('<li' + ((params.classNames) ? ' class="' + params.classNames + '"' : '') + '>' + ((params.text) ? params.text : '') + '</li>');
+		var $li = $('<li' +
+			((params.classNames) ? ' class="' + params.classNames + '"' : '') +
+			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) +
+			'" style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
+			((params.text) ? params.text : '') +
+			'</li>');
 
 		// add gridster
 		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
@@ -148,31 +162,9 @@ module.exports = React.createClass({
 	 */
 	initBlockEvent($block)
 	{
-		var self = this;
-
-		$block.on('click', function(e){
-			var $block = $(e.currentTarget);
-			var $blocks = self.$gridster.find('li');
-			var className = 'selected';
-
+		$block.on('click', (e) => {
 			e.stopPropagation();
-
-			if ($block.hasClass('selected'))
-			{
-				$block.removeClass(className);
-				self.props.selectBlock(null);
-			}
-			else
-			{
-				$blocks.removeClass(className);
-				$block.addClass(className);
-				self.props.selectBlock($blocks.filter('.' + className));
-				self.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', function(e){
-					$blocks.removeClass(className);
-					self.props.selectBlock(null);
-					$(this).off('click.gridsterBlock');
-				});
-			}
+			this.selectBlock($(e.currentTarget));
 		});
 	},
 
@@ -181,7 +173,9 @@ module.exports = React.createClass({
 	 */
 	removeBlock()
 	{
-		this.gridster.remove_widget( this.$gridster.find('li.selected') );
+		this.$gridster.find('li.' + this.selectedClassName).each((k, o) => {
+			this.gridster.remove_widget(o, null, null, true);
+		});
 		this.unSelectBlock();
 	},
 
@@ -190,7 +184,7 @@ module.exports = React.createClass({
 	 */
 	emptyBlock()
 	{
-		this.$gridster.find('li.selected').each((k, v) => {
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
 			if ($(v).hasClass('attached'))
 			{
 				$(v).removeClass('attached').children('figure').remove();
@@ -203,14 +197,62 @@ module.exports = React.createClass({
 	 */
 	duplicateBlock()
 	{
-		this.$gridster.find('li.selected').each((k, v) => {
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
 			this.block({
 				sizeX : parseInt(v.getAttribute('data-sizex')),
 				sizeY : parseInt(v.getAttribute('data-sizey')),
+				color : v.getAttribute('data-color'),
 				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
 				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
 			});
 		});
+	},
+
+	/**
+	 * Select block
+	 *
+	 * @param {object} $block
+	 */
+	selectBlock($block)
+	{
+		var $blocks = this.$gridster.find('li');
+
+		if ($block.hasClass(this.selectedClassName))
+		{
+			if (window.keyboardEvent.readySelect)
+			{
+				$block.removeClass(this.selectedClassName);
+			}
+			else
+			{
+				$blocks.removeClass(this.selectedClassName);
+			}
+
+			if (!this.$gridster.find('li.' + this.selectedClassName).length)
+			{
+				this.props.selectBlock(null);
+			}
+		}
+		else
+		{
+			if (window.keyboardEvent.readySelect)
+			{
+				$block.addClass(this.selectedClassName);
+			}
+			else
+			{
+				$blocks.removeClass(this.selectedClassName);
+				$block.addClass(this.selectedClassName);
+			}
+
+			this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
+
+			this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
+				$blocks.removeClass(this.selectedClassName);
+				this.props.selectBlock(null);
+				$(e.currentTarget).off('click.gridsterBlock');
+			});
+		}
 	},
 
 	/**
@@ -332,10 +374,23 @@ module.exports = React.createClass({
 		});
 		$target.addClass('attached').prepend($figure);
 
-		if ($target.hasClass('selected'))
+		if ($target.hasClass(this.selectedClassName))
 		{
 			this.props.selectBlock($target);
 		}
+	},
+
+	/**
+	 * Change block color
+	 *
+	 * @param {string} color
+	 */
+	changeBlockColor(color)
+	{
+		color = color || this.defaultBlockColor;
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+			$(v).attr('data-color', color).css('backgroundColor', color);
+		});
 	},
 
 	/**

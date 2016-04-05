@@ -6,7 +6,6 @@ module.exports = React.createClass({
 		uploadImages: React.PropTypes.array,
 		update: React.PropTypes.func
 	},
-	is_multiSelect : false,
 
 	$gridster : null,
 	dragTarget : null,
@@ -18,24 +17,6 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		const CTRL = 17;
-		const CMD = 91;
-
-		var onKeydown = (e) => {
-			if (e.keyCode == CTRL || e.keyCode == CMD)
-			{
-				this.is_multiSelect = true;
-				$(window).off('keydown').on('keyup', onKeyUp);
-			}
-		};
-
-		var onKeyUp = () => {
-			this.is_multiSelect = false;
-			$(window).off('keyup').on('keydown', onKeydown);
-		};
-
-		$(window).on('keydown', onKeydown);
-
 		this.$gridster = $('.gridster');
 	},
 
@@ -46,10 +27,12 @@ module.exports = React.createClass({
 	 */
 	onSelect(e)
 	{
+		e.stopPropagation();
+
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
 		let uploadImages = this.props.uploadImages;
 
-		if (this.is_multiSelect)
+		if (window.keyboardEvent.readySelect)
 		{
 			uploadImages[currentKey].on = !uploadImages[currentKey].on;
 		}
@@ -60,6 +43,20 @@ module.exports = React.createClass({
 			});
 		}
 
+		this.props.update(uploadImages);
+	},
+
+	/**
+	 * on un select items
+	 *
+	 * @param {event} e
+	 */
+	onUnselect(e)
+	{
+		let uploadImages = this.props.uploadImages;
+		uploadImages.forEach((data, key) => {
+			data.on = false;
+		});
 		this.props.update(uploadImages);
 	},
 
@@ -121,11 +118,12 @@ module.exports = React.createClass({
 		});
 
 		return (
-            <div className="upload-files">
+            <div className="upload-files" onClick={this.onUnselect}>
 				<div className="wrap">
         			<ul ref="items">{items}</ul>
 				</div>
         	</div>
 		);
 	}
+	
 });

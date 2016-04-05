@@ -1,6 +1,33 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 
+
+// set preference
+window.plePreference = {
+	uploadScript : '',
+	removeScript : '',
+	defaultImagesScript : '',
+	block : {
+		defaultColor : '#DDDDDD'
+	},
+	setting : {
+		width : 80,
+		height : 80,
+		max_col : 5,
+		max_scale : 2,
+		outer_margin : 10,
+		inner_margin : 10
+	}
+};
+if (pleUserPreference)
+{
+	Object.assign(window.plePreference, pleUserPreference);
+}
+
+
+// load libs
+const KeyboardEvent = require('./lib/KeyboardEvent.js');
+
 // init components
 const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
@@ -81,15 +108,19 @@ const App = React.createClass({
 					resizeWidth={this.resizeWidth}/>
 				<Sidebar
 					ref="sidebar"
-					uploadScript={preference.uploadScript}
-					removeScript={preference.removeScript}
-					defaultImagesScript={preference.defaultImagesScript}
+					uploadScript={window.plePreference.uploadScript}
+					removeScript={window.plePreference.removeScript}
+					defaultImagesScript={window.plePreference.defaultImagesScript}
 					show={this.state.show_sidebar}
 					toggleSidebar={this.toggleSidebar}/>
 			</div>
 		);
 	}
 });
+
+
+// event
+window.keyboardEvent = new KeyboardEvent();
 
 
 // render App

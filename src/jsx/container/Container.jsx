@@ -11,16 +11,8 @@ module.exports = React.createClass({
 	getInitialState()
 	{
 		return {
-			preference : {
-				width : 100,
-				height : 100,
-				max_col : 5,
-				max_scale : 2,
-				outer_margin : 10,
-				inner_margin : 10
-			},
-			action : null,
-			dynamicParameter : {}
+			preference : window.plePreference.setting,
+			action : null
 		};
 	},
 
@@ -38,7 +30,9 @@ module.exports = React.createClass({
 	updatePreference(params)
 	{
 		this.setState({ preference : params, action: 'updatePreference' });
-		this.refs.navTop.closeSetting();
+		
+		// close form
+		this.refs.navTop.toggleFormEvent(false);
 	},
 
 	/**
@@ -98,6 +92,7 @@ module.exports = React.createClass({
 					let $figure = $selectedItem.children('figure');
 					window.cropper.open({
 						$selected : $selectedItem,
+						color : $selectedItem.attr('data-color'),
 						image : {
 							url : $figure.attr('data-image'),
 							size : $figure.attr('data-size'),
@@ -115,7 +110,23 @@ module.exports = React.createClass({
 			case 'remove':
 				this.refs.gridster.removeBlock();
 				break;
+			case 'changeColor':
+				log('change item color');
+				break;
 		}
+	},
+
+	/**
+	 * Update block color
+	 *
+	 * @param {string} color
+	 */
+	updateBlockColor(color)
+	{
+		this.refs.gridster.changeBlockColor(color);
+		
+		// close form
+		this.refs.navTop.toggleFormEvent(false);
 	},
 	
 	/**
@@ -127,7 +138,9 @@ module.exports = React.createClass({
 			<div className="ple-container">
 				<NavTop
 					ref="navTop"
+					parent={this}
 					update={this.updatePreference}
+					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
 					actControl={this.topNavControl}
 					preference={this.state.preference}/>
@@ -136,8 +149,7 @@ module.exports = React.createClass({
 					preference={this.state.preference}
 					action={this.state.action}
 					resizeWidth={this.props.resizeWidth}
-					selectBlock={this.onSelectBlock}
-					dynamicParameter={this.state.dynamicParameter}/>
+					selectBlock={this.onSelectBlock}/>
 				<NavBottom
 					generate={this.generate} />
 			</div>

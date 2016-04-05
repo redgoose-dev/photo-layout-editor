@@ -270,8 +270,6 @@ module.exports = React.createClass({
 			});
 		}
 
-		// TODO : 애니메이션 타이밍 때문에 위치 저장이 제대로 안됨. 애니메이션을 넣으려면 저장 타이밍을 고쳐야할듯...
-
 		this.saveImageMeta();
 	},
 

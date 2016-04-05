@@ -1,0 +1,5 @@
+.DS_Store
+.idea/
+.idea/**/*
+jquery-minicolors.sublime-project
+jquery-minicolors.sublime-workspace
