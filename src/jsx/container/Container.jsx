@@ -11,16 +11,8 @@ module.exports = React.createClass({
 	getInitialState()
 	{
 		return {
-			preference : {
-				width : 100,
-				height : 100,
-				max_col : 5,
-				max_scale : 2,
-				outer_margin : 10,
-				inner_margin : 10
-			},
-			action : null,
-			dynamicParameter : {}
+			preference : window.plePreference.setting,
+			action : null
 		};
 	},
 
@@ -157,8 +149,7 @@ module.exports = React.createClass({
 					preference={this.state.preference}
 					action={this.state.action}
 					resizeWidth={this.props.resizeWidth}
-					selectBlock={this.onSelectBlock}
-					dynamicParameter={this.state.dynamicParameter}/>
+					selectBlock={this.onSelectBlock}/>
 				<NavBottom
 					generate={this.generate} />
 			</div>

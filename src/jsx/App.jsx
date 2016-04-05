@@ -7,18 +7,22 @@ window.plePreference = {
 	uploadScript : '',
 	removeScript : '',
 	defaultImagesScript : '',
-	defaultSetting : {
-
-	},
 	block : {
 		defaultColor : '#DDDDDD'
+	},
+	setting : {
+		width : 80,
+		height : 80,
+		max_col : 5,
+		max_scale : 2,
+		outer_margin : 10,
+		inner_margin : 10
 	}
 };
-if (preference)
+if (pleUserPreference)
 {
-	Object.assign(window.plePreference, preference);
+	Object.assign(window.plePreference, pleUserPreference);
 }
-// TODO : 환경설정값 좀더 손보기. gridster 설정값도 연동하기
 
 
 // load libs
@@ -104,9 +108,9 @@ const App = React.createClass({
 					resizeWidth={this.resizeWidth}/>
 				<Sidebar
 					ref="sidebar"
-					uploadScript={preference.uploadScript}
-					removeScript={preference.removeScript}
-					defaultImagesScript={preference.defaultImagesScript}
+					uploadScript={window.plePreference.uploadScript}
+					removeScript={window.plePreference.removeScript}
+					defaultImagesScript={window.plePreference.defaultImagesScript}
 					show={this.state.show_sidebar}
 					toggleSidebar={this.toggleSidebar}/>
 			</div>

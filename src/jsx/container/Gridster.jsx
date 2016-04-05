@@ -51,6 +51,11 @@ module.exports = React.createClass({
 				{
 					$(o).addClass('attached');
 				}
+				if ($(o).attr('data-color'))
+				{
+					$(o).css('background-color', $(o).attr('data-color'));
+				}
+
 				$(o).children('.gs-resize-handle').remove();
 			});
 			this.$gridster.children('ul').append(this.saveBlocks);
@@ -138,8 +143,8 @@ module.exports = React.createClass({
 
 		var $li = $('<li' +
 			((params.classNames) ? ' class="' + params.classNames + '"' : '') +
-			' data-color="' + this.defaultBlockColor +
-			'" style="background: ' + this.defaultBlockColor + '">' +
+			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) +
+			'" style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
 			((params.text) ? params.text : '') +
 			'</li>');
 
@@ -192,10 +197,11 @@ module.exports = React.createClass({
 	 */
 	duplicateBlock()
 	{
-		this.$gridster.find('li.' + selectedClassName).each((k, v) => {
+		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
 			this.block({
 				sizeX : parseInt(v.getAttribute('data-sizex')),
 				sizeY : parseInt(v.getAttribute('data-sizey')),
+				color : v.getAttribute('data-color'),
 				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
 				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
 			});

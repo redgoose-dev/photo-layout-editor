@@ -27,6 +27,8 @@ module.exports = React.createClass({
 	 */
 	onSelect(e)
 	{
+		e.stopPropagation();
+
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
 		let uploadImages = this.props.uploadImages;
 
@@ -41,6 +43,20 @@ module.exports = React.createClass({
 			});
 		}
 
+		this.props.update(uploadImages);
+	},
+
+	/**
+	 * on un select items
+	 *
+	 * @param {event} e
+	 */
+	onUnselect(e)
+	{
+		let uploadImages = this.props.uploadImages;
+		uploadImages.forEach((data, key) => {
+			data.on = false;
+		});
 		this.props.update(uploadImages);
 	},
 
@@ -102,7 +118,7 @@ module.exports = React.createClass({
 		});
 
 		return (
-            <div className="upload-files">
+            <div className="upload-files" onClick={this.onUnselect}>
 				<div className="wrap">
         			<ul ref="items">{items}</ul>
 				</div>
