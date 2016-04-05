@@ -11,15 +11,11 @@ module.exports = React.createClass({
 	{
 		return {
 			show : false,
+			color : window.plePreference.block.defaultColor,
 			wrapStyle : null,
 			image : null,
 			showImageResize : false
 		};
-	},
-
-	componentDidMount()
-	{
-
 	},
 
 	/**
@@ -35,7 +31,8 @@ module.exports = React.createClass({
 				width : this.$activeElement.width() + 'px',
 				height : this.$activeElement.height() + 'px',
 				left : this.$activeElement.offset().left + 'px',
-				top : this.$activeElement.offset().top + 'px'
+				top : this.$activeElement.offset().top + 'px',
+				backgroundColor : this.state.color
 			}
 		});
 	},
@@ -55,6 +52,7 @@ module.exports = React.createClass({
 		// update
 		this.setState({
 			show : true,
+			color : options.color,
 			image : options.image,
 			showImageResize : !(options.image.size == 'cover')
 		});

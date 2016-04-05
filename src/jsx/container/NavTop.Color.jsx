@@ -30,6 +30,14 @@ module.exports = React.createClass({
 		}, 0);
 	},
 
+	/**
+	 * Get contrast YIQ
+	 * 배경색과 어울리는 글자색을 가져오기 위하여 색을 확인하여 밝은색을 리턴할지 어두운색을 리턴할지 결정한다.
+	 *
+	 * @param {string} hexcolor
+	 * @return {string}
+	 *
+	 */
 	getContrastYIQ(hexcolor)
 	{
 		hexcolor = hexcolor.replace('#', '');
@@ -37,21 +45,50 @@ module.exports = React.createClass({
 		var g = parseInt(hexcolor.substr(2,2),16);
 		var b = parseInt(hexcolor.substr(4,2),16);
 		var yiq = ((r*299)+(g*587)+(b*114))/1000;
-		return (yiq >= 128) ? '#000' : '#ccc';
+		return (yiq >= 128) ? '#000' : '#eee';
 	},
 
+	/**
+	 * Import
+	 *
+	 * @param {string} getColor
+	 *
+	 */
+	import(getColor)
+	{
+		this.$color.minicolors('value', getColor);
+	},
+
+	/**
+	 * Update preview
+	 *
+	 * @param {string} color
+	 *
+	 */
 	updatePreview(color)
 	{
 		this.setState({
-			currentColor: color
+			currentColor: color.toUpperCase()
 		});
 	},
 
+	/**
+	 * Update input event
+	 *
+	 * @param {event} e
+	 *
+	 */
 	update(e)
 	{
-		this.setState({currentColor: e.target.value.toUpperCase()});
+		updatePreview(e.target.value.toUpperCase());
 	},
 
+	/**
+	 * Submit form
+	 *
+	 * @param {event} e
+	 *
+	 */
 	submit(e)
 	{
 		e.preventDefault();
