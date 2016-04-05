@@ -12,15 +12,20 @@
 <script src="../dist/js/vendor.pkgd.js"></script>
 <script>
 function log(o){console.log(o);}
-window.preference = {
+var pleUserPreference = {
 	uploadScript : '../script/imageUpload.php',
 	removeScript : '../script/imageRemove.php',
 	defaultImagesScript : '../script/defaultImages.php',
-	defaultSetting : {
-		
-	},
 	block : {
 		defaultColor : '#DDDDDD'
+	},
+	setting : {
+		width : 120,
+		height : 100,
+		max_col : 5,
+		max_scale : 2,
+		outer_margin : 10,
+		inner_margin : 5
 	}
 };
 </script>

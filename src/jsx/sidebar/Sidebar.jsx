@@ -36,7 +36,7 @@ module.exports = React.createClass({
 	componentDidMount()
 	{
 		$.get(this.props.defaultImagesScript, (response) => {
-			var result = JSON.parse(response.replace(/\+/g, '%20'));
+			var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
 			this.setState({
 				uploadImages : this.importImages(result)
 			})
@@ -62,7 +62,7 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * upload images
+	 * Upload images
 	 *
 	 * @Param {Files} files
 	 */
@@ -132,6 +132,10 @@ module.exports = React.createClass({
 		}
 	},
 
+	/**
+	 * Remove items
+	 *
+	 */
 	remove()
 	{
 		var selectedKeys = [];
@@ -144,6 +148,7 @@ module.exports = React.createClass({
 			return;
 		}
 
+		// get select items
 		this.state.uploadImages.forEach((o, k) => {
 			if (o.on)
 			{
@@ -175,7 +180,7 @@ module.exports = React.createClass({
 			}
 		}
 
-		// remove real files
+		// remove real image files
 		if (this.props.removeScript && confirmBool && removeImages.length)
 		{
 			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
@@ -184,6 +189,10 @@ module.exports = React.createClass({
 		}
 	},
 
+	/**
+	 * Attach image from the block
+	 *
+	 */
 	attach()
 	{
 		var items = [];
@@ -204,6 +213,10 @@ module.exports = React.createClass({
 		}
 	},
 
+	/**
+	 * Toggle select items
+	 *
+	 */
 	toggleSelect()
 	{
 		var items = this.state.uploadImages;
@@ -215,6 +228,11 @@ module.exports = React.createClass({
 		this.setState({ uploadImages : items });
 	},
 
+	/**
+	 * Update items
+	 *
+	 * @param {array} data
+	 */
 	update(data)
 	{
 		this.setState({ uploadImages : data });

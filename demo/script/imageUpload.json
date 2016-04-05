@@ -1,0 +1,18 @@
+{
+	"state" : "success",
+	"message" : "complete upload",
+	"images" : [
+		{
+			"loc": "./images/rg3144.jpg",
+			"type": "image/jpeg",
+			"size": 10000,
+			"name": "rg3144.jpg"
+		},
+		{
+			"loc": "./images/rg3130.jpg",
+			"type": "image/jpeg",
+			"size": 12000,
+			"name": "rg3130.jpg"
+		}
+	]
+}

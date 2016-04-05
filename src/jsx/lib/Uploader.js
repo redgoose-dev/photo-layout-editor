@@ -65,7 +65,9 @@ module.exports = function Uploader()
 					{
 						case 200:
 							try {
-								var result = JSON.parse(e.target.responseText.replace(/\+/g, '%20'));
+								var result = (response instanceof Array) ?
+									e.target.responseText :
+									JSON.parse(e.target.responseText.replace(/\+/g, '%20'));
 								complete(result);
 							} catch(e) {
 								complete({

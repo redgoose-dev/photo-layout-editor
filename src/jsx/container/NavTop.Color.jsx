@@ -31,24 +31,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Get contrast YIQ
-	 * 배경색과 어울리는 글자색을 가져오기 위하여 색을 확인하여 밝은색을 리턴할지 어두운색을 리턴할지 결정한다.
-	 *
-	 * @param {string} hexcolor
-	 * @return {string}
-	 *
-	 */
-	getContrastYIQ(hexcolor)
-	{
-		hexcolor = hexcolor.replace('#', '');
-		var r = parseInt(hexcolor.substr(0,2),16);
-		var g = parseInt(hexcolor.substr(2,2),16);
-		var b = parseInt(hexcolor.substr(4,2),16);
-		var yiq = ((r*299)+(g*587)+(b*114))/1000;
-		return (yiq >= 128) ? '#000' : '#eee';
-	},
-
-	/**
 	 * Import
 	 *
 	 * @param {string} getColor
@@ -80,7 +62,7 @@ module.exports = React.createClass({
 	 */
 	update(e)
 	{
-		updatePreview(e.target.value.toUpperCase());
+		this.updatePreview(e.target.value.toUpperCase());
 	},
 
 	/**
@@ -101,9 +83,9 @@ module.exports = React.createClass({
 	render()
 	{
 		var previewStyle = {
-			backgroundColor : this.state.currentColor,
-			color : this.getContrastYIQ(this.state.currentColor)
+			backgroundColor : this.state.currentColor
 		};
+
 
 		return (
 			<article className="form edit-color">
@@ -112,7 +94,13 @@ module.exports = React.createClass({
 						<legend className="blind">Edit color form</legend>
 						<input type="hidden" ref="color" />
 						<div className="preview">
-							<input type="text" style={previewStyle} defaultValue="#DDDDDD" value={this.state.currentColor} onChange={this.update} />
+							<input
+								type="text"
+								maxLength="7"
+								defaultValue={this.state.currentColor}
+								value={this.state.currentColor}
+								onChange={this.update} />
+							<span style={previewStyle}></span>
 						</div>
 					</fieldset>
 					<nav>
