@@ -1,4 +1,4 @@
-var log = function(o) { console.log(o); }
+var log = function(o) { console.log(o); };
 
 // log modules
 var gulp = require('gulp');
@@ -28,7 +28,7 @@ var minifis = {
 };
 var vendors = {
 	js : [
-		'./node_modules/react/dist/react.min.js',
+		'./node_modules/react/dist/react.js',
 		'./node_modules/react-dom/dist/react-dom.min.js',
 		'./node_modules/jquery/dist/jquery.min.js',
 		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js',
