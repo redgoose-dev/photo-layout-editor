@@ -3,7 +3,8 @@
 
 ### Demo
 
-데모실행 : `demo/index.html`
+* 데모실행 : `demo/index.html`
+* 체험하기 : http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
 
 
 ### Development app
