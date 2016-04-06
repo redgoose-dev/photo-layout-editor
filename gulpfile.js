@@ -1,4 +1,4 @@
-var log = function(o) { console.log(o); }
+var log = function(o) { console.log(o); };
 
 // log modules
 var gulp = require('gulp');
