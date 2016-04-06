@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 
 $dir = '../upload';
-$dir_exp = '/^..\/upload/';
+$dir_exp = '/^.\/upload/';
 
 
 if (isset($_POST['images']) && count($_POST['images']) > 0)

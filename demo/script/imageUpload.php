@@ -10,7 +10,7 @@ $count = count($files['name']);
 $copyFiles = [];
 
 $uploadDir = '../upload';
-$uploadUrl = '../upload';
+$uploadUrl = './upload';
 
 
 // check directory
