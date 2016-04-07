@@ -20,7 +20,7 @@ if (is_dir('../upload'))
 	{
 		if (exif_imagetype($filename))
 		{
-			$images[] = '../upload/'.basename($filename);
+			$images[] = './upload/'.basename($filename);
 		}
 	}
 }
