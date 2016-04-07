@@ -7,6 +7,11 @@ window.plePreference = {
 	uploadScript : '',
 	removeScript : '',
 	defaultImagesScript : '',
+	gridster : {
+		createNow : true,
+		createCount : 6,
+		importParams : []
+	},
 	block : {
 		defaultColor : '#DDDDDD'
 	},
