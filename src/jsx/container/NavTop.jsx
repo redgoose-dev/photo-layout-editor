@@ -147,6 +147,23 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * On empty
+	 *
+	 * @param {object} e
+	 */
+	onEmpty(e)
+	{
+		this.props.actControl(e);
+
+		// update toolbar
+		var newVisible = this.state.visible;
+		newVisible.edit = false;
+		this.setState({
+			visible: newVisible
+		});
+	},
+
+	/**
 	 * RENDER
 	 */
 	render()
@@ -191,7 +208,7 @@ module.exports = React.createClass({
 						</button>
 					</div>
 					<div className={'block color-bg-key' + ((this.state.visible.empty) ? ' is-show' : '')}>
-						<button type="button" title="Remove image in block" onClick={this.props.actControl} data-type="empty">
+						<button type="button" title="Remove image in block" onClick={this.onEmpty} data-type="empty">
 							<i className="sp-ico ico-empty abs">Remove image</i>
 						</button>
 					</div>

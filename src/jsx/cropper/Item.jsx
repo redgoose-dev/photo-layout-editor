@@ -299,8 +299,8 @@ module.exports = React.createClass({
 			if (showArea)
 			{
 				styleObject = {
-					'left' : this.props.options.position.split(' ')[0],
-					'top' : this.props.options.position.split(' ')[1],
+					'left' : this.props.options.position.split(' ')[0] + 'px',
+					'top' : this.props.options.position.split(' ')[1] + 'px',
 					'width' : this.props.options.size.split(' ')[0]
 				};
 				img = (
