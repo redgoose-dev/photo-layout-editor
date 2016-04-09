@@ -52,14 +52,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Generate
-	 */
-	generate()
-	{
-		log('generate output');
-	},
-
-	/**
 	 * On select block
 	 * 
 	 */
@@ -151,7 +143,8 @@ module.exports = React.createClass({
 					resizeWidth={this.props.resizeWidth}
 					selectBlock={this.onSelectBlock}/>
 				<NavBottom
-					generate={this.generate} />
+					container={this}
+					gridster={this.refs.gridster} />
 			</div>
 		);
 	}

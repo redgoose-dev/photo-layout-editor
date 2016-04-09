@@ -86,7 +86,6 @@ module.exports = React.createClass({
 			backgroundColor : this.state.currentColor
 		};
 
-
 		return (
 			<article className="form edit-color">
 				<form onSubmit={this.submit}>
@@ -97,7 +96,6 @@ module.exports = React.createClass({
 							<input
 								type="text"
 								maxLength="7"
-								defaultValue={this.state.currentColor}
 								value={this.state.currentColor}
 								onChange={this.update} />
 							<span style={previewStyle}></span>

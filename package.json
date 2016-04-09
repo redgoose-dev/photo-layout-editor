@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/RedgooseDev/PhotoLayoutEditor#readme",
   "dependencies": {
-    "jquery": "^2.2.2",
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8"
+    "jquery": "^2.2.3",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",

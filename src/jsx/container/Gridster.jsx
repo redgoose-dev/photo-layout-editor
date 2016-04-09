@@ -119,8 +119,18 @@ module.exports = React.createClass({
 	 */
 	init()
 	{
+		// create gridster
 		this.create();
-		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
+
+		// make random blocks
+		if (window.plePreference.gridster.createNow)
+		{
+			this.randomAddBlocks(
+				(window.plePreference.gridster.createCount || 5),
+				this.props.preference.max_scale,
+				this.props.preference.max_scale
+			);
+		}
 	},
 
 	/**
