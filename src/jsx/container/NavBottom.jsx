@@ -1,88 +1,56 @@
+const React = require('React');
+const Export = require('../lib/Export.js');
+
 module.exports = React.createClass({
 
 	displayName : 'Nav-bottom',
-	container : null,
-	gridster : null,
-	$gridster : null,
+	export : Export,
+
 
 	componentDidMount()
 	{
-		this.container = this.props.container;
-	},
-
-	exportJSON()
-	{
-
+		// init export
+		this.export.init(this.props.container);
 	},
 
 	/**
-	 * Export gridster
-	 *
-	 * @return {object}
-	 */
-	exportGridster()
-	{
-		var blockData = [];
-
-		this.$gridster.find('li').each((k, o) => {
-			var $o = $(o);
-			var data = {};
-
-			data.color = $o.data('color');
-
-			if ($o.hasClass('attached'))
-			{
-				data.position = $o.children('figure').data('position');
-				data.size = $o.children('figure').data('size');
-				data.image = $o.children('figure').data('image');
-			}
-
-			blockData.push(data);
-		});
-
-		return {
-			params : this.gridster.serialize(),
-			figure : blockData
-		};
-	},
-
-	/**
-	 * Action generator
+	 * on generator
 	 *
 	 * @param {event} e
 	 */
-	actGenerator(e)
+	onGenerator(e)
 	{
 		let action = e.currentTarget.getAttribute('data-action');
-		let gridsterComponent = this.props.container.refs.gridster;
-
-		this.container = this.props.container;
-		this.gridster = gridsterComponent.gridster;
-		this.$gridster = gridsterComponent.$gridster;
 
 		switch(action)
 		{
-			case 'json':
-				let gridsterData = this.exportGridster();
-				let preference = this.container.state.preference;
+			case 'printJson':
+				window.result.open(
+					this.export.objectToJson(
+						this.export.basic(),
+						null
+					),
+					'code'
+				);
+				break;
 
-				log(gridsterData);
-				log(preference);
+			case 'printJsonPacked':
+				this.export.packed();
+				break;
 
+			case 'printImage':
+				// export.makeImage()
+				log('export image');
 				break;
-			case 'jsonImage':
+
+			case 'console':
+				console.log(this.export.basic());
 				break;
-			case 'image':
-				break;
+
 			default:
 				log('not select action');
 				break;
 		}
-
-		//log(action);
-
-		// log(this.container);
-		// log(this.gridster);
 	},
 
 	/**
@@ -91,15 +59,38 @@ module.exports = React.createClass({
 	render()
 	{
 		return (
-            <nav className="nav-bottom">
-        		<button
-					type="button"
-					title="Generate export"
-					data-action="json"
-					onClick={this.actGenerator}>
-        			<span>Export JSON</span>
-        		</button>
-        	</nav>
+			<div>
+				<nav className="nav-bottom">
+					<button
+						type="button"
+						title="Export json"
+						data-action="printJson"
+						onClick={this.onGenerator}>
+						<span>JSON</span>
+					</button>
+					<button
+						type="button"
+						title="Export json(packed)"
+						data-action="printJsonPacked"
+						onClick={this.onGenerator}>
+						<span>JSON(packed)</span>
+					</button>
+					<button
+						type="button"
+						title="Image"
+						data-action="printImage"
+						onClick={this.onGenerator}>
+						<span>Image</span>
+					</button>
+					<button
+						type="button"
+						title="Console"
+						data-action="console"
+						onClick={this.onGenerator}>
+						<span>Console</span>
+					</button>
+				</nav>
+			</div>
 		);
 	}
 });
