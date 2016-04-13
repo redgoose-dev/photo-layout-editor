@@ -105,6 +105,9 @@ module.exports = {
 	{
 		var queue = [];
 		var pref = this.container.state.preference;
+		var getItemSize = (width, col, margin) => {
+			return (width * col) + ((col > 1) ? margin * (col - 1) : 0);
+		};
 
 		gridsterData.figure.forEach((o, k) => {
 			var param = gridsterData.params[k];
@@ -115,8 +118,8 @@ module.exports = {
 					image : o.image,
 					position : o.position,
 					size : o.size,
-					targetWidth : pref.width * param.size_x, // TODO : inner 여백을 계산 안했다.;; 그래서 사이즈가 안맞음.
-					targetHeight : pref.height * param.size_y
+					targetWidth : getItemSize(pref.width, param.size_x, pref.inner_margin),
+					targetHeight : getItemSize(pref.height, param.size_y, pref.inner_margin)
 				});
 			}
 		});
@@ -144,7 +147,6 @@ module.exports = {
 	packed()
 	{
 		var queue = this.makeQueue(this.exportGridster());
-
 		this.playQueue(queue);
 	},
 
@@ -155,12 +157,13 @@ module.exports = {
 	 */
 	playQueue(queue)
 	{
+		var that = this;
 		var max = queue.length;
 
 		function makeImage(options, callback)
 		{
 			// set limit resampling count
-			options.resampleCount = (options.resampleCount > 1) ? options.resampleCount : 1;
+			options.resampleCount = (options.resampleCount > 0) ? options.resampleCount : 0;
 			options.resampleCount = (options.resampleCount < 4) ? options.resampleCount : 4;
 
 			var resampleMax = Math.pow(2, options.resampleCount);
@@ -190,17 +193,27 @@ module.exports = {
 			// init draw image
 			canvas.ctx.drawImage(
 				options.image,
-				options.cx, // crop x
-				options.cy, // crop y
-				options.cw, // crop x2
-				options.ch, // cropy2
-				options.dx, // x
-				options.dy, // y
-				(options.width * resampleMax), // dw
-				(options.width * resampleMax) // dh
+				(options.cx), // cx
+				(options.cy), // cy
+				(options.cw), // cw
+				(options.ch), // ch
+				(options.dx * resampleMax), // dx
+				(options.dy * resampleMax), // dy
+				(options.dw * resampleMax), // dw
+				(options.dh * resampleMax) // dh
 			);
 
-			resizeCanvas(options.resampleCount - 1, canvas);
+			if (options.resampleCount > 0)
+			{
+				resizeCanvas(options.resampleCount - 1, canvas);
+			}
+			else
+			{
+				if (callback)
+				{
+					callback(canvas);
+				}
+			}
 		}
 
 		function draw(key)
@@ -209,27 +222,47 @@ module.exports = {
 			var data = queue[key];
 
 			img.onload = (e) => {
-				// data.targetWidth;
-				var ratio = 0;
-				var size = null;
-				var option = null;
 				var realSize = {
 					width: img.naturalWidth,
 					height: img.naturalHeight
 				};
+				var size = {};
+				var option = null;
 
 				if (data.size == 'cover')
 				{
-					ratio = (realSize.width > realSize.height) ?
-						(realSize.width / data.targetWidth) :
-						(realSize.height / data.targetHeight);
-					size = {
-						width : realSize.width / ratio,
-						height : realSize.height / ratio
-					};
+					if (data.targetWidth > data.targetHeight)
+					{
+						size = {
+							width : data.targetWidth,
+							height : realSize.height * (data.targetWidth / realSize.width)
+						};
+						if (data.targetHeight > size.height)
+						{
+							size = {
+								height : data.targetHeight,
+								width : realSize.width * (data.targetHeight / realSize.height)
+							};
+						}
+					}
+					else
+					{
+						size = {
+							height : data.targetHeight,
+							width : realSize.width * (data.targetHeight / realSize.height)
+						};
+						if (data.targetWidth > size.width)
+						{
+							size = {
+								width : data.targetWidth,
+								height : realSize.height * (data.targetWidth / realSize.width)
+							};
+						}
+					}
+
 					option = {
 						image : img,
-						resampleCount : 2,
+						resampleCount : 0,
 						width : data.targetWidth,
 						height : data.targetHeight,
 						cx : 0,
@@ -238,9 +271,10 @@ module.exports = {
 						ch : realSize.height,
 						dx : 0,
 						dy : 0,
+						dw : size.width,
+						dh : size.height,
 						bgColor : '#dddddd'
 					};
-					log(size);
 				}
 				else
 				{
@@ -249,7 +283,6 @@ module.exports = {
 
 				makeImage(option, function(canvas){
 					key += 1;
-					log(key);
 					document.body.appendChild(canvas.el);
 					if (max > key)
 					{
