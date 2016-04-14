@@ -1,4 +1,12 @@
 
+/**
+ * Canvas Class
+ *
+ * @param {int} width
+ * @param {int} height
+ * @param {string} bgColor
+ *
+ */
 function Canvas(width, height, bgColor)
 {
 	this.el = document.createElement('canvas');
@@ -18,6 +26,119 @@ function Canvas(width, height, bgColor)
 		this.ctx.fillRect(0, 0, size.width, size.height);
 	}
 }
+
+/**
+ * Make image
+ *
+ * @param {Object} options
+ * @param {Function} callback
+ */
+function makeImage(options, callback)
+{
+	// set limit resampling count
+	options.resampleCount = (options.resampleCount > 0) ? options.resampleCount : 0;
+	options.resampleCount = (options.resampleCount < 4) ? options.resampleCount : 4;
+
+	var resampleMax = Math.pow(2, options.resampleCount);
+	var canvas = new Canvas(options.width * resampleMax, options.height * resampleMax, options.bgColor);
+
+	// resize canvas
+	var resizeCanvas = function(count, parentCanvas)
+	{
+		var max = Math.pow(2, count);
+		var canvasForResize = new Canvas(options.width * max, options.height * max, options.bgColor);
+
+		canvasForResize.ctx.drawImage(parentCanvas.el, 0, 0, parentCanvas.el.width * 0.5, parentCanvas.el.height * 0.5);
+
+		if (count > 0)
+		{
+			resizeCanvas(count-1, canvasForResize);
+		}
+		else
+		{
+			if (callback)
+			{
+				callback(canvasForResize);
+			}
+		}
+	};
+
+	// init draw image
+	canvas.ctx.drawImage(
+		options.image,
+		(options.cx), // cx
+		(options.cy), // cy
+		(options.cw), // cw
+		(options.ch), // ch
+		(options.dx * resampleMax), // dx
+		(options.dy * resampleMax), // dy
+		(options.dw * resampleMax), // dw
+		(options.dh * resampleMax) // dh
+	);
+
+	if (options.resampleCount > 0)
+	{
+		resizeCanvas(options.resampleCount - 1, canvas);
+	}
+	else
+	{
+		if (callback)
+		{
+			callback(canvas);
+		}
+	}
+}
+
+/**
+ * Get image size
+ *
+ * @param {String} type
+ * @param {int} cw container width
+ * @param {int} ch container height
+ * @param {int} iw image width
+ * @param {int} ih image height
+ * @return {Object}
+ */
+function getImageSize(type, cw, ch, iw, ih)
+{
+	var size  = {
+		width : 0,
+		height : 0
+	};
+
+	switch(type)
+	{
+		case 'cover':
+			if (cw > ch)
+			{
+				size.width = cw;
+				size.height = ih * (cw / iw)
+				if (ch > size.height)
+				{
+					size.width = iw * (ch / ih);
+					size.height = ch;
+				}
+			}
+			else
+			{
+				size.width = iw * (ch / ih);
+				size.height = ch;
+				if (cw > size.width)
+				{
+					size.width = cw;
+					size.height = ih * (cw / iw);
+				}
+			}
+			break;
+
+		default:
+
+			break;
+	}
+
+	return size;
+}
+
 
 module.exports = {
 
@@ -128,93 +249,13 @@ module.exports = {
 	},
 
 	/**
-	 * Basic
-	 * 
-	 * @return {Object}
-	 */
-	basic()
-	{
-		return {
-			gridster : this.exportGridster(),
-			preference : this.container.state.preference
-		};
-	},
-
-	/**
-	 * Packed
-	 *
-	 */
-	packed()
-	{
-		var queue = this.makeQueue(this.exportGridster());
-		this.playQueue(queue);
-	},
-
-	/**
 	 * Play queue
 	 *
 	 * @return {Object}
 	 */
 	playQueue(queue)
 	{
-		var that = this;
 		var max = queue.length;
-
-		function makeImage(options, callback)
-		{
-			// set limit resampling count
-			options.resampleCount = (options.resampleCount > 0) ? options.resampleCount : 0;
-			options.resampleCount = (options.resampleCount < 4) ? options.resampleCount : 4;
-
-			var resampleMax = Math.pow(2, options.resampleCount);
-			var canvas = new Canvas(options.width * resampleMax, options.height * resampleMax, options.bgColor);
-
-			// resize canvas
-			var resizeCanvas = function(count, parentCanvas)
-			{
-				var max = Math.pow(2, count);
-				var canvasForResize = new Canvas(options.width * max, options.height * max, options.bgColor);
-
-				canvasForResize.ctx.drawImage(parentCanvas.el, 0, 0, parentCanvas.el.width * 0.5, parentCanvas.el.height * 0.5);
-
-				if (count > 0)
-				{
-					resizeCanvas(count-1, canvasForResize);
-				}
-				else
-				{
-					if (callback)
-					{
-						callback(canvasForResize);
-					}
-				}
-			};
-
-			// init draw image
-			canvas.ctx.drawImage(
-				options.image,
-				(options.cx), // cx
-				(options.cy), // cy
-				(options.cw), // cw
-				(options.ch), // ch
-				(options.dx * resampleMax), // dx
-				(options.dy * resampleMax), // dy
-				(options.dw * resampleMax), // dw
-				(options.dh * resampleMax) // dh
-			);
-
-			if (options.resampleCount > 0)
-			{
-				resizeCanvas(options.resampleCount - 1, canvas);
-			}
-			else
-			{
-				if (callback)
-				{
-					callback(canvas);
-				}
-			}
-		}
 
 		function draw(key)
 		{
@@ -227,42 +268,18 @@ module.exports = {
 					height: img.naturalHeight
 				};
 				var size = {};
+				var position = {};
 				var option = null;
 
 				if (data.size == 'cover')
 				{
-					if (data.targetWidth > data.targetHeight)
-					{
-						size = {
-							width : data.targetWidth,
-							height : realSize.height * (data.targetWidth / realSize.width)
-						};
-						if (data.targetHeight > size.height)
-						{
-							size = {
-								height : data.targetHeight,
-								width : realSize.width * (data.targetHeight / realSize.height)
-							};
-						}
-					}
-					else
-					{
-						size = {
-							height : data.targetHeight,
-							width : realSize.width * (data.targetHeight / realSize.height)
-						};
-						if (data.targetWidth > size.width)
-						{
-							size = {
-								width : data.targetWidth,
-								height : realSize.height * (data.targetWidth / realSize.width)
-							};
-						}
-					}
+					size = getImageSize('cover', data.targetWidth, data.targetHeight, realSize.width, realSize.height);
+
+					// TODO : 이미지 위치를 중앙으로 이동하도록 좌표잡기. position값으로..
 
 					option = {
 						image : img,
-						resampleCount : 0,
+						resampleCount : 1,
 						width : data.targetWidth,
 						height : data.targetHeight,
 						cx : 0,
@@ -293,9 +310,33 @@ module.exports = {
 			img.src = data.image;
 		}
 
-		if (max)
+		if (max > 0)
 		{
 			draw(0);
 		}
+	},
+
+
+	/**
+	 * Basic
+	 *
+	 * @return {Object}
+	 */
+	basic()
+	{
+		return {
+			gridster : this.exportGridster(),
+			preference : this.container.state.preference
+		};
+	},
+
+	/**
+	 * Packed
+	 *
+	 */
+	packed()
+	{
+		var queue = this.makeQueue(this.exportGridster());
+		this.playQueue(queue);
 	}
 };
