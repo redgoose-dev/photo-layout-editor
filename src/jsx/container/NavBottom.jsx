@@ -25,22 +25,19 @@ module.exports = React.createClass({
 		switch(action)
 		{
 			case 'printJson':
-				window.result.open(
-					this.export.objectToJson(
-						this.export.basic(),
-						null
-					),
-					'code'
-				);
+				window.result.open( this.export.basic(), 'code' );
 				break;
 
 			case 'printJsonPacked':
-				this.export.packed();
+				this.export.packed((res) => {
+					window.result.open(res, 'code');
+				});
 				break;
 
 			case 'printImage':
-				// export.makeImage()
-				log('export image');
+				this.export.image(() => {
+					
+				});
 				break;
 
 			case 'console':

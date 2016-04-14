@@ -125,7 +125,7 @@ function getImageSize(type, cw, ch, iw, ih)
 			if (cw > ch)
 			{
 				size.width = cw;
-				size.height = ih * (cw / iw)
+				size.height = ih * (cw / iw);
 				if (ch > size.height)
 				{
 					size.width = iw * (ch / ih);
@@ -144,12 +144,38 @@ function getImageSize(type, cw, ch, iw, ih)
 			}
 			break;
 
-		default:
+		case 'width':
+			size.width = cw;
+			size.height = ih * (cw / iw);
+			break;
 
+		case 'height':
+			size.width = iw * (ch / ih);
+			size.height = ch;
+			break;
+
+		default:
+			size.width = cw;
+			size.height = ch;
 			break;
 	}
 
-	return size;
+	return {
+		width : Math.round(size.width),
+		height : Math.round(size.height)
+	};
+}
+
+/**
+ * Get image size
+ *
+ * @param {Object} el
+ * @param {int} quality
+ * @return {Object}
+ */
+function canvasToBase64(el, quality)
+{
+	return el.toDataURL('image/jpeg', quality);
 }
 
 
@@ -253,7 +279,8 @@ module.exports = {
 					position : o.position,
 					size : o.size,
 					targetWidth : getItemSize(pref.width, param.size_x, pref.inner_margin),
-					targetHeight : getItemSize(pref.height, param.size_y, pref.inner_margin)
+					targetHeight : getItemSize(pref.height, param.size_y, pref.inner_margin),
+					color : o.color
 				});
 			}
 		});
@@ -264,11 +291,14 @@ module.exports = {
 	/**
 	 * Play queue
 	 *
+	 * @param {Array} queue
+	 * @param {Function} callback
 	 * @return {Object}
 	 */
-	playQueue(queue)
+	playQueue(queue, callback)
 	{
 		var max = queue.length;
+		var result = [];
 
 		function draw(key)
 		{
@@ -276,48 +306,62 @@ module.exports = {
 			var data = queue[key];
 
 			img.onload = (e) => {
-				var realSize = {
+				let realSize = {
 					width: img.naturalWidth,
 					height: img.naturalHeight
 				};
-				var size = {};
-				var position = {};
-				var option = null;
+				let size = {};
+				let position = {};
+				let pos = [];
 
 				if (data.size == 'cover')
 				{
 					size = getImageSize('cover', data.targetWidth, data.targetHeight, realSize.width, realSize.height);
-
-					// TODO : 이미지 위치를 중앙으로 이동하도록 좌표잡기. position값으로..
-
-					option = {
-						image : img,
-						resampleCount : 1,
-						width : data.targetWidth,
-						height : data.targetHeight,
-						cx : 0,
-						cy : 0,
-						cw : realSize.width,
-						ch : realSize.height,
-						dx : 0,
-						dy : 0,
-						dw : size.width,
-						dh : size.height,
-						bgColor : '#dddddd'
-					};
+					position.x = (data.targetWidth * 0.5) - (size.width * 0.5);
+					position.y = (data.targetHeight * 0.5) - (size.height * 0.5);
 				}
 				else
 				{
-
+					pos = data.position.split(' ');
+					size = getImageSize('width', data.targetWidth, data.targetHeight, realSize.width, realSize.height);
+					position.x = parseInt(pos[0]);
+					position.y = parseInt(pos[1]);
 				}
 
-				makeImage(option, function(canvas){
+				makeImage({
+					image : img,
+					resampleCount : 1,
+					width : data.targetWidth,
+					height : data.targetHeight,
+					cx : 0,
+					cy : 0,
+					cw : realSize.width,
+					ch : realSize.height,
+					dx : position.x,
+					dy : position.y,
+					dw : size.width,
+					dh : size.height,
+					bgColor : data.color
+				}, (canvas) => {
 					key += 1;
-					document.body.appendChild(canvas.el);
+					//document.body.appendChild(canvas.el);
+					result.push({
+						key : data.key,
+						data : canvasToBase64(canvas.el, 0.8)
+					});
 					if (max > key)
 					{
 						draw(key);
 					}
+					else
+					{
+						if (callback)
+						{
+							//log(result);
+							callback(result);
+						}
+					}
+
 				});
 			};
 			img.src = data.image;
@@ -329,6 +373,23 @@ module.exports = {
 		}
 	},
 
+	/**
+	 * Get export data
+	 *
+	 * @param {Object} resource
+	 * @return {Object}
+	 */
+	getExportData(resource)
+	{
+		return {
+			gridster : resource,
+			preference : this.container.state.preference
+		};
+	},
+
+
+
+	/*** EXPORT METHODS ***/
 
 	/**
 	 * Basic
@@ -337,19 +398,43 @@ module.exports = {
 	 */
 	basic()
 	{
-		return {
-			gridster : this.exportGridster(),
-			preference : this.container.state.preference
-		};
+		return this.objectToJson(
+			this.getExportData( this.exportGridster() ),
+			null
+		);
+	},
+	
+	/**
+	 * Packed
+	 * 
+	 * @param {Function} callback
+	 */
+	packed(callback)
+	{
+		var result = this.exportGridster();
+		var queue = this.makeQueue(result);
+		this.playQueue(queue, (imgResult) => {
+			imgResult.forEach((o) => {
+				result.figure[o.key].image = o.data;
+			});
+			if (callback)
+			{
+				callback( this.objectToJson(this.getExportData(result), null) );
+			}
+		});
 	},
 
 	/**
-	 * Packed
+	 * Image
 	 *
+	 * @param {Function} callback
 	 */
-	packed()
+	image(callback)
 	{
-		var queue = this.makeQueue(this.exportGridster());
-		this.playQueue(queue);
+		var gridData = this.exportGridster();
+		var pref = this.container.state.preference;
+
+		log(gridData);
+		log(pref);
 	}
 };
