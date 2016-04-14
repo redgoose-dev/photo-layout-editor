@@ -31,6 +31,19 @@ function Canvas(width, height, bgColor)
  * Make image
  *
  * @param {Object} options
+ * @param {Object} options.image         image element
+ * @param {int}    options.resampleCount
+ * @param {int}    options.width
+ * @param {int}    options.height
+ * @param {int}    options.cx            crop x
+ * @param {int}    options.cy            crop y
+ * @param {int}    options.cw            crop width
+ * @param {int}    options.ch            crop height
+ * @param {int}    options.dx
+ * @param {int}    options.dy
+ * @param {int}    options.dw
+ * @param {int}    options.dh
+ * @param {String} options.bgColor
  * @param {Function} callback
  */
 function makeImage(options, callback)
