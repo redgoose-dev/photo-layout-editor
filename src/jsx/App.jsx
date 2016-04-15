@@ -38,6 +38,7 @@ const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
 const Cropper = require('./cropper/Cropper.jsx');
+const Result = require('./result/Result.jsx');
 
 
 // App
@@ -131,3 +132,4 @@ window.keyboardEvent = new KeyboardEvent();
 // render App
 window.app = ReactDOM.render(<App/>, document.getElementById('app'));
 window.cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));
+window.result = ReactDOM.render(<Result/>, document.getElementById('result'));
