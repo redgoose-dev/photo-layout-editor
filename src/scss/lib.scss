@@ -31,3 +31,6 @@ $sidebar-toggle-speed : .3s;
 	&:before {width: 2px; height: 100%; margin-left: -1px; left: 50%; top: 0;}
 	&:after {height: 2px; width: 100%; margin-top: -1px; top: 50%; left: 0;}
 }
+%transparent-background {
+	background: $col-bg-blur url('../img/bg-space.png') 0 0 repeat;
+}

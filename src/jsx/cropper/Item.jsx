@@ -31,7 +31,6 @@ module.exports = React.createClass({
 		if (this.props.options)
 		{
 			this.imageMeta = this.props.options;
-			//log(this.props.options);
 			if (this.props.options.size !== 'cover')
 			{
 				let $img = this.$figure.find('> .img-wrap > img');
@@ -299,8 +298,8 @@ module.exports = React.createClass({
 			if (showArea)
 			{
 				styleObject = {
-					'left' : this.props.options.position.split(' ')[0] + 'px',
-					'top' : this.props.options.position.split(' ')[1] + 'px',
+					'left' : (this.props.options.position.split(' ')[0] + 'px').replace('pxpx', 'px'),
+					'top' : (this.props.options.position.split(' ')[1] + 'px').replace('pxpx', 'px'),
 					'width' : this.props.options.size.split(' ')[0]
 				};
 				img = (

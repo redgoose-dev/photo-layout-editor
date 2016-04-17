@@ -170,12 +170,15 @@ function getImageSize(type, cw, ch, iw, ih)
  * Get image size
  *
  * @param {Object} el
+ * @param {String} outputType
  * @param {int} quality
  * @return {Object}
  */
-function canvasToBase64(el, quality)
+function canvasToBase64(el, outputType, quality)
 {
-	return el.toDataURL('image/jpeg', quality);
+	outputType = outputType || 'image/jpeg';
+	quality = quality || 0.75;
+	return el.toDataURL(outputType, (outputType == 'image/jpeg') ? quality : null);
 }
 
 
@@ -223,13 +226,13 @@ module.exports = {
 			const $o = $(o);
 			var data = {};
 
-			data.color = $o.data('color');
+			data.color = $o.attr('data-color');
 
 			if ($o.hasClass('attached'))
 			{
-				data.position = $o.children('figure').data('position');
-				data.size = $o.children('figure').data('size');
-				data.image = $o.children('figure').data('image');
+				data.position = $o.children('figure').attr('data-position');
+				data.size = $o.children('figure').attr('data-size');
+				data.image = $o.children('figure').attr('data-image');
 			}
 
 			blockData.push(data);
@@ -292,13 +295,16 @@ module.exports = {
 	 * Play queue
 	 *
 	 * @param {Array} queue
+	 * @param {String} outputType
+	 * @param {int} quality
 	 * @param {Function} callback
 	 * @return {Object}
 	 */
-	playQueue(queue, callback)
+	playQueue(queue, outputType, quality, callback)
 	{
 		var max = queue.length;
 		var result = [];
+		quality = quality || 0.75;
 
 		function draw(key)
 		{
@@ -344,10 +350,9 @@ module.exports = {
 					bgColor : data.color
 				}, (canvas) => {
 					key += 1;
-					//document.body.appendChild(canvas.el);
 					result.push({
 						key : data.key,
-						data : canvasToBase64(canvas.el, 0.8)
+						data : canvasToBase64(canvas.el, outputType, quality)
 					});
 					if (max > key)
 					{
@@ -357,7 +362,6 @@ module.exports = {
 					{
 						if (callback)
 						{
-							//log(result);
 							callback(result);
 						}
 					}
@@ -370,6 +374,13 @@ module.exports = {
 		if (max > 0)
 		{
 			draw(0);
+		}
+		else
+		{
+			if (callback)
+			{
+				callback(result);
+			}
 		}
 	},
 
@@ -387,6 +398,58 @@ module.exports = {
 		};
 	},
 
+	/**
+	 * Draw canvas
+	 *
+	 * @param {Object} canvas
+	 * @param {Object} gridData
+	 * @param {Object} pref
+	 * @param {Boolean} isImage
+	 * @param {Function} callback
+	 */
+	drawCanvas(canvas, gridData, pref, isImage, callback)
+	{
+		gridData.params.forEach((o, k) => {
+			var figures = gridData.figure[k];
+			var block = {
+				x : (pref.width + pref.inner_margin) * (o.col - 1) + (pref.outer_margin + pref.inner_margin),
+				y : (pref.height + pref.inner_margin) * (o.row - 1) + (pref.outer_margin + pref.inner_margin),
+				width : (o.size_x * pref.width) + ((o.size_x > 1) ? (pref.inner_margin * (o.size_x-1)) : 0),
+				height : (o.size_y * pref.height) + ((o.size_y > 1) ? (pref.inner_margin * (o.size_y-1)) : 0)
+			};
+
+			if (figures.image)
+			{
+				var img = new Image();
+				img.onload = (e) => {
+					canvas.ctx.drawImage(
+						img,
+						block.x, // dx
+						block.y, // dy
+						block.width, // dw
+						block.height // dh
+					);
+
+					if (isImage && callback && ((gridData.params.length - 1) == k))
+					{
+						callback(canvas);
+					}
+				};
+				img.src = figures.image;
+			}
+			else
+			{
+				canvas.ctx.fillStyle = (figures.color) ? figures.color : '#ffffff';
+				canvas.ctx.fillRect(block.x, block.y, block.width, block.height);
+			}
+
+			if (!isImage && callback && ((gridData.params.length - 1) == k))
+			{
+				callback(canvas);
+			}
+		});
+	},
+
 
 
 	/*** EXPORT METHODS ***/
@@ -396,12 +459,22 @@ module.exports = {
 	 *
 	 * @return {Object}
 	 */
-	basic()
+	json()
 	{
 		return this.objectToJson(
 			this.getExportData( this.exportGridster() ),
 			null
 		);
+	},
+
+	/**
+	 * Console
+	 *
+	 * @return {Object}
+	 */
+	console()
+	{
+		console.log( this.getExportData( this.exportGridster() ) );
 	},
 	
 	/**
@@ -413,9 +486,11 @@ module.exports = {
 	{
 		var result = this.exportGridster();
 		var queue = this.makeQueue(result);
-		this.playQueue(queue, (imgResult) => {
+		this.playQueue(queue, 'image/jpeg', 0.8, (imgResult) => {
 			imgResult.forEach((o) => {
 				result.figure[o.key].image = o.data;
+				result.figure[o.key].position = '50% 50%';
+				result.figure[o.key].size = 'cover';
 			});
 			if (callback)
 			{
@@ -433,8 +508,26 @@ module.exports = {
 	{
 		var gridData = this.exportGridster();
 		var pref = this.container.state.preference;
+		var queue = this.makeQueue(gridData);
+		var canvas = new Canvas(
+			this.gridster.$gridster.width() + (pref.outer_margin * 2) + (pref.inner_margin),
+			this.gridster.$gridster.height() + (pref.outer_margin * 2) + (pref.inner_margin),
+			'#ffffff');
+		//log(gridData);
 
-		log(gridData);
-		log(pref);
+		this.playQueue(queue, 'image/png', 0, (imgResult) => {
+			imgResult.forEach((o) => {
+				gridData.figure[o.key].image = o.data;
+				gridData.figure[o.key].position = '0 0';
+				gridData.figure[o.key].size = 'cover';
+			});
+
+			this.drawCanvas(canvas, gridData, pref, (imgResult.length > 0), (canvas) => {
+				if (callback)
+				{
+					callback(canvasToBase64(canvas.el, 'image/jpeg', 0.85));
+				}
+			});
+		});
 	}
 };
