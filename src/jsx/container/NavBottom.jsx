@@ -25,7 +25,7 @@ module.exports = React.createClass({
 		switch(action)
 		{
 			case 'printJson':
-				window.result.open( this.export.basic(), 'code' );
+				window.result.open( this.export.json(), 'code' );
 				break;
 
 			case 'printJsonPacked':
@@ -35,13 +35,13 @@ module.exports = React.createClass({
 				break;
 
 			case 'printImage':
-				this.export.image(() => {
-					
+				this.export.image((src) => {
+					window.result.open(src, 'image');
 				});
 				break;
 
 			case 'console':
-				console.log(this.export.basic());
+				this.export.console();
 				break;
 
 			default:

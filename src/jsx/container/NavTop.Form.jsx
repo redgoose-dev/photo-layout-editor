@@ -35,6 +35,8 @@ module.exports = React.createClass({
 	 */
 	render()
 	{
+		log(this.props.preference.width);
+		// TODO : 리셋을 했을때 값이 없어지는 현상 수정 필요함.
 		return (
 			<article className="form edit-setting" id="settings">
 				<form method="post" ref="form" onSubmit={this.update}>
@@ -42,7 +44,7 @@ module.exports = React.createClass({
 						<legend className="blind">Settings form</legend>
 						<h1>Settings</h1>
 						<dl>
-							<dt><label htmlhtmlFor="frm_name">Min Width</label></dt>
+							<dt><label htmlFor="frm_name">Min Width</label></dt>
 							<dd>
 								<input
 									type="number" name="width" id="frm_name"
