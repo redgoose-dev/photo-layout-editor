@@ -409,16 +409,35 @@ module.exports = {
 	 */
 	drawCanvas(canvas, gridData, pref, isImage, callback)
 	{
-		gridData.params.forEach((o, k) => {
-			var figures = gridData.figure[k];
-			var block = {
-				x : (pref.width + pref.inner_margin) * (o.col - 1) + (pref.outer_margin + pref.inner_margin),
-				y : (pref.height + pref.inner_margin) * (o.row - 1) + (pref.outer_margin + pref.inner_margin),
-				width : (o.size_x * pref.width) + ((o.size_x > 1) ? (pref.inner_margin * (o.size_x-1)) : 0),
-				height : (o.size_y * pref.height) + ((o.size_y > 1) ? (pref.inner_margin * (o.size_y-1)) : 0)
+		function check(n)
+		{
+			if (n > 0)
+			{
+				play(n);
+			}
+			else
+			{
+				if (callback)
+				{
+					callback(canvas);
+				}
+			}
+		}
+
+		function play(k)
+		{
+			k--;
+
+			let param = gridData.params[k];
+			let figure = gridData.figure[k];
+			let block = {
+				x : (pref.width + pref.inner_margin) * (param.col - 1) + (pref.outer_margin + pref.inner_margin),
+				y : (pref.height + pref.inner_margin) * (param.row - 1) + (pref.outer_margin + pref.inner_margin),
+				width : (param.size_x * pref.width) + ((param.size_x > 1) ? (pref.inner_margin * (param.size_x-1)) : 0),
+				height : (param.size_y * pref.height) + ((param.size_y > 1) ? (pref.inner_margin * (param.size_y-1)) : 0)
 			};
 
-			if (figures.image)
+			if (figure.image)
 			{
 				var img = new Image();
 				img.onload = (e) => {
@@ -429,25 +448,19 @@ module.exports = {
 						block.width, // dw
 						block.height // dh
 					);
-
-					if (isImage && callback && ((gridData.params.length - 1) == k))
-					{
-						callback(canvas);
-					}
+					check(k);
 				};
-				img.src = figures.image;
+				img.src = figure.image;
 			}
 			else
 			{
-				canvas.ctx.fillStyle = (figures.color) ? figures.color : '#ffffff';
+				canvas.ctx.fillStyle = (figure.color) ? figure.color : '#ffffff';
 				canvas.ctx.fillRect(block.x, block.y, block.width, block.height);
+				check(k);
 			}
+		}
 
-			if (!isImage && callback && ((gridData.params.length - 1) == k))
-			{
-				callback(canvas);
-			}
-		});
+		play(gridData.params.length);
 	},
 
 
@@ -513,7 +526,6 @@ module.exports = {
 			this.gridster.$gridster.width() + (pref.outer_margin * 2) + (pref.inner_margin),
 			this.gridster.$gridster.height() + (pref.outer_margin * 2) + (pref.inner_margin),
 			'#ffffff');
-		//log(gridData);
 
 		this.playQueue(queue, 'image/png', 0, (imgResult) => {
 			imgResult.forEach((o) => {
