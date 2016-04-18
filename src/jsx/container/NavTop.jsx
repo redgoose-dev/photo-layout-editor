@@ -188,7 +188,7 @@ module.exports = React.createClass({
 							<i className="sp-ico ico-setting abs">Setting</i>
 						</button>
 						<NavTopForm
-							update={this.props.update}
+							submit={this.props.updatePreference}
 							reset={this.props.reset}
 							preference={this.props.preference}/>
 					</div>

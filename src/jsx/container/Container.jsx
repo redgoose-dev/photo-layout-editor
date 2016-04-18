@@ -1,3 +1,6 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+
 const NavTop = require('./NavTop.jsx');
 const Gridster = require('./Gridster.jsx');
 const NavBottom = require('./NavBottom.jsx');
@@ -131,7 +134,7 @@ module.exports = React.createClass({
 				<NavTop
 					ref="navTop"
 					parent={this}
-					update={this.updatePreference}
+					updatePreference={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
 					actControl={this.topNavControl}
