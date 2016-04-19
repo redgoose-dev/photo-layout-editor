@@ -25,18 +25,30 @@ module.exports = React.createClass({
 		switch(action)
 		{
 			case 'printJson':
-				window.result.open( this.export.json(), 'code' );
+				window.result.open(
+					this.export.json(),
+					'code',
+					'json데이터로 만들어서 출력합니다. 이미지 경로는 서버에 저장된 위치로 지정됩니다.'
+				);
 				break;
 
 			case 'printJsonPacked':
 				this.export.packed((res) => {
-					window.result.open(res, 'code');
+					window.result.open(
+						res,
+						'code',
+						'json 데이터로 만들어서 출력합니다.<br>이미지를 base64데이터로 변환하여 json데이터에 같이 들어갑니다.'
+					);
 				});
 				break;
 
 			case 'printImage':
 				this.export.image((src) => {
-					window.result.open(src, 'image');
+					window.result.open(
+						src,
+						'image',
+						'데이터를 토대로 이미지 형식으로 결과물을 만들었습니다. 이미지 저장을 할 수 있습니다.'
+					);
 				});
 				break;
 
@@ -50,6 +62,11 @@ module.exports = React.createClass({
 		}
 	},
 
+	importExample()
+	{
+		log('import example data');
+	},
+
 	/**
 	 * render
 	 */
@@ -60,24 +77,30 @@ module.exports = React.createClass({
 				<nav className="nav-bottom">
 					<button
 						type="button"
+						title="Import json"
+						onClick={this.importExample}>
+						<span>Import</span>
+					</button>
+					<button
+						type="button"
 						title="Export json"
 						data-action="printJson"
 						onClick={this.onGenerator}>
-						<span>JSON</span>
+						<span>Export</span>
 					</button>
 					<button
 						type="button"
 						title="Export json(packed)"
 						data-action="printJsonPacked"
 						onClick={this.onGenerator}>
-						<span>JSON(packed)</span>
+						<span>Export(packed)</span>
 					</button>
 					<button
 						type="button"
 						title="Image"
 						data-action="printImage"
 						onClick={this.onGenerator}>
-						<span>Image</span>
+						<span>Make Image</span>
 					</button>
 					<button
 						type="button"
