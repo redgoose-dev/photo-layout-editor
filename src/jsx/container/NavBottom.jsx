@@ -62,7 +62,11 @@ module.exports = React.createClass({
 		}
 	},
 
-	importExample()
+	/**
+	 * Import example
+	 *
+	 */
+	replaceExample()
 	{
 		log('import example data');
 	},
@@ -75,40 +79,44 @@ module.exports = React.createClass({
 		return (
 			<div>
 				<nav className="nav-bottom">
-					<button
-						type="button"
-						title="Import json"
-						onClick={this.importExample}>
-						<span>Import</span>
-					</button>
-					<button
-						type="button"
-						title="Export json"
-						data-action="printJson"
-						onClick={this.onGenerator}>
-						<span>Export</span>
-					</button>
-					<button
-						type="button"
-						title="Export json(packed)"
-						data-action="printJsonPacked"
-						onClick={this.onGenerator}>
-						<span>Export(packed)</span>
-					</button>
-					<button
-						type="button"
-						title="Image"
-						data-action="printImage"
-						onClick={this.onGenerator}>
-						<span>Make Image</span>
-					</button>
-					<button
-						type="button"
-						title="Console"
-						data-action="console"
-						onClick={this.onGenerator}>
-						<span>Console</span>
-					</button>
+					<p>
+						<button
+							type="button"
+							title="Export json"
+							data-action="printJson"
+							onClick={this.onGenerator}>
+							<span>Export</span>
+						</button>
+						<button
+							type="button"
+							title="Export json(packed)"
+							data-action="printJsonPacked"
+							onClick={this.onGenerator}>
+							<span>Export(packed)</span>
+						</button>
+						<button
+							type="button"
+							title="Image"
+							data-action="printImage"
+							onClick={this.onGenerator}>
+							<span>Make Image</span>
+						</button>
+						<button
+							type="button"
+							title="Console"
+							data-action="console"
+							onClick={this.onGenerator}>
+							<span>Print console.log</span>
+						</button>
+					</p>
+					<p>
+						<button
+							type="button"
+							title="Replace example"
+							onClick={this.replaceExample}>
+							<span>Replace example</span>
+						</button>
+					</p>
 				</nav>
 			</div>
 		);

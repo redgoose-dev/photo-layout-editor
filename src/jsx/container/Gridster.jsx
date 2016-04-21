@@ -65,7 +65,6 @@ module.exports = React.createClass({
 		this.resizeWrapWidth();
 
 		// init gridster
-		//log(window.plePreference.gridster.params);
 		this.gridster = this.$gridster.children('ul').gridster({
 			widget_margins: [innerMargin, innerMargin],
 			widget_base_dimensions: [pref.width, pref.height],
