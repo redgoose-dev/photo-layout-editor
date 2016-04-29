@@ -71,10 +71,12 @@ module.exports = React.createClass({
 		return (
 			<article className={'ple-result' + ((this.state.show) ? ' show' : '')}>
 				<div className="wrap">
-					<h1>Result</h1>
-					{(this.state.message) ? (
-						<p className="message" dangerouslySetInnerHTML={{__html: this.state.message}} />
-					) : ''}
+					<header>
+						<h1>Result</h1>
+						{(this.state.message) ? (
+							<p className="message" dangerouslySetInnerHTML={{__html: this.state.message}} />
+						) : ''}
+					</header>
 					<textarea
 						ref="code"
 						className={(this.state.show_code) ? 'show' : ''}
