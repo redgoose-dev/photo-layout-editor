@@ -68,10 +68,11 @@ module.exports = React.createClass({
 	 */
 	replaceExample()
 	{
-		$.getJSON('./assets/example.json', (res) => {
-			log(res)
+        var gridster = this.props.gridster;
+        log(gridster);
+		$.getJSON(plePreference.replaceScript, (res) => {
+			//log(res);
 		});
-		//log('import example data');
 		// TODO : example.json 데이터를 불러온다.
 		// TODO : 데이터 불러오는데 성공하면 블럭 모두 삭제하고 importParam을 이용해서 블럭 교체함
 		// TODO : 이미지들을 사이드바에 올릴까 좀 고민됨.
