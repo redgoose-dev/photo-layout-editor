@@ -194,6 +194,8 @@ module.exports = React.createClass({
 		// add gridster
 		if (params.size_x)
 		{
+			log('aaa');
+			// TODO : 이거 작동 문제가 있음.
 			this.gridster.add_widget(
 				$li,
 				(params.size_x || 1),
@@ -204,6 +206,7 @@ module.exports = React.createClass({
 		}
 		else
 		{
+			log('bb');
 			this.gridster.add_widget( $li, params.col, params.row, false );
 		}
 

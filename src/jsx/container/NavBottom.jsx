@@ -69,9 +69,39 @@ module.exports = React.createClass({
 	replaceExample()
 	{
         var gridster = this.props.gridster;
-        log(gridster);
+        var sidebar = app.refs.sidebar;
+
 		$.getJSON(plePreference.replaceScript, (res) => {
-			//log(res);
+
+			// update preference gridster
+			if (res.preference)
+			{
+				this.props.container.updatePreference(res.preference);
+			}
+
+			if (res.gridster)
+			{
+				// replace gridster blocks
+				if (res.gridster.params)
+				{
+					gridster.clear();
+					gridster.importParams(res.gridster.params);
+				}
+
+				// import images to sidebar and gridster blocks
+				if (res.gridster.figure && res.gridster.figure.length)
+				{
+					let newImages = res.gridster.figure.map((o) => {
+						return o.image;
+					});
+					sidebar.import(newImages);
+				}
+
+				// update gridster datas
+				// TODO : gridster에서 블럭 삭제하기
+				// TODO : gridster에서 블럭 만들기
+				// TODO : 만든 블럭에다 이미지 적용하기
+			}
 		});
 		// TODO : example.json 데이터를 불러온다.
 		// TODO : 데이터 불러오는데 성공하면 블럭 모두 삭제하고 importParam을 이용해서 블럭 교체함
