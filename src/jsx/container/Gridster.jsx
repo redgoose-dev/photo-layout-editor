@@ -215,6 +215,16 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * get selected blocks
+	 *
+	 * @return {object}
+	 */
+	getSelectedBlocks()
+	{
+		return this.$gridster.find('li.' + this.selectedClassName);
+	},
+
+	/**
 	 * Init block event
 	 *
 	 * @param {object} $block
@@ -229,10 +239,12 @@ module.exports = React.createClass({
 
 	/**
 	 * Remove block
+	 *
+	 * @param {object} $target
 	 */
-	removeBlock()
+	removeBlock($target)
 	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, o) => {
+		$target.each((k, o) => {
 			this.gridster.remove_widget(o, null, null, true);
 		});
 		this.unSelectBlock();
@@ -240,10 +252,13 @@ module.exports = React.createClass({
 
 	/**
 	 * Empty block
+	 * clear image in block
+	 *
+	 * @param {object} $target
 	 */
-	emptyBlock()
+	emptyBlock($target)
 	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+		$target.each((k, v) => {
 			if ($(v).hasClass('attached'))
 			{
 				$(v).removeClass('attached').children('figure').remove();
@@ -253,10 +268,12 @@ module.exports = React.createClass({
 
 	/**
 	 * Duplicate block
+	 *
+	 * @param {object} $target
 	 */
-	duplicateBlock()
+	duplicateBlock($target)
 	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+		$target.each((k, v) => {
 			this.block({
 				col : parseInt(v.getAttribute('data-sizex')),
 				row : parseInt(v.getAttribute('data-sizey')),
@@ -442,12 +459,14 @@ module.exports = React.createClass({
 	/**
 	 * Change block color
 	 *
+	 * @param {object} $target
 	 * @param {string} color
 	 */
-	changeBlockColor(color)
+	changeBlockColor($target, color)
 	{
+		if (!$target || !$target.length) return false;
 		color = color || this.defaultBlockColor;
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+		$target.each((k, v) => {
 			$(v).attr('data-color', color).css('backgroundColor', color);
 		});
 	},

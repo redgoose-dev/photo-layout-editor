@@ -8,6 +8,7 @@
 </head>
 <body>
 <main id="app"></main>
+<button type="button" id="fooo">FOO</button>
 <div id="cropper"></div>
 <div id="result"></div>
 <script src="../dist/js/vendor.pkgd.js"></script>
@@ -37,5 +38,12 @@ window.pleUserPreference = {
 };
 </script>
 <script src="../dist/js/app.pkgd.js"></script>
+<script>
+document.getElementById('fooo').addEventListener('click', function(e){
+	var api = window.PLE.api;
+
+	api.gridster.duplicate($('#gridster li').eq(1));
+});
+</script>
 </body>
 </html>
