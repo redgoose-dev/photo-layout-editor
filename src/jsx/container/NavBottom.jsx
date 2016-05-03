@@ -25,7 +25,7 @@ module.exports = React.createClass({
 		switch(action)
 		{
 			case 'printJson':
-				window.result.open(
+				window.PLE_result.open(
 					this.export.json(),
 					'code',
 					'json데이터로 만들어서 출력합니다. 이미지 경로는 서버에 저장된 위치로 지정됩니다.'
@@ -34,7 +34,7 @@ module.exports = React.createClass({
 
 			case 'printJsonPacked':
 				this.export.packed((res) => {
-					window.result.open(
+					window.PLE_result.open(
 						res,
 						'code',
 						'json 데이터로 만들어서 출력합니다.<br>이미지를 base64데이터로 변환하여 json데이터에 같이 들어갑니다.'
@@ -44,7 +44,7 @@ module.exports = React.createClass({
 
 			case 'printImage':
 				this.export.image((src) => {
-					window.result.open(
+					window.PLE_result.open(
 						src,
 						'image',
 						'데이터를 토대로 이미지 형식으로 결과물을 만들었습니다. 이미지 저장을 할 수 있습니다.'
@@ -69,7 +69,7 @@ module.exports = React.createClass({
 	replaceExample()
 	{
         var gridster = this.props.gridster;
-        var sidebar = app.refs.sidebar;
+        var sidebar = window.PLE.refs.sidebar;
 
 		$.getJSON(plePreference.replaceScript, (res) => {
 
@@ -84,7 +84,7 @@ module.exports = React.createClass({
 				// replace gridster blocks
 				if (res.gridster.params)
 				{
-					gridster.clear();
+					gridster.reset(false);
 					gridster.importParams(res.gridster.params);
 				}
 
@@ -98,15 +98,11 @@ module.exports = React.createClass({
 				}
 
 				// update gridster datas
-				// TODO : gridster에서 블럭 삭제하기
-				// TODO : gridster에서 블럭 만들기
+				// TODO : (OK)gridster에서 블럭 삭제하기
+				// TODO : (OK)gridster에서 블럭 만들기
 				// TODO : 만든 블럭에다 이미지 적용하기
 			}
 		});
-		// TODO : example.json 데이터를 불러온다.
-		// TODO : 데이터 불러오는데 성공하면 블럭 모두 삭제하고 importParam을 이용해서 블럭 교체함
-		// TODO : 이미지들을 사이드바에 올릴까 좀 고민됨.
-		// TODO : 이미지들을 블럭에 attach 시키기.
 	},
 
 	/**

@@ -204,7 +204,7 @@ module.exports = React.createClass({
 		});
 		if (items.length)
 		{
-			window.app.refs.container.refs.gridster.attachImages(items);
+			window.PLE.refs.container.refs.gridster.attachImages(items);
 		}
 		else
 		{

@@ -93,7 +93,7 @@ module.exports = React.createClass({
 		if (this.dragTarget)
 		{
 			let img = this.props.uploadImages[parseInt(e.currentTarget.getAttribute('data-key'))].image;
-			window.app.refs.container.refs.gridster.assignImage($(this.dragTarget), img, null);
+			window.PLE.refs.container.refs.gridster.assignImage($(this.dragTarget), img, null);
 			this.dragTarget = null;
 		}
 	},

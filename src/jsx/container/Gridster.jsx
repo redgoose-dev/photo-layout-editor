@@ -104,11 +104,13 @@ module.exports = React.createClass({
 
 	/**
 	 * Clear blocks
+	 *
+	 * @param {boolean} save
 	 */
-	clear()
+	clear(save)
 	{
 		this.$gridster.find('li').removeAttr('style class');
-		this.saveBlocks = $(this.$gridster.children('ul').html());
+		this.saveBlocks = (save) ? $(this.$gridster.children('ul').html()) : null;
 		this.gridster.destroy(true);
 		this.$gridster.children().remove();
 		this.$gridster.removeClass('ready').removeAttr('style');
@@ -140,12 +142,13 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Update preference
+	 * Reset gridster
 	 *
+	 * @param {boolean} save
 	 */
-	updatePreference()
+	reset(save)
 	{
-		this.clear();
+		this.clear(!!(save));
 		this.create();
 	},
 
@@ -194,8 +197,6 @@ module.exports = React.createClass({
 		// add gridster
 		if (params.size_x)
 		{
-			log('aaa');
-			// TODO : 이거 작동 문제가 있음.
 			this.gridster.add_widget(
 				$li,
 				(params.size_x || 1),
@@ -206,7 +207,6 @@ module.exports = React.createClass({
 		}
 		else
 		{
-			log('bb');
 			this.gridster.add_widget( $li, params.col, params.row, false );
 		}
 
@@ -363,7 +363,7 @@ module.exports = React.createClass({
 	 */
 	shuffleBlocks()
 	{
-		this.clear();
+		this.clear(true);
 
 		this.saveBlocks.each((k, o) => {
 			$(o).attr({
@@ -458,9 +458,18 @@ module.exports = React.createClass({
 	render()
 	{
 		// act action
-		if (typeof this[this.props.action] === 'function')
+		switch(this.props.action)
 		{
-			this[this.props.action]();
+			case 'updatePreference':
+				this.reset(true);
+				break;
+			default:
+				if (typeof this[this.props.action] === 'function')
+				{
+					this[this.props.action]();
+				}
+
+				break;
 		}
 
 		return (
