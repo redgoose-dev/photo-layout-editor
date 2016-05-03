@@ -13,8 +13,8 @@ function Canvas(width, height, bgColor)
 	this.ctx = this.el.getContext('2d');
 
 	var size = {
-		width : (width) ? width : 150,
-		height : (height) ? height : 100
+		width : width || 150,
+		height : height || 100
 	};
 
 	this.el.width = size.width;
@@ -208,7 +208,7 @@ module.exports = {
 	 */
 	objectToJson(src, space)
 	{
-		return JSON.stringify(src, null, (space || 4));
+		return JSON.stringify(src, null, (space || 0));
 	},
 
 	/**
@@ -329,7 +329,7 @@ module.exports = {
 				else
 				{
 					pos = data.position.split(' ');
-					size = getImageSize('width', data.targetWidth, data.targetHeight, realSize.width, realSize.height);
+					size = getImageSize('width', parseInt(data.size.split(' ')[0]), 0, realSize.width, realSize.height);
 					position.x = parseInt(pos[0]);
 					position.y = parseInt(pos[1]);
 				}
@@ -404,10 +404,9 @@ module.exports = {
 	 * @param {Object} canvas
 	 * @param {Object} gridData
 	 * @param {Object} pref
-	 * @param {Boolean} isImage
 	 * @param {Function} callback
 	 */
-	drawCanvas(canvas, gridData, pref, isImage, callback)
+	drawCanvas(canvas, gridData, pref, callback)
 	{
 		function check(n)
 		{
@@ -476,7 +475,7 @@ module.exports = {
 	{
 		return this.objectToJson(
 			this.getExportData( this.exportGridster() ),
-			null
+			4
 		);
 	},
 
@@ -507,7 +506,7 @@ module.exports = {
 			});
 			if (callback)
 			{
-				callback( this.objectToJson(this.getExportData(result), null) );
+				callback( this.objectToJson(this.getExportData(result), 0) );
 			}
 		});
 	},
@@ -534,7 +533,8 @@ module.exports = {
 				gridData.figure[o.key].size = 'cover';
 			});
 
-			this.drawCanvas(canvas, gridData, pref, (imgResult.length > 0), (canvas) => {
+			this.drawCanvas(canvas, gridData, pref, (canvas) => {
+				//document.querySelector('.ple-editor').appendChild(canvas.el);
 				if (callback)
 				{
 					callback(canvasToBase64(canvas.el, 'image/jpeg', 0.85));

@@ -31,15 +31,17 @@ module.exports = React.createClass({
 	 *
 	 * @param {string} resultText
 	 * @param {string} type(code|image)
+	 * @param {string} message
 	 */
-	open(resultText, type)
+	open(resultText, type, message)
 	{
 		$('html').addClass('ple-popup-mode');
 		this.setState({
 			show : true,
 			result : resultText,
 			show_code : (type == 'code'),
-			show_image : (type == 'image')
+			show_image : (type == 'image'),
+			message : message
 		});
 	},
 
@@ -64,10 +66,17 @@ module.exports = React.createClass({
 	 */
 	render()
 	{
+		//let message = (this.state.message) ?
+
 		return (
 			<article className={'ple-result' + ((this.state.show) ? ' show' : '')}>
 				<div className="wrap">
-					<h1>Result</h1>
+					<header>
+						<h1>Result</h1>
+						{(this.state.message) ? (
+							<p className="message" dangerouslySetInnerHTML={{__html: this.state.message}} />
+						) : ''}
+					</header>
 					<textarea
 						ref="code"
 						className={(this.state.show_code) ? 'show' : ''}

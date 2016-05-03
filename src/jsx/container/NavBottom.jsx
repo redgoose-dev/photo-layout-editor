@@ -25,18 +25,30 @@ module.exports = React.createClass({
 		switch(action)
 		{
 			case 'printJson':
-				window.result.open( this.export.json(), 'code' );
+				window.PLE_result.open(
+					this.export.json(),
+					'code',
+					'json데이터로 만들어서 출력합니다. 이미지 경로는 서버에 저장된 위치로 지정됩니다.'
+				);
 				break;
 
 			case 'printJsonPacked':
 				this.export.packed((res) => {
-					window.result.open(res, 'code');
+					window.PLE_result.open(
+						res,
+						'code',
+						'json 데이터로 만들어서 출력합니다.<br>이미지를 base64데이터로 변환하여 json데이터에 같이 들어갑니다.'
+					);
 				});
 				break;
 
 			case 'printImage':
 				this.export.image((src) => {
-					window.result.open(src, 'image');
+					window.PLE_result.open(
+						src,
+						'image',
+						'데이터를 토대로 이미지 형식으로 결과물을 만들었습니다. 이미지 저장을 할 수 있습니다.'
+					);
 				});
 				break;
 
@@ -51,6 +63,49 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * Import example
+	 *
+	 */
+	replaceExample()
+	{
+        var gridster = this.props.gridster;
+        var sidebar = window.PLE.refs.sidebar;
+
+		$.getJSON(plePreference.replaceScript, (res) => {
+
+			// update preference gridster
+			if (res.preference)
+			{
+				this.props.container.updatePreference(res.preference);
+			}
+
+			if (res.gridster)
+			{
+				// replace gridster blocks
+				if (res.gridster.params)
+				{
+					gridster.reset(false);
+					gridster.importParams(res.gridster.params);
+				}
+
+				// import images to sidebar and gridster blocks
+				if (res.gridster.figure && res.gridster.figure.length)
+				{
+					let newImages = res.gridster.figure.map((o) => {
+						return o.image;
+					});
+					sidebar.import(newImages);
+				}
+
+				// update gridster datas
+				// TODO : (OK)gridster에서 블럭 삭제하기
+				// TODO : (OK)gridster에서 블럭 만들기
+				// TODO : 만든 블럭에다 이미지 적용하기
+			}
+		});
+	},
+
+	/**
 	 * render
 	 */
 	render()
@@ -58,34 +113,44 @@ module.exports = React.createClass({
 		return (
 			<div>
 				<nav className="nav-bottom">
-					<button
-						type="button"
-						title="Export json"
-						data-action="printJson"
-						onClick={this.onGenerator}>
-						<span>JSON</span>
-					</button>
-					<button
-						type="button"
-						title="Export json(packed)"
-						data-action="printJsonPacked"
-						onClick={this.onGenerator}>
-						<span>JSON(packed)</span>
-					</button>
-					<button
-						type="button"
-						title="Image"
-						data-action="printImage"
-						onClick={this.onGenerator}>
-						<span>Image</span>
-					</button>
-					<button
-						type="button"
-						title="Console"
-						data-action="console"
-						onClick={this.onGenerator}>
-						<span>Console</span>
-					</button>
+					<p>
+						<button
+							type="button"
+							title="Export json"
+							data-action="printJson"
+							onClick={this.onGenerator}>
+							<span>Export</span>
+						</button>
+						<button
+							type="button"
+							title="Export json(packed)"
+							data-action="printJsonPacked"
+							onClick={this.onGenerator}>
+							<span>Export(packed)</span>
+						</button>
+						<button
+							type="button"
+							title="Image"
+							data-action="printImage"
+							onClick={this.onGenerator}>
+							<span>Make Image</span>
+						</button>
+						<button
+							type="button"
+							title="Console"
+							data-action="console"
+							onClick={this.onGenerator}>
+							<span>Print console.log</span>
+						</button>
+					</p>
+					<p>
+						<button
+							type="button"
+							title="Replace example"
+							onClick={this.replaceExample}>
+							<span>Replace example</span>
+						</button>
+					</p>
 				</nav>
 			</div>
 		);

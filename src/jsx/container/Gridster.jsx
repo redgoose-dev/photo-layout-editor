@@ -104,11 +104,13 @@ module.exports = React.createClass({
 
 	/**
 	 * Clear blocks
+	 *
+	 * @param {boolean} save
 	 */
-	clear()
+	clear(save)
 	{
 		this.$gridster.find('li').removeAttr('style class');
-		this.saveBlocks = $(this.$gridster.children('ul').html());
+		this.saveBlocks = (save) ? $(this.$gridster.children('ul').html()) : null;
 		this.gridster.destroy(true);
 		this.$gridster.children().remove();
 		this.$gridster.removeClass('ready').removeAttr('style');
@@ -119,14 +121,20 @@ module.exports = React.createClass({
 	 */
 	init()
 	{
+		let pref = window.plePreference.gridster;
+
 		// create gridster
 		this.create();
 
 		// make random blocks
-		if (window.plePreference.gridster.createNow)
+		if (pref.params)
+		{
+			this.importParams(pref.params);
+		}
+		else if (pref.createNow)
 		{
 			this.randomAddBlocks(
-				(window.plePreference.gridster.createCount || 5),
+				(pref.createCount || 5),
 				this.props.preference.max_scale,
 				this.props.preference.max_scale
 			);
@@ -134,32 +142,73 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Update preference
+	 * Reset gridster
+	 *
+	 * @param {boolean} save
 	 */
-	updatePreference()
+	reset(save)
 	{
-		this.clear();
+		this.clear(!!(save));
 		this.create();
+	},
+
+	/**
+	 * Import params
+	 *
+	 * @param {Array} arr
+	 */
+	importParams(arr)
+	{
+		if (!arr.length) return false;
+
+		arr.forEach((o) => {
+			this.block({
+				col : o.col,
+				row : o.row,
+				size_x : o.size_x,
+				size_y : o.size_y
+			});
+		});
 	},
 
 	/**
 	 * Make block
 	 *
 	 * @param {object} params
+	 * @param {int} params.col
+	 * @param {int} params.row
+	 * @param {int} params.size_x
+	 * @param {int} params.size_y
+	 * @param {String} params.classNames
+	 * @param {String} params.color
+	 * @param {String} params.text
 	 */
 	block(params)
 	{
-		if (!params.sizeX || !params.sizeY) return false;
+		if (!params.col || !params.row) return false;
 
-		var $li = $('<li' +
+		let $li = $('<li' +
 			((params.classNames) ? ' class="' + params.classNames + '"' : '') +
-			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) +
-			'" style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
+			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) + '"' +
+			' style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
 			((params.text) ? params.text : '') +
 			'</li>');
 
 		// add gridster
-		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
+		if (params.size_x)
+		{
+			this.gridster.add_widget(
+				$li,
+				(params.size_x || 1),
+				(params.size_y || 1),
+				params.col,
+				params.row
+			);
+		}
+		else
+		{
+			this.gridster.add_widget( $li, params.col, params.row, false );
+		}
 
 		// init event
 		this.initBlockEvent($li);
@@ -209,8 +258,8 @@ module.exports = React.createClass({
 	{
 		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
 			this.block({
-				sizeX : parseInt(v.getAttribute('data-sizex')),
-				sizeY : parseInt(v.getAttribute('data-sizey')),
+				col : parseInt(v.getAttribute('data-sizex')),
+				row : parseInt(v.getAttribute('data-sizey')),
 				color : v.getAttribute('data-color'),
 				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
 				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
@@ -288,8 +337,8 @@ module.exports = React.createClass({
 		for (var i=0; i<count; i++)
 		{
 			this.block({
-				sizeX : util.getRandomRange(1, max_width),
-				sizeY : util.getRandomRange(1, max_height)
+				col : util.getRandomRange(1, max_width),
+				row : util.getRandomRange(1, max_height)
 			});
 		}
 	},
@@ -306,7 +355,7 @@ module.exports = React.createClass({
 		y = y || 1;
 		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
 		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
-		this.block({ sizeX : x, sizeY : y });
+		this.block({ col : x, row : y });
 	},
 
 	/**
@@ -314,7 +363,7 @@ module.exports = React.createClass({
 	 */
 	shuffleBlocks()
 	{
-		this.clear();
+		this.clear(true);
 
 		this.saveBlocks.each((k, o) => {
 			$(o).attr({
@@ -409,9 +458,18 @@ module.exports = React.createClass({
 	render()
 	{
 		// act action
-		if (typeof this[this.props.action] === 'function')
+		switch(this.props.action)
 		{
-			this[this.props.action]();
+			case 'updatePreference':
+				this.reset(true);
+				break;
+			default:
+				if (typeof this[this.props.action] === 'function')
+				{
+					this[this.props.action]();
+				}
+
+				break;
 		}
 
 		return (

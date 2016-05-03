@@ -204,7 +204,7 @@ module.exports = React.createClass({
 		});
 		if (items.length)
 		{
-			window.app.refs.container.refs.gridster.attachImages(items);
+			window.PLE.refs.container.refs.gridster.attachImages(items);
 		}
 		else
 		{
@@ -235,9 +235,42 @@ module.exports = React.createClass({
 	 */
 	update(data)
 	{
+        if (!data) return false;
 		this.setState({ uploadImages : data });
 	},
 
+	/**
+	 * Import datas
+	 *
+	 * @param {array} images : import images data
+	 */
+    import(images)
+    {
+		if (!images) return false;
+
+		var exist = false;
+		let newImages = this.state.uploadImages;
+		images.forEach((o) => {
+			exist = false;
+			newImages.forEach((i) => {
+				if (i.image === o)
+				{
+					exist = true;
+					return false;
+				}
+			});
+			if (!exist)
+			{
+				newImages.push({
+					on : false,
+					image : o,
+					style : { backgroundImage : 'url(' + o + ')' }
+				});
+			}
+		});
+
+		this.update(newImages);
+    },
 
 	/**
 	 * render

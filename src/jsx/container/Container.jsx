@@ -85,7 +85,7 @@ module.exports = React.createClass({
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
-					window.cropper.open({
+					window.PLE_cropper.open({
 						$selected : $selectedItem,
 						color : $selectedItem.attr('data-color'),
 						image : {
@@ -104,9 +104,6 @@ module.exports = React.createClass({
 				break;
 			case 'remove':
 				this.refs.gridster.removeBlock();
-				break;
-			case 'changeColor':
-				log('change item color');
 				break;
 		}
 	},

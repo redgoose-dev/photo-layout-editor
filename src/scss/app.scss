@@ -47,8 +47,7 @@ html.ple-popup-mode {overflow: hidden;}
 .ple-header {
 	h1 {
 		margin: -5px 0 0;
-		font-size: 36px; color: #222;
-		font-family: $font-eng;
+		font-family: $font-eng; font-size: 36px; color: #222;
 	}
 	p {
 		margin: 3px 0 0;
@@ -76,10 +75,7 @@ html.ple-popup-mode {overflow: hidden;}
 				display: block; position: relative;
 				margin: 0; padding: 0; width: 42px; height: 42px;
 				border: none; background: $col-blur; cursor: pointer;
-				i {
-					position: absolute; display: block;
-					left: 50%; top: 50%;
-				}
+				i {position: absolute; display: block; left: 50%; top: 50%;}
 			}
 			&.is-show {display: block;}
 			&.color-bg-key {
@@ -199,9 +195,10 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 	}
 	.nav-bottom {
-		margin: 30px 0; text-align: center;
+		margin: 30px 0; text-align: left;
+		p {margin: 2px 0;}
 		button {
-			margin: 0 1px; padding: 11px 18px;
+			margin: 0 1px; padding: 10px 15px;
 			border: none; background: $col-key;
 			font-size: 0; cursor: pointer;
 			> * {vertical-align: middle;}
@@ -407,9 +404,16 @@ html.ple-popup-mode {overflow: hidden;}
 	position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999;
 	overflow: auto; background: #fff;
 	&.show {display: block;}
-	h1 {
+	header {
 		margin: 0 0 15px;
-		font-family: $font-eng; font-size: 30px; color: #222;
+		h1 {
+			margin: 0;
+			font-family: $font-eng; font-size: 30px; color: #222;
+		}
+		p {
+			margin: 5px 0;
+			font-size: 13px;
+		}
 	}
 	.wrap {
 		position: relative; z-index: 2;
