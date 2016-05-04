@@ -8,6 +8,7 @@ window.plePreference = {
 	removeScript : '',
 	defaultImagesScript : '',
 	gridster : {
+		nameID : 'ple_gridster',
 		createNow : true,
 		createCount : 6,
 		importParams : []

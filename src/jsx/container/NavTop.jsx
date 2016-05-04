@@ -122,7 +122,7 @@ module.exports = React.createClass({
 	onSelect($el)
 	{
 		var newVisible = this.state.visible;
-		if ($el)
+		if ($el && $el.length)
 		{
 			newVisible.duplicate = true;
 			newVisible.remove = true;

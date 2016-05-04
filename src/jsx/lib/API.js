@@ -74,7 +74,32 @@ function GridsterForAPI() {
 	 * @param {object} $target
 	 */
 	this.select = ($target) => {
-		
+		gridster.selectBlock($target);
+	};
+
+	/**
+	 * un select block
+	 *
+	 * @param {object} $target
+	 */
+	this.unSelect = ($target) => {
+		gridster.unSelectBlock($target);
+	};
+
+	/**
+	 * toggle select block
+	 *
+	 * @param {object} $target
+	 */
+	this.toggleSelect = ($target) => {
+		if ($target.hasClass(gridster.selectedClassName))
+		{
+			this.unSelect($target);
+		}
+		else
+		{
+			this.select($target);
+		}
 	};
 
 	this.updatePreference = (params) => {};

@@ -82,7 +82,9 @@ module.exports = React.createClass({
 		}
 
 		// act unselected
-		this.unSelectBlock();
+		setTimeout(() => {
+			this.unSelectBlock();
+		}, 50);
 	},
 
 	/**
@@ -233,7 +235,7 @@ module.exports = React.createClass({
 	{
 		$block.on('click', (e) => {
 			e.stopPropagation();
-			this.selectBlock($(e.currentTarget));
+			this.onSelectBlock($(e.currentTarget));
 		});
 	},
 
@@ -285,61 +287,70 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Select block
+	 * Select block by click
 	 *
 	 * @param {object} $block
 	 */
-	selectBlock($block)
+	onSelectBlock($block)
 	{
 		var $blocks = this.$gridster.find('li');
 
 		if ($block.hasClass(this.selectedClassName))
 		{
-			if (window.keyboardEvent.readySelect)
-			{
-				$block.removeClass(this.selectedClassName);
-			}
-			else
-			{
-				$blocks.removeClass(this.selectedClassName);
-			}
+			this.unSelectBlock((window.keyboardEvent.readySelect) ? $block : $blocks);
 
-			if (!this.$gridster.find('li.' + this.selectedClassName).length)
+			if (!this.getSelectedBlocks().length)
 			{
 				this.props.selectBlock(null);
 			}
 		}
 		else
 		{
-			if (window.keyboardEvent.readySelect)
-			{
-				$block.addClass(this.selectedClassName);
-			}
-			else
+			if (!window.keyboardEvent.readySelect)
 			{
 				$blocks.removeClass(this.selectedClassName);
-				$block.addClass(this.selectedClassName);
 			}
-
-			this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
-
-			this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
-				$blocks.removeClass(this.selectedClassName);
-				this.props.selectBlock(null);
-				$(e.currentTarget).off('click.gridsterBlock');
-			});
+			this.selectBlock($block);
 		}
 	},
 
 	/**
+	 * Select block
+	 *
+	 * @param {object} $target
+	 */
+	selectBlock($target)
+	{
+		var $blocks = this.$gridster.find('li');
+		if (!$target)
+		{
+			$target = $blocks;
+		}
+
+		$target.addClass(this.selectedClassName);
+		this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
+
+		this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
+			this.unSelectBlock($blocks);
+		});
+	},
+	
+	/**
 	 * unselect block
 	 *
+	 * @param {object} $target
 	 */
-	unSelectBlock()
+	unSelectBlock($target)
 	{
-		setTimeout(() => {
-			this.$wrap.trigger('click.gridsterBlock');
-		}, 50);
+		$target = $target || this.$gridster.find('li');
+
+		$target.removeClass(this.selectedClassName);
+
+		if (!this.getSelectedBlocks().length)
+		{
+			this.props.selectBlock(null);
+			this.$wrap.off('click.gridsterBlock');
+		}
 	},
 
 	/**
@@ -426,7 +437,7 @@ module.exports = React.createClass({
 		});
 
 		// act unselected
-		this.unSelectBlock();
+		//this.unSelectBlock();
 	},
 
 	/**
@@ -493,7 +504,7 @@ module.exports = React.createClass({
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster" id="gridster"></div>
+				<div ref="gridster" className="gridster" id={window.plePreference.gridster.nameID}></div>
         	</div>
 		);
 	}
