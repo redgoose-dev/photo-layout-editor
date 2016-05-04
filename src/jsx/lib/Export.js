@@ -473,10 +473,7 @@ module.exports = {
 	 */
 	json()
 	{
-		return this.objectToJson(
-			this.getExportData( this.exportGridster() ),
-			4
-		);
+		return this.objectToJson( this.getExportData( this.exportGridster() ), 4 );
 	},
 
 	/**

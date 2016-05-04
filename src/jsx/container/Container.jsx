@@ -10,6 +10,7 @@ module.exports = React.createClass({
 
 	displayName : 'Container',
 	originalPreference : {},
+	gridster : null,
 
 	getInitialState()
 	{
@@ -75,13 +76,13 @@ module.exports = React.createClass({
 		switch(type)
 		{
 			case 'shuffle':
-				this.refs.gridster.shuffleBlocks();
+				this.gridster.shuffleBlocks();
 				break;
 			case 'addBlock':
-				this.refs.gridster.addBlock();
+				this.gridster.addBlock();
 				break;
 			case 'edit':
-				var $selectedItem = this.refs.gridster.$gridster.find('li.selected');
+				var $selectedItem = this.gridster.$gridster.find('li.selected');
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
@@ -97,13 +98,13 @@ module.exports = React.createClass({
 				}
 				break;
 			case 'empty':
-				this.refs.gridster.emptyBlock();
+				this.gridster.emptyBlock(this.gridster.getSelectedBlocks());
 				break;
 			case 'duplicate':
-				this.refs.gridster.duplicateBlock();
+				this.gridster.duplicateBlock(this.gridster.getSelectedBlocks());
 				break;
 			case 'remove':
-				this.refs.gridster.removeBlock();
+				this.gridster.removeBlock(this.gridster.getSelectedBlocks());
 				break;
 		}
 	},
@@ -115,7 +116,8 @@ module.exports = React.createClass({
 	 */
 	updateBlockColor(color)
 	{
-		this.refs.gridster.changeBlockColor(color);
+		// change color
+		this.gridster.changeBlockColor(this.gridster.getSelectedBlocks(), color);
 		
 		// close form
 		this.refs.navTop.toggleFormEvent(false);

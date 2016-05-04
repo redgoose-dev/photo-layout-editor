@@ -8,6 +8,8 @@
 </head>
 <body>
 <main id="app"></main>
+<button type="button" id="fooo">FOO</button>
+<button type="button" id="fooo2">FOO2</button>
 <div id="cropper"></div>
 <div id="result"></div>
 <script src="../dist/js/vendor.pkgd.js"></script>
@@ -19,9 +21,10 @@ window.pleUserPreference = {
 	defaultImagesScript : './script/defaultImages.php',
 	replaceScript : './assets/example.json',
 	gridster : {
-		createNow : true
-		,createCount : 5
-		//,params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
+		nameID : 'gridster',
+		createNow : true,
+		createCount : 5
+		//params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
 	},
 	block : {
 		defaultColor : '#DDDDDD'
@@ -37,5 +40,15 @@ window.pleUserPreference = {
 };
 </script>
 <script src="../dist/js/app.pkgd.js"></script>
+<script>
+var api = window.PLE.api;
+document.getElementById('fooo').addEventListener('click', function(e){
+	// $('#gridster li').eq(0)
+	api.gridster.toggleSelect($('#gridster li').eq(2));
+});
+//document.getElementById('fooo2').addEventListener('click', function(e){
+//	api.gridster.unSelect($('#gridster li').eq(2));
+//});
+</script>
 </body>
 </html>
