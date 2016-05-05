@@ -37,28 +37,32 @@ module.exports = React.createClass({
 	{
 		$.get(this.props.defaultImagesScript, (response) => {
 			var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
-			this.setState({
-				uploadImages : this.importImages(result)
-			})
+			this.importImages(result);
 		});
 	},
 
 	/**
 	 * Import images
 	 *
-	 * @param {array} files
-	 * @return {array}
-	 * */
+	 * @param {Array} files
+	 */
 	importImages(files)
 	{
-		files = files || [];
-		return files.map((o) => {
-			return {
-				on : false,
-				image : o,
-				style : { backgroundImage : 'url(' + o + ')' }
-			};
-		});
+		var result = this.state.uploadImages;
+		if (files.length)
+		{
+			files.forEach((o) => {
+				if (o)
+				{
+					result.push({
+						on : false,
+						image : o,
+						style : { backgroundImage : 'url(' + o + ')' }
+					});
+				}
+			});
+		}
+		this.setState({ uploadImages : result });
 	},
 
 	/**
@@ -89,21 +93,9 @@ module.exports = React.createClass({
 				uploadFiles,
 				(response) => {
 					this.setState({ is_loading : false });
-
 					if (response.state == 'success')
 					{
-						var data = response.images;
-
-						data.forEach((o) => {
-							this.state.uploadImages.push({
-								on : false,
-								image : o.loc,
-								style : { backgroundImage : 'url(' + o.loc + ')' }
-							});
-						});
-						this.setState({
-							uploadImages : this.state.uploadImages
-						});
+						this.importImages(response.images.map((o) => { return o.loc; }));
 					}
 					else
 					{
@@ -117,17 +109,8 @@ module.exports = React.createClass({
 			// is local upload
 			this.setState({ is_loading : true });
 			this.uploader.local(uploadFiles, (data) => {
-				var result = this.state.uploadImages;
 				this.setState({ is_loading : false });
-
-				data.forEach((o) => {
-					result.push({
-						on : false,
-						image : o,
-						style : { backgroundImage : 'url(' + o + ')' }
-					});
-				});
-				this.setState({ uploadImages : result });
+				this.importImages(data);
 			});
 		}
 	},
@@ -238,39 +221,6 @@ module.exports = React.createClass({
         if (!data) return false;
 		this.setState({ uploadImages : data });
 	},
-
-	/**
-	 * Import datas
-	 *
-	 * @param {array} images : import images data
-	 */
-    import(images)
-    {
-		if (!images) return false;
-
-		var exist = false;
-		let newImages = this.state.uploadImages;
-		images.forEach((o) => {
-			exist = false;
-			newImages.forEach((i) => {
-				if (i.image === o)
-				{
-					exist = true;
-					return false;
-				}
-			});
-			if (!exist)
-			{
-				newImages.push({
-					on : false,
-					image : o,
-					style : { backgroundImage : 'url(' + o + ')' }
-				});
-			}
-		});
-
-		this.update(newImages);
-    },
 
 	/**
 	 * render

@@ -44,7 +44,10 @@ window.pleUserPreference = {
 var api = window.PLE.api;
 document.getElementById('fooo').addEventListener('click', function(e){
 	// $('#gridster li').eq(0)
-	api.gridster.toggleSelect($('#gridster li').eq(2));
+//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
+//		$('body').append('<img src="' + res + '" />');
+//	});
+	api.side.add(['./images/rg3144.jpg', './images/rg3144.jpg']);
 });
 //document.getElementById('fooo2').addEventListener('click', function(e){
 //	api.gridster.unSelect($('#gridster li').eq(2));

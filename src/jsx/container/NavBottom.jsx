@@ -21,21 +21,23 @@ module.exports = React.createClass({
 	onGenerator(e)
 	{
 		let action = e.currentTarget.getAttribute('data-action');
+		let exp = this.export;
+		let pref = this.props.container.state.preference;
 
 		switch(action)
 		{
 			case 'printJson':
 				window.PLE_result.open(
-					this.export.json(),
+					exp.objectToJson({ gridster : exp.exportGridster(), preference : pref }, 4),
 					'code',
 					'json데이터로 만들어서 출력합니다. 이미지 경로는 서버에 저장된 위치로 지정됩니다.'
 				);
 				break;
 
 			case 'printJsonPacked':
-				this.export.packed((res) => {
+				this.export.packed('image/jpeg', 0.75, (res) => {
 					window.PLE_result.open(
-						res,
+						this.export.objectToJson({ gridster : res, preference : pref }, 0),
 						'code',
 						'json 데이터로 만들어서 출력합니다.<br>이미지를 base64데이터로 변환하여 json데이터에 같이 들어갑니다.'
 					);
@@ -43,7 +45,7 @@ module.exports = React.createClass({
 				break;
 
 			case 'printImage':
-				this.export.image((src) => {
+				this.export.image('image/jpeg', 0.8, '#ffffff', (src) => {
 					window.PLE_result.open(
 						src,
 						'image',
@@ -53,11 +55,10 @@ module.exports = React.createClass({
 				break;
 
 			case 'console':
-				this.export.console();
-				break;
-
-			default:
-				log('not select action');
+				console.log({
+					gridster : exp.exportGridster(),
+					preference : pref
+				});
 				break;
 		}
 	},
