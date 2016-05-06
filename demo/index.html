@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <title>Photo layout editor program</title>
 <link rel="stylesheet" href="../dist/css/vendor.pkgd.css"/>
 <link rel="stylesheet" href="../dist/css/app.pkgd.css"/>
@@ -44,10 +45,23 @@ window.pleUserPreference = {
 var api = window.PLE.api;
 document.getElementById('fooo').addEventListener('click', function(e){
 	// $('#gridster li').eq(0)
-//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
-//		$('body').append('<img src="' + res + '" />');
-//	});
-	api.side.add(['./images/rg3144.jpg', './images/rg3144.jpg']);
+	
+	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
+	//		$('body').append('<img src="' + res + '" />');
+	//	});
+	
+	//	api.gridster.assignImage(
+	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
+	//		'./images/rg3144.jpg',
+	//		{
+	//			size: '80px auto',
+	//			position: '-20px -10px'
+	//		}
+	//	);
+
+	// api.side.attach([1,8]);
+	
+	api.side.remove(0);
 });
 //document.getElementById('fooo2').addEventListener('click', function(e){
 //	api.gridster.unSelect($('#gridster li').eq(2));

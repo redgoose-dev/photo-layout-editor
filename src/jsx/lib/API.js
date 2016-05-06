@@ -41,8 +41,21 @@ function GridsterForAPI() {
 	 *
 	 * @param {Array} images
 	 */
-	this.attach = (images) => {
+	this.attachImages = (images) => {
+		gridster.attachImages(images);
+	};
 
+	/**
+	 * assign images to target element
+	 *
+	 * @param {Object} $target
+	 * @param {String} image
+	 * @param {Object} imageOptions
+	 * @param {String} imageOptions.position
+	 * @param {String} imageOptions.size
+	 */
+	this.assignImage = ($target, image, imageOptions) => {
+		gridster.assignImage($target, image, imageOptions);
 	};
 
 	/**
@@ -197,17 +210,51 @@ function SidebarForAPI() {
 	/**
 	 * add image
 	 *
+	 * @param {Object} files
 	 */
 	this.add = (files) => {
 		sidebar.importImages(files);
 	};
 
-	this.remove = () => {};
+	/**
+	 * remove image
+	 *
+	 * @param {number|Array} key
+	 */
+	this.remove = (key) => {
+		if (typeof key === 'number')
+		{
+			key = [key];
+		}
+		else if (!Array.isArray(key))
+		{
+			key = [];
+		}
+		log(key);
+		// TODO : 여기서부터 작업시작
+	};
+
 	this.select = () => {};
+	this.unSelect = () => {};
 
 	this.export = () => {};
-	this.attach = () => {};
 
+	/**
+	 * attach image
+	 *
+	 * @param {Number|Array} key
+	 */
+	this.attach = (key) => {
+		if (typeof key === 'number')
+		{
+			key = [key];
+		}
+		else if (!Array.isArray(key))
+		{
+			key = [];
+		}
+		sidebar.attachImagesByKey(key);
+	};
 }
 
 

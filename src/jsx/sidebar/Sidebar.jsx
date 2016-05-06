@@ -35,10 +35,13 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		$.get(this.props.defaultImagesScript, (response) => {
-			var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
-			this.importImages(result);
-		});
+		if (this.props.defaultImagesScript)
+		{
+			$.get(this.props.defaultImagesScript, (response) => {
+				var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
+				this.importImages(result);
+			});
+		}
 	},
 
 	/**
@@ -121,6 +124,7 @@ module.exports = React.createClass({
 	 */
 	remove()
 	{
+		// TODO : remove()와 removeSelect()메서드를 분리하여 다른방식으로 이미지를 선택하여 삭제할 수 있도록 해야함.
 		var selectedKeys = [];
 		var removeImages = [];
 		var confirmBool = false;
@@ -139,6 +143,7 @@ module.exports = React.createClass({
 			}
 		});
 
+		// TODO : 여기서부터 remove()메서드에서 할일
 		if (selectedKeys.length)
 		{
 			if (confirm('선택한 사진을 삭제할까요?'))
@@ -173,21 +178,50 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Attach image from the block
+	 * attach select images
+	 * 선택되어있는 이미지를 gridster에 붙인다.
 	 *
 	 */
-	attach()
+	attachSelectImages()
 	{
 		var items = [];
 		this.state.uploadImages.forEach((o) => {
-			if (o.on)
+			if (o.on) items.push(o.image);
+		});
+		this.attchImages(items);
+	},
+
+	/**
+	 * attach images by key
+	 * 사이드바에 있는 key 번호를 선택하여 gridster에 이미지를 붙인다.
+	 * 
+	 * @param {Array} key
+	 */
+	attachImagesByKey(key)
+	{
+		if (!key.length) return false;
+
+		var items = [];
+		key.forEach((i) => {
+			if (this.state.uploadImages[i] && this.state.uploadImages[i].image)
 			{
-				items.push(o.image);
+				items.push(this.state.uploadImages[i].image);
 			}
 		});
-		if (items.length)
+		this.attchImages(items);
+	},
+
+	/**
+	 * attach images
+	 *
+	 * @param {Array} images
+	 *
+	 */
+	attchImages(images)
+	{
+		if (images.length)
 		{
-			window.PLE.refs.container.refs.gridster.attachImages(items);
+			window.PLE.refs.container.refs.gridster.attachImages(images);
 		}
 		else
 		{
@@ -237,7 +271,7 @@ module.exports = React.createClass({
                 <Nav ref="nav"
 					 upload={this.upload}
 					 remove={this.remove}
-					 attach={this.attach}
+					 attach={this.attachSelectImages}
 					 toggleSelect={this.toggleSelect} />
                 <UploadFiles ref="files"
 							 uploadImages={this.state.uploadImages}
