@@ -222,9 +222,7 @@ html.ple-popup-mode {overflow: hidden;}
 	transition: transform $sidebar-toggle-speed ease-in-out;
 	-webkit-transform: translateX(0);
 	transform: translateX(0);
-	&.loading {
-
-	}
+	&.loading {}
 	.toggle {
 		position: absolute; left: -25px; top: 20px; z-index: 10;
 		padding: 10px 5px; margin: 0;
@@ -259,7 +257,7 @@ html.ple-popup-mode {overflow: hidden;}
 			position: relative; float: left; width: 25%; height: 36px;
 			border-width: 0 0 0 1px; border-style: solid;
 			border-color: #626164; border-color: rgba(255,255,255,.3);
-			background: none; cursor: pointer;
+			background: none; cursor: pointer; overflow: hidden;
 			&:first-child {border-width: 0;}
 		}
 		input[type=file] {

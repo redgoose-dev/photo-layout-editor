@@ -4,6 +4,27 @@ var gridster = null;
 var sidebar = null;
 var exp = require('../lib/Export.js');
 
+
+/**
+ * item to array
+ *
+ * @param {number|string|Array} item
+ * @param {string} type
+ * @return {Array}
+ */
+function itemToArray(item, type)
+{
+	if (typeof item === type)
+	{
+		item = [item];
+	}
+	else if (!Array.isArray(item))
+	{
+		item = [];
+	}
+	return item;
+}
+
 /**
  * Gridster for API
  *
@@ -210,50 +231,63 @@ function SidebarForAPI() {
 	/**
 	 * add image
 	 *
-	 * @param {Object} files
+	 * @param {Array} files
 	 */
 	this.add = (files) => {
 		sidebar.importImages(files);
 	};
 
 	/**
-	 * remove image
+	 * remove images
 	 *
-	 * @param {number|Array} key
+	 * @param {number|Array} keys
 	 */
-	this.remove = (key) => {
-		if (typeof key === 'number')
-		{
-			key = [key];
-		}
-		else if (!Array.isArray(key))
-		{
-			key = [];
-		}
-		log(key);
-		// TODO : 여기서부터 작업시작
+	this.remove = (keys) => {
+		sidebar.remove(itemToArray(keys, 'number'));
 	};
 
-	this.select = () => {};
-	this.unSelect = () => {};
+	/**
+	 * select images
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.select = (keys) => {
+		sidebar.select(itemToArray(keys, 'number'), true);
+	};
 
-	this.export = () => {};
+	/**
+	 * un select images
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.unSelect = (keys) => {
+		sidebar.select(itemToArray(keys, 'number'), false);
+	};
+
+	/**
+	 * toggle select for all items
+	 *
+	 */
+	this.toggleSelectAll = () => {
+		sidebar.toggleSelect();
+	};
+
+	/**
+	 * export
+	 *
+	 * @return {Array}
+	 */
+	this.export = () => {
+		return sidebar.exportImages();
+	};
 
 	/**
 	 * attach image
 	 *
-	 * @param {Number|Array} key
+	 * @param {number|Array} keys
 	 */
-	this.attach = (key) => {
-		if (typeof key === 'number')
-		{
-			key = [key];
-		}
-		else if (!Array.isArray(key))
-		{
-			key = [];
-		}
-		sidebar.attachImagesByKey(key);
+	this.attach = (keys) => {
+		sidebar.attachImagesByKey(itemToArray(keys, 'number'));
 	};
 }
 

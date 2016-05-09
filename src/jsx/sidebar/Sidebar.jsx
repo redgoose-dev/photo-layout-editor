@@ -1,3 +1,4 @@
+const React = require('React');
 const Uploader = require('../lib/Uploader.js');
 const Nav = require('./Nav.jsx');
 const UploadFiles = require('./UploadFiles.jsx');
@@ -69,6 +70,23 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * Export images
+	 *
+	 * @return {Array}
+	 */
+	exportImages()
+	{
+		var result = [];
+		this.state.uploadImages.forEach((o) => {
+			if (o.image)
+			{
+				result.push();
+			}
+		});
+		return result;
+	},
+
+	/**
 	 * Upload images
 	 *
 	 * @Param {Files} files
@@ -121,12 +139,45 @@ module.exports = React.createClass({
 	/**
 	 * Remove items
 	 *
+	 * @param {Array} keys
 	 */
-	remove()
+	remove(keys)
 	{
-		// TODO : remove()와 removeSelect()메서드를 분리하여 다른방식으로 이미지를 선택하여 삭제할 수 있도록 해야함.
-		var selectedKeys = [];
+		if (!keys.length) return false;
+
+		var uploadImages = this.state.uploadImages;
 		var removeImages = [];
+
+		keys.forEach((o) => {
+			if (uploadImages[o])
+			{
+				// make remove image list
+				removeImages.push(uploadImages[o].image);
+				// delete item in uploadImages
+				delete uploadImages[o];
+			}
+		});
+		// update state
+		this.setState({ uploadImages : uploadImages });
+
+		// remove real image files
+		if (this.props.removeScript && removeImages.length)
+		{
+			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
+				// log(response);
+			});
+		}
+	},
+
+	/**
+	 * remove select images
+	 * 선택되어있는 이미지들을 삭제한다.
+	 *
+	 */
+	removeSelectImages()
+	{
+		var selectedKeys = [];
+		var removeKeys = [];
 		var confirmBool = false;
 
 		if (!this.state.uploadImages.length)
@@ -143,17 +194,12 @@ module.exports = React.createClass({
 			}
 		});
 
-		// TODO : 여기서부터 remove()메서드에서 할일
 		if (selectedKeys.length)
 		{
 			if (confirm('선택한 사진을 삭제할까요?'))
 			{
 				confirmBool = true;
-				selectedKeys.forEach((o) => {
-					removeImages.push(this.state.uploadImages[o].image);
-					delete this.state.uploadImages[o];
-				});
-				this.setState({ uploadImages : this.state.uploadImages });
+				removeKeys = selectedKeys;
 			}
 		}
 		else
@@ -161,19 +207,16 @@ module.exports = React.createClass({
 			if (confirm('선택된 사진이 없습니다. 전부 삭제할까요?'))
 			{
 				confirmBool = true;
-				removeImages = this.state.uploadImages.map((o) => {
-					return o.image;
+				this.state.uploadImages.forEach((o, k) => {
+					removeKeys.push(k);
 				});
-				this.setState({ uploadImages : [] });
 			}
 		}
 
-		// remove real image files
-		if (this.props.removeScript && confirmBool && removeImages.length)
+		// remove images
+		if (confirmBool)
 		{
-			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
-				//log(response);
-			});
+			this.remove(removeKeys);
 		}
 	},
 
@@ -231,7 +274,23 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Toggle select items
+	 * select images
+	 *
+	 * @param {Array} keys
+	 * @param {Boolean} sw
+	 *
+	 */
+	select(keys, sw)
+	{
+		var items = this.state.uploadImages;
+		keys.forEach((o) => {
+			items[o].on = sw;
+		});
+		this.setState({ uploadImages : items });
+	},
+
+	/**
+	 * Toggle select all items
 	 *
 	 */
 	toggleSelect()
@@ -270,7 +329,7 @@ module.exports = React.createClass({
 				</button>
                 <Nav ref="nav"
 					 upload={this.upload}
-					 remove={this.remove}
+					 remove={this.removeSelectImages}
 					 attach={this.attachSelectImages}
 					 toggleSelect={this.toggleSelect} />
                 <UploadFiles ref="files"

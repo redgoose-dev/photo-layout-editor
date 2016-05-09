@@ -42,10 +42,34 @@ window.pleUserPreference = {
 </script>
 <script src="../dist/js/app.pkgd.js"></script>
 <script>
+// TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.
+
 var api = window.PLE.api;
 document.getElementById('fooo').addEventListener('click', function(e){
 	// $('#gridster li').eq(0)
-	
+
+	// 이미지를 경로 그대로 가져온다
+	//	api.gridster.export(null, function(res){
+	//		log(res);
+	//	});
+
+	// 이미지를 base64코드로 변환하여 가져온다.
+	//	api.gridster.export({
+	//		type: 'image/jpeg',
+	//		quality : 0.5
+	//	}, function(res){
+	//		log(res);
+	//	});
+
+	// 모두 모아져 있는 이미지 만들기
+	//	api.gridster.makeImage({
+	//		type : 'image/jpeg',
+	//		quality : 0.5,
+	//		bgColor : '#ff0000'
+	//	}, function(res){
+	//		log(res);
+	//	});
+
 	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
 	//		$('body').append('<img src="' + res + '" />');
 	//	});
@@ -61,7 +85,15 @@ document.getElementById('fooo').addEventListener('click', function(e){
 
 	// api.side.attach([1,8]);
 	
-	api.side.remove(0);
+	// api.side.remove([1,2]);
+
+	// api.side.select([0,2,3]);
+
+	//api.side.unSelect([1,2,4]);
+
+	//api.side.toggleSelectAll();
+
+	// log(api.side.export());
 });
 //document.getElementById('fooo2').addEventListener('click', function(e){
 //	api.gridster.unSelect($('#gridster li').eq(2));
