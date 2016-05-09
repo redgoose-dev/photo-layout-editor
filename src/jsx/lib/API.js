@@ -1,8 +1,34 @@
 var app = null;
+var container = null;
 var gridster = null;
 var sidebar = null;
 var exp = require('../lib/Export.js');
 
+
+/**
+ * item to array
+ *
+ * @param {number|string|Array} item
+ * @param {string} type
+ * @return {Array}
+ */
+function itemToArray(item, type)
+{
+	if (typeof item === type)
+	{
+		item = [item];
+	}
+	else if (!Array.isArray(item))
+	{
+		item = [];
+	}
+	return item;
+}
+
+/**
+ * Gridster for API
+ *
+ */
 function GridsterForAPI() {
 
 	/**
@@ -29,6 +55,28 @@ function GridsterForAPI() {
 			options = { col : 1, row : 1 };
 		}
 		gridster.block(options);
+	};
+
+	/**
+	 * attach images to block
+	 *
+	 * @param {Array} images
+	 */
+	this.attachImages = (images) => {
+		gridster.attachImages(images);
+	};
+
+	/**
+	 * assign images to target element
+	 *
+	 * @param {Object} $target
+	 * @param {String} image
+	 * @param {Object} imageOptions
+	 * @param {String} imageOptions.position
+	 * @param {String} imageOptions.size
+	 */
+	this.assignImage = ($target, image, imageOptions) => {
+		gridster.assignImage($target, image, imageOptions);
 	};
 
 	/**
@@ -102,24 +150,147 @@ function GridsterForAPI() {
 		}
 	};
 
-	this.updatePreference = (params) => {};
-	this.getPreference = () => {};
+	/**
+	 * import preference
+	 *
+	 * @param {object} setting
+	 */
+	this.importPreference = (setting) => {
+		if (setting && (typeof setting === 'object'))
+		{
+			setting = Object.assign(container.state.preference, setting);
+			container.updatePreference(setting);
+		}
+	};
 
-	this.export = () => {};
-	this.makeImage = () => {};
+	/**
+	 * export preference
+	 *
+	 * @return {object}
+	 */
+	this.exportPreference = () => {
+		return container.state.preference;
+	};
 
+	/**
+	 * export
+	 *
+	 * @param {object}   packImageOptions
+	 * @param {string}   packImageOptions.type    (image/jpeg, image/png)
+	 * @param {int}      packImageOptions.quality (0~1)
+	 * @param {function} callback
+	 */
+	this.export = (packImageOptions, callback) => {
+		if (packImageOptions && (typeof packImageOptions === 'object'))
+		{
+			exp.packed(packImageOptions.type, packImageOptions.quality, (res) => {
+				if (callback)
+				{
+					callback(res);
+				}
+			});
+		}
+		else
+		{
+			if (callback)
+			{
+				callback(exp.exportGridster());
+			}
+		}
+	};
+
+	/**
+	 * make image
+	 *
+	 * @param {object}   options
+	 * @param {string}   options.type    (image/jpeg, image/png)
+	 * @param {int}      options.quality (0~1)
+	 * @param {string}   options.bgColor (#ffffff)
+	 * @param {function} callback
+	 */
+	this.makeImage = (options, callback) => {
+		if (callback)
+		{
+			if (!options)
+			{
+				options = options || { type : null, quality : null, bgColor : null };
+			}
+			exp.image(options.type, options.quality, options.bgColor, (src) => {
+				callback(src);
+			});
+		}
+	};
 }
 
+/**
+ * Sidebar for API
+ *
+ */
 function SidebarForAPI() {
 
-	this.add = () => {};
-	this.remove = () => {};
-	this.select = () => {};
+	/**
+	 * add image
+	 *
+	 * @param {Array} files
+	 */
+	this.add = (files) => {
+		sidebar.importImages(files);
+	};
 
-	this.export = () => {};
-	this.attach = () => {};
+	/**
+	 * remove images
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.remove = (keys) => {
+		sidebar.remove(itemToArray(keys, 'number'));
+	};
 
+	/**
+	 * select images
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.select = (keys) => {
+		sidebar.select(itemToArray(keys, 'number'), true);
+	};
+
+	/**
+	 * un select images
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.unSelect = (keys) => {
+		sidebar.select(itemToArray(keys, 'number'), false);
+	};
+
+	/**
+	 * toggle select for all items
+	 *
+	 */
+	this.toggleSelectAll = () => {
+		sidebar.toggleSelect();
+	};
+
+	/**
+	 * export
+	 *
+	 * @return {Array}
+	 */
+	this.export = () => {
+		return sidebar.exportImages();
+	};
+
+	/**
+	 * attach image
+	 *
+	 * @param {number|Array} keys
+	 */
+	this.attach = (keys) => {
+		sidebar.attachImagesByKey(itemToArray(keys, 'number'));
+	};
 }
+
 
 module.exports = function API() {
 
@@ -130,7 +301,9 @@ module.exports = function API() {
 	 */
 	this.init = (parent) => {
 		app = parent;
-		gridster = app.refs.container.refs.gridster;
+		container = app.refs.container;
+		gridster = container.refs.gridster;
+		sidebar = app.refs.sidebar;
 
 		this.gridster = new GridsterForAPI();
 		this.side = new SidebarForAPI();

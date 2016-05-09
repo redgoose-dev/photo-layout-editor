@@ -176,7 +176,7 @@ module.exports = React.createClass({
 	/**
 	 * Make block
 	 *
-	 * @param {object} params
+	 * @param {Object} params
 	 * @param {int} params.col
 	 * @param {int} params.row
 	 * @param {int} params.size_x
@@ -214,6 +214,39 @@ module.exports = React.createClass({
 
 		// init event
 		this.initBlockEvent($li);
+	},
+
+	/**
+	 * Add block
+	 *
+	 * @param {int} x
+	 * @param {int} y
+	 */
+	addBlock(x, y)
+	{
+		x = x || 1;
+		y = y || 1;
+		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
+		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
+		this.block({ col : x, row : y });
+	},
+
+	/**
+	 * Random add blocks
+	 *
+	 * @param {int} count
+	 * @param {int} max_width
+	 * @param {int} max_height
+	 */
+	randomAddBlocks(count, max_width, max_height)
+	{
+		for (var i=0; i<count; i++)
+		{
+			this.block({
+				col : util.getRandomRange(1, max_width),
+				row : util.getRandomRange(1, max_height)
+			});
+		}
 	},
 
 	/**
@@ -354,39 +387,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Random add blocks
-	 *
-	 * @param {int} count
-	 * @param {int} max_width
-	 * @param {int} max_height
-	 */
-	randomAddBlocks(count, max_width, max_height)
-	{
-		for (var i=0; i<count; i++)
-		{
-			this.block({
-				col : util.getRandomRange(1, max_width),
-				row : util.getRandomRange(1, max_height)
-			});
-		}
-	},
-
-	/**
-	 * Add block
-	 *
-	 * @param {int} x
-	 * @param {int} y
-	 */
-	addBlock(x, y)
-	{
-		x = x || 1;
-		y = y || 1;
-		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
-		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
-		this.block({ col : x, row : y });
-	},
-
-	/**
 	 * Shuffle blocks
 	 */
 	shuffleBlocks()
@@ -407,8 +407,10 @@ module.exports = React.createClass({
 
 	/**
 	 * Attach images
+	 * 빈 블럭에 이미지들을 붙여넣는 작업을 한다.
+	 * 만약 블럭의 갯수가 모자라면 블럭을 추가로 만들고 이미지를 붙여넣는다.
 	 *
-	 * @param {array} images
+	 * @param {Array} images
 	 */
 	attachImages(images)
 	{
@@ -419,7 +421,7 @@ module.exports = React.createClass({
 			let total = images.length - $blocks.length;
 			for (let i=0; i<total; i++)
 			{
-				this.addBlock();
+				this.addBlock(1,1);
 			}
 			$blocks = this.$gridster.find('li').not('.attached');
 		}
@@ -435,13 +437,11 @@ module.exports = React.createClass({
 		baskets.forEach((o, k) => {
 			this.assignImage($(o), images[k], null);
 		});
-
-		// act unselected
-		//this.unSelectBlock();
 	},
 
 	/**
 	 * Assign image
+	 * 블럭 하나에다 이미지를 붙이는 작업을 한다.
 	 *
 	 * @param {object} $target
 	 * @param {string} image
@@ -449,6 +449,8 @@ module.exports = React.createClass({
 	 */
 	assignImage($target, image, imageOptions)
 	{
+		if (!$target.length) return false;
+
 		var $figure = $('<figure/>');
 		$figure.css({
 			'background-image' : 'url(' + image + ')',

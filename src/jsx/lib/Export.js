@@ -212,39 +212,6 @@ module.exports = {
 	},
 
 	/**
-	 * Export gridster
-	 *
-	 * @return {Object}
-	 */
-	exportGridster()
-	{
-		const $gridster = this.gridster.$gridster;
-		const gridster = this.gridster.gridster;
-		var blockData = [];
-
-		$gridster.find('li').each((k, o) => {
-			const $o = $(o);
-			var data = {};
-
-			data.color = $o.attr('data-color');
-
-			if ($o.hasClass('attached'))
-			{
-				data.position = $o.children('figure').attr('data-position');
-				data.size = $o.children('figure').attr('data-size');
-				data.image = $o.children('figure').attr('data-image');
-			}
-
-			blockData.push(data);
-		});
-
-		return {
-			params : gridster.serialize(),
-			figure : blockData
-		};
-	},
-
-	/**
 	 * Get ratio
 	 *
 	 * @param {int} w
@@ -385,20 +352,6 @@ module.exports = {
 	},
 
 	/**
-	 * Get export data
-	 *
-	 * @param {Object} resource
-	 * @return {Object}
-	 */
-	getExportData(resource)
-	{
-		return {
-			gridster : resource,
-			preference : this.container.state.preference
-		};
-	},
-
-	/**
 	 * Draw canvas
 	 *
 	 * @param {Object} canvas
@@ -467,35 +420,49 @@ module.exports = {
 	/*** EXPORT METHODS ***/
 
 	/**
-	 * Basic
+	 * Export gridster
 	 *
 	 * @return {Object}
 	 */
-	json()
+	exportGridster()
 	{
-		return this.objectToJson( this.getExportData( this.exportGridster() ), 4 );
+		var blockData = [];
+		var grid = this.gridster;
+
+		grid.$gridster.find('li').each((k, o) => {
+			const $o = $(o);
+			var data = {};
+
+			data.color = $o.attr('data-color');
+
+			if ($o.hasClass('attached'))
+			{
+				data.position = $o.children('figure').attr('data-position');
+				data.size = $o.children('figure').attr('data-size');
+				data.image = $o.children('figure').attr('data-image');
+			}
+
+			blockData.push(data);
+		});
+
+		return {
+			params : grid.gridster.serialize(),
+			figure : blockData
+		};
 	},
 
 	/**
-	 * Console
-	 *
-	 * @return {Object}
-	 */
-	console()
-	{
-		console.log( this.getExportData( this.exportGridster() ) );
-	},
-	
-	/**
 	 * Packed
-	 * 
-	 * @param {Function} callback
+	 *
+	 * @param {string} type image type (image/jpeg, image/png)
+	 * @param {int} quality
+	 * @param {function} callback
 	 */
-	packed(callback)
+	packed(type, quality, callback)
 	{
 		var result = this.exportGridster();
 		var queue = this.makeQueue(result);
-		this.playQueue(queue, 'image/jpeg', 0.8, (imgResult) => {
+		this.playQueue(queue, (type || 'image/jpeg'), (quality || 0.8), (imgResult) => {
 			imgResult.forEach((o) => {
 				result.figure[o.key].image = o.data;
 				result.figure[o.key].position = '50% 50%';
@@ -503,7 +470,7 @@ module.exports = {
 			});
 			if (callback)
 			{
-				callback( this.objectToJson(this.getExportData(result), 0) );
+				callback(result);
 			}
 		});
 	},
@@ -511,9 +478,12 @@ module.exports = {
 	/**
 	 * Image
 	 *
-	 * @param {Function} callback
+	 * @param {string} type
+	 * @param {int} quality
+	 * @param {string} bgColor
+	 * @param {function} callback
 	 */
-	image(callback)
+	image(type, quality, bgColor, callback)
 	{
 		var gridData = this.exportGridster();
 		var pref = this.container.state.preference;
@@ -521,7 +491,8 @@ module.exports = {
 		var canvas = new Canvas(
 			this.gridster.$gridster.width() + (pref.outer_margin * 2) + (pref.inner_margin),
 			this.gridster.$gridster.height() + (pref.outer_margin * 2) + (pref.inner_margin),
-			'#ffffff');
+			(bgColor || '#ffffff')
+		);
 
 		this.playQueue(queue, 'image/png', 0, (imgResult) => {
 			imgResult.forEach((o) => {
@@ -531,10 +502,14 @@ module.exports = {
 			});
 
 			this.drawCanvas(canvas, gridData, pref, (canvas) => {
-				//document.querySelector('.ple-editor').appendChild(canvas.el);
 				if (callback)
 				{
-					callback(canvasToBase64(canvas.el, 'image/jpeg', 0.85));
+					// end point
+					callback(canvasToBase64(
+						canvas.el,
+						(type || 'image/jpeg'),
+						(quality || 0.8)
+					));
 				}
 			});
 		});

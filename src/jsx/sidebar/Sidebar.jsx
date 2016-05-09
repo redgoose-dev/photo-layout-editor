@@ -1,3 +1,4 @@
+const React = require('React');
 const Uploader = require('../lib/Uploader.js');
 const Nav = require('./Nav.jsx');
 const UploadFiles = require('./UploadFiles.jsx');
@@ -35,30 +36,54 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		$.get(this.props.defaultImagesScript, (response) => {
-			var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
-			this.setState({
-				uploadImages : this.importImages(result)
-			})
-		});
+		if (this.props.defaultImagesScript)
+		{
+			$.get(this.props.defaultImagesScript, (response) => {
+				var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
+				this.importImages(result);
+			});
+		}
 	},
 
 	/**
 	 * Import images
 	 *
-	 * @param {array} files
-	 * @return {array}
-	 * */
+	 * @param {Array} files
+	 */
 	importImages(files)
 	{
-		files = files || [];
-		return files.map((o) => {
-			return {
-				on : false,
-				image : o,
-				style : { backgroundImage : 'url(' + o + ')' }
-			};
+		var result = this.state.uploadImages;
+		if (files.length)
+		{
+			files.forEach((o) => {
+				if (o)
+				{
+					result.push({
+						on : false,
+						image : o,
+						style : { backgroundImage : 'url(' + o + ')' }
+					});
+				}
+			});
+		}
+		this.setState({ uploadImages : result });
+	},
+
+	/**
+	 * Export images
+	 *
+	 * @return {Array}
+	 */
+	exportImages()
+	{
+		var result = [];
+		this.state.uploadImages.forEach((o) => {
+			if (o.image)
+			{
+				result.push();
+			}
 		});
+		return result;
 	},
 
 	/**
@@ -89,21 +114,9 @@ module.exports = React.createClass({
 				uploadFiles,
 				(response) => {
 					this.setState({ is_loading : false });
-
 					if (response.state == 'success')
 					{
-						var data = response.images;
-
-						data.forEach((o) => {
-							this.state.uploadImages.push({
-								on : false,
-								image : o.loc,
-								style : { backgroundImage : 'url(' + o.loc + ')' }
-							});
-						});
-						this.setState({
-							uploadImages : this.state.uploadImages
-						});
+						this.importImages(response.images.map((o) => { return o.loc; }));
 					}
 					else
 					{
@@ -117,17 +130,8 @@ module.exports = React.createClass({
 			// is local upload
 			this.setState({ is_loading : true });
 			this.uploader.local(uploadFiles, (data) => {
-				var result = this.state.uploadImages;
 				this.setState({ is_loading : false });
-
-				data.forEach((o) => {
-					result.push({
-						on : false,
-						image : o,
-						style : { backgroundImage : 'url(' + o + ')' }
-					});
-				});
-				this.setState({ uploadImages : result });
+				this.importImages(data);
 			});
 		}
 	},
@@ -135,11 +139,45 @@ module.exports = React.createClass({
 	/**
 	 * Remove items
 	 *
+	 * @param {Array} keys
 	 */
-	remove()
+	remove(keys)
+	{
+		if (!keys.length) return false;
+
+		var uploadImages = this.state.uploadImages;
+		var removeImages = [];
+
+		keys.forEach((o) => {
+			if (uploadImages[o])
+			{
+				// make remove image list
+				removeImages.push(uploadImages[o].image);
+				// delete item in uploadImages
+				delete uploadImages[o];
+			}
+		});
+		// update state
+		this.setState({ uploadImages : uploadImages });
+
+		// remove real image files
+		if (this.props.removeScript && removeImages.length)
+		{
+			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
+				// log(response);
+			});
+		}
+	},
+
+	/**
+	 * remove select images
+	 * 선택되어있는 이미지들을 삭제한다.
+	 *
+	 */
+	removeSelectImages()
 	{
 		var selectedKeys = [];
-		var removeImages = [];
+		var removeKeys = [];
 		var confirmBool = false;
 
 		if (!this.state.uploadImages.length)
@@ -161,11 +199,7 @@ module.exports = React.createClass({
 			if (confirm('선택한 사진을 삭제할까요?'))
 			{
 				confirmBool = true;
-				selectedKeys.forEach((o) => {
-					removeImages.push(this.state.uploadImages[o].image);
-					delete this.state.uploadImages[o];
-				});
-				this.setState({ uploadImages : this.state.uploadImages });
+				removeKeys = selectedKeys;
 			}
 		}
 		else
@@ -173,38 +207,64 @@ module.exports = React.createClass({
 			if (confirm('선택된 사진이 없습니다. 전부 삭제할까요?'))
 			{
 				confirmBool = true;
-				removeImages = this.state.uploadImages.map((o) => {
-					return o.image;
+				this.state.uploadImages.forEach((o, k) => {
+					removeKeys.push(k);
 				});
-				this.setState({ uploadImages : [] });
 			}
 		}
 
-		// remove real image files
-		if (this.props.removeScript && confirmBool && removeImages.length)
+		// remove images
+		if (confirmBool)
 		{
-			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
-				//log(response);
-			});
+			this.remove(removeKeys);
 		}
 	},
 
 	/**
-	 * Attach image from the block
+	 * attach select images
+	 * 선택되어있는 이미지를 gridster에 붙인다.
 	 *
 	 */
-	attach()
+	attachSelectImages()
 	{
 		var items = [];
 		this.state.uploadImages.forEach((o) => {
-			if (o.on)
+			if (o.on) items.push(o.image);
+		});
+		this.attchImages(items);
+	},
+
+	/**
+	 * attach images by key
+	 * 사이드바에 있는 key 번호를 선택하여 gridster에 이미지를 붙인다.
+	 * 
+	 * @param {Array} key
+	 */
+	attachImagesByKey(key)
+	{
+		if (!key.length) return false;
+
+		var items = [];
+		key.forEach((i) => {
+			if (this.state.uploadImages[i] && this.state.uploadImages[i].image)
 			{
-				items.push(o.image);
+				items.push(this.state.uploadImages[i].image);
 			}
 		});
-		if (items.length)
+		this.attchImages(items);
+	},
+
+	/**
+	 * attach images
+	 *
+	 * @param {Array} images
+	 *
+	 */
+	attchImages(images)
+	{
+		if (images.length)
 		{
-			window.PLE.refs.container.refs.gridster.attachImages(items);
+			window.PLE.refs.container.refs.gridster.attachImages(images);
 		}
 		else
 		{
@@ -214,7 +274,23 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Toggle select items
+	 * select images
+	 *
+	 * @param {Array} keys
+	 * @param {Boolean} sw
+	 *
+	 */
+	select(keys, sw)
+	{
+		var items = this.state.uploadImages;
+		keys.forEach((o) => {
+			items[o].on = sw;
+		});
+		this.setState({ uploadImages : items });
+	},
+
+	/**
+	 * Toggle select all items
 	 *
 	 */
 	toggleSelect()
@@ -240,39 +316,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Import datas
-	 *
-	 * @param {array} images : import images data
-	 */
-    import(images)
-    {
-		if (!images) return false;
-
-		var exist = false;
-		let newImages = this.state.uploadImages;
-		images.forEach((o) => {
-			exist = false;
-			newImages.forEach((i) => {
-				if (i.image === o)
-				{
-					exist = true;
-					return false;
-				}
-			});
-			if (!exist)
-			{
-				newImages.push({
-					on : false,
-					image : o,
-					style : { backgroundImage : 'url(' + o + ')' }
-				});
-			}
-		});
-
-		this.update(newImages);
-    },
-
-	/**
 	 * render
 	 */
 	render()
@@ -286,8 +329,8 @@ module.exports = React.createClass({
 				</button>
                 <Nav ref="nav"
 					 upload={this.upload}
-					 remove={this.remove}
-					 attach={this.attach}
+					 remove={this.removeSelectImages}
+					 attach={this.attachSelectImages}
 					 toggleSelect={this.toggleSelect} />
                 <UploadFiles ref="files"
 							 uploadImages={this.state.uploadImages}

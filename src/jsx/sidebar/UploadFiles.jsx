@@ -17,7 +17,7 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		this.$gridster = $('.gridster');
+		this.$gridster = $('#' + window.plePreference.gridster.nameID);
 	},
 
 	/**
@@ -49,9 +49,8 @@ module.exports = React.createClass({
 	/**
 	 * on un select items
 	 *
-	 * @param {event} e
 	 */
-	onUnselect(e)
+	onUnselect()
 	{
 		let uploadImages = this.props.uploadImages;
 		uploadImages.forEach((data, key) => {
