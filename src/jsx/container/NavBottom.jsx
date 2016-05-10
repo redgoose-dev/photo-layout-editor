@@ -95,7 +95,8 @@ module.exports = React.createClass({
 					let newImages = res.gridster.figure.map((o) => {
 						return o.image;
 					});
-					sidebar.import(newImages);
+					sidebar.importImages(newImages);
+
 				}
 
 				// update gridster datas

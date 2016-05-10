@@ -12,6 +12,7 @@ module.exports = React.createClass({
 
 	$dragEl : null,
 	dragType : null,
+	dragPosition : [],
 
 	getInitialState()
 	{
@@ -71,12 +72,6 @@ module.exports = React.createClass({
 	{
 		this.dragType = e.type;
 
-		// TODO : 터치 드래그 이벤트 때문에 드래그 컴포넌트를 만들어야할거 같음.
-		// TODO : 드래그 시작하면 타겟을 복제해야함. 그리고 마우스 위치를 따라가게 하기 위해서 move 이벤트를 추가할 필요가 있음.
-		// TODO : 마우스 포인트가 대상 영역에 들어가면 마우스 포인트가 변하게 해야함.
-		// TODO : end 이벤트가 일어났으면 복제한 타겟을 삭제하고 드래그 이벤트를 전부 off시킴
-		// TODO : 대상에 들어갔는지 확인하고 대상에다 놓았으면 gridster 업데이트.
-
 		switch(this.dragType)
 		{
 			case 'dragstart':
@@ -93,14 +88,23 @@ module.exports = React.createClass({
 				break;
 
 			case 'touchstart':
-				this.$dragEl = $(e.currentTarget).clone().removeAttr('draggable').addClass('ple-sidebar-placeholder');
+				this.$dragEl = $(e.currentTarget)
+					.clone()
+					.removeAttr('draggable')
+					.addClass('ple-sidebar-placeholder')
+					.width($(e.currentTarget).width())
+					.height($(e.currentTarget).height())
+				;
+
 				$('body').append(this.$dragEl);
 				$(e.currentTarget).on('touchmove', (te) => {
+					te.preventDefault();
+
 					var touch = te.originalEvent.touches[0];
-					// TODO : 따라가게 만들기
+					this.dragPosition = [touch.pageX, touch.pageY];
 					this.$dragEl.css({
-						top : touch.pageY,
-						left : touch.pageX
+						top : touch.pageY - (this.$dragEl.width() * 0.5),
+						left : touch.pageX - (this.$dragEl.height() * 0.5)
 					});
 				});
 				break;
@@ -117,7 +121,6 @@ module.exports = React.createClass({
 		switch(this.dragType)
 		{
 			case 'dragstart':
-				log(this.$gridster.find('li'));
 				this.$gridster.find('li')
 					.removeClass('hover')
 					.off('dragover dragleave drop');
@@ -128,6 +131,9 @@ module.exports = React.createClass({
 				this.$dragEl.remove();
 				this.$dragEl = null;
 				$(e.currentTarget).off('touchmove');
+
+				// check gridster item area
+				this.dragTarget = this.getGridsterItem()
 				break;
 		}
 
@@ -137,6 +143,30 @@ module.exports = React.createClass({
 			window.PLE.refs.container.refs.gridster.assignImage($(this.dragTarget), img, null);
 			this.dragTarget = null;
 		}
+	},
+
+	/**
+	 * get gridster item
+	 * 포인트 위치에 있는 gridster블럭을 가져온다.
+	 *
+	 * @return {Object} gridster item
+	 */
+	getGridsterItem()
+	{
+		var $result = null;
+		this.$gridster.find('li').each((n, el) => {
+			var $this = $(el);
+			var pos = $this.offset();
+			if (pos.left < this.dragPosition[0] &&
+				(pos.left + $this.width()) > this.dragPosition[0] &&
+				pos.top < this.dragPosition[1] &&
+				(pos.top + $this.height()) > this.dragPosition[1])
+			{
+				$result = el;
+				return false;
+			}
+		});
+		return $result;
 	},
 
 	/**
@@ -168,5 +198,4 @@ module.exports = React.createClass({
         	</div>
 		);
 	}
-	
 });
