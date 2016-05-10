@@ -10,6 +10,9 @@ module.exports = React.createClass({
 	$gridster : null,
 	dragTarget : null,
 
+	$dragEl : null,
+	dragType : null,
+
 	getInitialState()
 	{
 		return {}
@@ -66,7 +69,7 @@ module.exports = React.createClass({
 	 */
 	onDragStart(e)
 	{
-		var type = e.type;
+		this.dragType = e.type;
 
 		// TODO : 터치 드래그 이벤트 때문에 드래그 컴포넌트를 만들어야할거 같음.
 		// TODO : 드래그 시작하면 타겟을 복제해야함. 그리고 마우스 위치를 따라가게 하기 위해서 move 이벤트를 추가할 필요가 있음.
@@ -74,28 +77,34 @@ module.exports = React.createClass({
 		// TODO : end 이벤트가 일어났으면 복제한 타겟을 삭제하고 드래그 이벤트를 전부 off시킴
 		// TODO : 대상에 들어갔는지 확인하고 대상에다 놓았으면 gridster 업데이트.
 
-		// switch(e.type)
-		// {
-		// 	//case 'dragstart':
-		// 	case 'touchstart':
-		// 		this.$gridster.find('li').on('dragover', (e) => {
-		// 			e.preventDefault();
-		// 			$(e.currentTarget).addClass('hover');
-		// 		}).on('dragleave', (e) => {
-		// 			e.preventDefault();
-		// 			$(e.currentTarget).removeClass('hover');
-		// 		}).on('drop', (e) => {
-		// 			e.preventDefault();
-		// 			this.dragTarget = e.currentTarget;
-		// 		});
-		// 		break;
-		//
-		// 	//case 'touchstart':
-		// 	case 'dragstart':
-		// 		log(e.currentTarget);
-		//
-		// 		break;
-		// }
+		switch(this.dragType)
+		{
+			case 'dragstart':
+				this.$gridster.find('li').on('dragover', (e) => {
+					e.preventDefault();
+					$(e.currentTarget).addClass('hover');
+				}).on('dragleave', (e) => {
+					e.preventDefault();
+					$(e.currentTarget).removeClass('hover');
+				}).on('drop', (e) => {
+					e.preventDefault();
+					this.dragTarget = e.currentTarget;
+				});
+				break;
+
+			case 'touchstart':
+				this.$dragEl = $(e.currentTarget).clone().removeAttr('draggable').addClass('ple-sidebar-placeholder');
+				$('body').append(this.$dragEl);
+				$(e.currentTarget).on('touchmove', (te) => {
+					var touch = te.originalEvent.touches[0];
+					// TODO : 따라가게 만들기
+					this.$dragEl.css({
+						top : touch.pageY,
+						left : touch.pageX
+					});
+				});
+				break;
+		}
 	},
 
 	/**
@@ -105,9 +114,22 @@ module.exports = React.createClass({
 	 */
 	onDragEnd(e)
 	{
-		this.$gridster.find('li')
-			.removeClass('hover')
-			.off('dragover dragleave drop');
+		switch(this.dragType)
+		{
+			case 'dragstart':
+				log(this.$gridster.find('li'));
+				this.$gridster.find('li')
+					.removeClass('hover')
+					.off('dragover dragleave drop');
+
+				break;
+
+			case 'touchstart':
+				this.$dragEl.remove();
+				this.$dragEl = null;
+				$(e.currentTarget).off('touchmove');
+				break;
+		}
 
 		if (this.dragTarget)
 		{
@@ -127,7 +149,7 @@ module.exports = React.createClass({
 		// make item elements
 		this.props.uploadImages.forEach((item, key) => {
 			items.push(
-				<li key={key} data-key={key} draggable="false"
+				<li key={key} data-key={key} draggable="true"
 					onClick={this.onSelect}
 					onDragStart={this.onDragStart}
 					onDragEnd={this.onDragEnd}

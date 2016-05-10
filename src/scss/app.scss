@@ -185,6 +185,13 @@ html.ple-popup-mode {overflow: hidden;}
 					border: 4px solid $col-active;
 				}
 			}
+			&.hover {
+				&:after {
+					content: ''; position: absolute; z-index: 2;
+					left: 0; right: 0; top: 0; bottom: 0;
+					background: rgba(32,178,146,.3);
+				}
+			}
 			.gs-resize-handle {}
 			figure {
 				margin: 0;
