@@ -36,7 +36,7 @@ module.exports = React.createClass({
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
 		let uploadImages = this.props.uploadImages;
 
-		if (window.keyboardEvent.readySelect)
+		if (window.PLE.keyboardEvent.readySelect)
 		{
 			uploadImages[currentKey].on = !uploadImages[currentKey].on;
 		}

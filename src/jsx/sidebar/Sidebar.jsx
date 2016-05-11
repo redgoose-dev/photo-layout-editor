@@ -1,4 +1,5 @@
 const React = require('React');
+const ReactDOM = require('ReactDOM');
 const Uploader = require('../lib/Uploader.js');
 const Nav = require('./Nav.jsx');
 const UploadFiles = require('./UploadFiles.jsx');
@@ -30,18 +31,32 @@ module.exports = React.createClass({
 	{
 		return {
 			uploadImages : [],
-			is_loading : false
+			is_loading : false,
+			show : this.props.show
 		};
 	},
 
 	componentDidMount()
 	{
+		this.parent = this.props.parent;
+
+		this.parent.$side = $(ReactDOM.findDOMNode(this));
+
 		if (this.props.defaultImagesScript)
 		{
 			$.get(this.props.defaultImagesScript, (response) => {
 				var result = (response instanceof Array) ? response : JSON.parse(response.replace(/\+/g, '%20'));
 				this.importImages(result);
 			});
+		}
+
+		if (this.props.show)
+		{
+			this.showSide();
+		}
+		else
+		{
+			this.hideSide();
 		}
 	},
 
@@ -316,15 +331,65 @@ module.exports = React.createClass({
 	},
 
 	/**
+	 * show side
+	 *
+	 */
+	showSide()
+	{
+		let $app = $(this.parent.option.elements.app);
+		$app.addClass('on-sidebar');
+		this.updateSide(true);
+	},
+
+	/**
+	 * hide side
+	 *
+	 */
+	hideSide()
+	{
+		let $app = $(this.parent.option.elements.app);
+		$app.removeClass('on-sidebar');
+		this.updateSide(false);
+	},
+
+	/**
+	 * hide side
+	 *
+	 * @param {Boolean} sw
+	 */
+	updateSide(sw)
+	{
+		this.setState({ show : sw });
+		localStorage.setItem('sidebar', sw);
+		this.parent.resizeWidthSide(sw);
+	},
+
+	/**
+	 * Toggle side
+	 *
+	 */
+	toggleSide()
+	{
+		if (this.state.show)
+		{
+			this.hideSide();
+		}
+		else
+		{
+			this.showSide();
+		}
+	},
+
+	/**
 	 * render
 	 */
 	render()
 	{
 		return (
 			<aside className={ 'ple-sidebar' + ((this.state.is_loading) ? ' loading' : '') }>
-				<button type="button" onClick={this.props.toggleSidebar} className="toggle">
+				<button type="button" onClick={this.toggleSide} className="toggle">
 					<span>
-						<i className={'sp-ico abs' + ((this.props.show) ? ' ico-arrow-right' : ' ico-arrow-left')}>Toggle sidebar</i>
+						<i className={'sp-ico abs' + ((this.state.show) ? ' ico-arrow-right' : ' ico-arrow-left')}>Toggle sidebar</i>
 					</span>
 				</button>
                 <Nav ref="nav"

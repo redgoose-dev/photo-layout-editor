@@ -35,7 +35,6 @@ if (pleUserPreference)
 const KeyboardEvent = require('./lib/KeyboardEvent.js');
 
 // init components
-const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
 const Cropper = require('./cropper/Cropper.jsx');
@@ -43,99 +42,83 @@ const Result = require('./result/Result.jsx');
 const API = require('./lib/API.js');
 
 
-// App
-const App = React.createClass({
+window.PLE = {
 	
-	displayName : 'photo-layout-editor',
+	// components
+	container : null,
+	side : null,
+	cropper : null,
+	result : null,
+	keyboardEvent : null,
+	
+	// API
+	api : null,
+
+	// elements
+	$app : null,
+	$container : null,
+	$side : null,
+	
+	option : {},
 	saveWidth : 0,
-	$editor : null,
-	$sidebar : null,
-	show_sidebar : (localStorage.getItem('sidebar') != 'false'),
-	api : new API(),
 
-	getInitialState()
+	init(options)
 	{
-		return {};
-	},
+		this.option = options;
 
-	componentDidMount()
-	{
-		// init api
-		this.api.init(this);
+		// set elements
+		this.$app = $(this.option.elements.app);
 		
-		this.$editor = $(ReactDOM.findDOMNode(this.refs.editor));
-		this.$sidebar = $(ReactDOM.findDOMNode(this.refs.sidebar));
+		// TODO : preference값을 이 객체속에다 집어넣기
+		
+		// init container
+		this.container = ReactDOM.render(<Container parent={this} resizeWidth="" />, options.elements.container);
 
-		// scroll event
-		$(window).on('scroll', (e) => {
-			this.refs.container.refs.navTop.scrollEvent();
-		});
+		// init side
+		this.side = ReactDOM.render(<Sidebar
+			parent={this}
+			uploadScript={window.plePreference.uploadScript}
+			removeScript={window.plePreference.removeScript}
+			defaultImagesScript={window.plePreference.defaultImagesScript}
+			show={this.option.show_side}
+			toggleSidebar={this.toggleSidebar} />, options.elements.side);
+		
+		// init Cropper
+		this.cropper = ReactDOM.render(<Cropper parent={this} />, options.elements.cropper);
+		
+		// ini result
+		this.result = ReactDOM.render(<Result parent={this} />, options.elements.result);
+		
+		// init keyboard event
+		this.keyboardEvent = new KeyboardEvent();
 
-		// show sidebar
-		if (this.show_sidebar)
-		{
-			this.$editor.addClass('on-sidebar');
-		}
+		// init API
+		this.api = new API();
+		this.api.init(this);
 
 		// play gridster
-		this.refs.container.actGridster();
+		this.container.actGridster();
 	},
 
 	/**
-	 * Toggle side bar
+	 * resize width in the side
+	 *
+	 * @param {Boolean} showSide
 	 */
-	toggleSidebar()
+	resizeWidthSide(showSide)
 	{
-		var bool = !this.show_sidebar;
-		localStorage.setItem('sidebar', bool);
-		this.show_sidebar = bool;
-
-		this.saveWidth = (bool) ? this.saveWidth + this.$sidebar.width() : this.saveWidth - this.$sidebar.width();
-
-		this.$editor.toggleClass('on-sidebar');
-		this.$editor.css('min-width', this.saveWidth);
+		this.saveWidth = (showSide) ? this.saveWidth + this.$side.width() : this.saveWidth - this.$side.width();
+		this.$app.css('min-width', this.saveWidth);
 	},
 
 	/**
-	 * Resize container width
+	 * resize width in the container
 	 *
 	 * @param {int} width
 	 */
-	resizeWidth(width)
+	resizeWidthContainer(width)
 	{
-		this.saveWidth = (this.show_sidebar) ? width : width - this.$sidebar.width();
-		this.$editor.css('min-width', this.saveWidth);
-	},
-
-	/**
-	 * render
-	 */
-	render()
-	{
-		return (
-			<div ref="editor" className="ple-editor">
-				<Header ref="header" />
-				<Container
-					ref="container"
-					resizeWidth={this.resizeWidth}/>
-				<Sidebar
-					ref="sidebar"
-					uploadScript={window.plePreference.uploadScript}
-					removeScript={window.plePreference.removeScript}
-					defaultImagesScript={window.plePreference.defaultImagesScript}
-					show={this.state.show_sidebar}
-					toggleSidebar={this.toggleSidebar}/>
-			</div>
-		);
+		this.saveWidth = (this.side.state.show) ? width : width - this.$side.width();
+		this.$app.css('min-width', this.saveWidth);
 	}
-});
-
-
-// event
-window.keyboardEvent = new KeyboardEvent();
-
-
-// render App
-window.PLE = ReactDOM.render(<App/>, document.getElementById('app'));
-window.PLE_cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));
-window.PLE_result = ReactDOM.render(<Result/>, document.getElementById('result'));
+};

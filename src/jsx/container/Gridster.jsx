@@ -15,6 +15,7 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
+		this.parent = this.props.parent;
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 		this.$wrap = this.$gridster.parent();
 	},
@@ -101,7 +102,7 @@ module.exports = React.createClass({
 		var width_sidebar = $('.ple-sidebar').width();
 		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
 
-		this.props.resizeWidth(bodyWidth);
+		this.props.root.resizeWidthContainer(bodyWidth);
 	},
 
 	/**
@@ -330,7 +331,7 @@ module.exports = React.createClass({
 
 		if ($block.hasClass(this.selectedClassName))
 		{
-			this.unSelectBlock((window.keyboardEvent.readySelect) ? $block : $blocks);
+			this.unSelectBlock((window.PLE.keyboardEvent.readySelect) ? $block : $blocks);
 
 			if (!this.getSelectedBlocks().length)
 			{
@@ -339,7 +340,7 @@ module.exports = React.createClass({
 		}
 		else
 		{
-			if (!window.keyboardEvent.readySelect)
+			if (!window.PLE.keyboardEvent.readySelect)
 			{
 				$blocks.removeClass(this.selectedClassName);
 			}

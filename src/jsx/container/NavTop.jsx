@@ -28,6 +28,14 @@ module.exports = React.createClass({
 		};
 	},
 
+	componentDidMount()
+	{
+		// scroll event
+		$(window).on('scroll', (e) => {
+			this.scrollEvent();
+		});
+	},
+
 	/**
 	 * Toggle setting form
 	 */

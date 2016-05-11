@@ -9,6 +9,8 @@ const NavBottom = require('./NavBottom.jsx');
 module.exports = React.createClass({
 
 	displayName : 'Container',
+
+	parent : null,
 	originalPreference : {},
 	gridster : null,
 
@@ -22,6 +24,8 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
+		this.root = this.props.parent;
+		this.root.$container = $(ReactDOM.findDOMNode(this));
 		this.originalPreference = this.state.preference;
 		this.gridster = this.refs.gridster;
 	},
@@ -86,7 +90,7 @@ module.exports = React.createClass({
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
-					window.PLE_cropper.open({
+					window.PLE.cropper.open({
 						$selected : $selectedItem,
 						color : $selectedItem.attr('data-color'),
 						image : {
@@ -133,6 +137,7 @@ module.exports = React.createClass({
 				<NavTop
 					ref="navTop"
 					parent={this}
+					root={this.root}
 					updatePreference={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
@@ -140,13 +145,11 @@ module.exports = React.createClass({
 					preference={this.state.preference}/>
 				<Gridster
 					ref="gridster"
+					parent={this}
+					root={this.root}
 					preference={this.state.preference}
 					action={this.state.action}
-					resizeWidth={this.props.resizeWidth}
 					selectBlock={this.onSelectBlock}/>
-				<NavBottom
-					container={this}
-					gridster={this.refs.gridster} />
 			</div>
 		);
 	}

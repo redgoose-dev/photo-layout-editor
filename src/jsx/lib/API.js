@@ -25,6 +25,7 @@ function itemToArray(item, type)
 	return item;
 }
 
+
 /**
  * Gridster for API
  *
@@ -293,7 +294,10 @@ function SidebarForAPI() {
 
 
 module.exports = function API() {
-
+	
+	this.gridster = null;
+	this.side = null;
+	
 	/**
 	 * Init
 	 *
@@ -301,9 +305,9 @@ module.exports = function API() {
 	 */
 	this.init = (parent) => {
 		app = parent;
-		container = app.refs.container;
+		container = app.container;
 		gridster = container.refs.gridster;
-		sidebar = app.refs.sidebar;
+		sidebar = app.side;
 
 		this.gridster = new GridsterForAPI();
 		this.side = new SidebarForAPI();

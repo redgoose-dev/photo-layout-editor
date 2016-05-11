@@ -8,9 +8,27 @@
 <link rel="stylesheet" href="../dist/css/app.pkgd.css"/>
 </head>
 <body>
-<main id="app"></main>
-<button type="button" id="fooo">FOO</button>
-<button type="button" id="fooo2">FOO2</button>
+<main class="ple-editor" id="app">
+	<!-- Header -->
+	<header class="ple-header">
+		<h1>Photo Layout Editor</h1>
+		<p>사진 레이아웃 에디터입니다. 처음 시작하면 먼저 문서설정을 해주세요!</p>
+	</header>
+	<!-- // Header -->
+
+	<div class="container">
+		<!-- PLE container -->
+		<div id="ple_app"></div>
+		<!-- // PLE container -->
+		<nav>
+			.control buttons area
+		</nav>
+	</div>
+
+	<!-- PLE Sidebar -->
+	<div id="ple_side"></div>
+	<!-- // PLE Sidebar -->
+</main>
 <div id="cropper"></div>
 <div id="result"></div>
 <script src="../dist/js/vendor.pkgd.js"></script>
@@ -42,59 +60,73 @@ window.pleUserPreference = {
 </script>
 <script src="../dist/js/app.pkgd.js"></script>
 <script>
+PLE.init({
+	elements : {
+		app : document.getElementById('app'),
+		container : document.getElementById('ple_app'),
+		side : document.getElementById('ple_side'),
+		cropper : document.getElementById('cropper'),
+		result : document.getElementById('result')
+	},
+	show_side : (localStorage.getItem('sidebar') != 'false')
+});
+
+
+
+
 // TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.
 
-var api = window.PLE.api;
-document.getElementById('fooo').addEventListener('click', function(e){
-	// $('#gridster li').eq(0)
-
-	// 이미지를 경로 그대로 가져온다
-	//	api.gridster.export(null, function(res){
-	//		log(res);
-	//	});
-
-	// 이미지를 base64코드로 변환하여 가져온다.
-	//	api.gridster.export({
-	//		type: 'image/jpeg',
-	//		quality : 0.5
-	//	}, function(res){
-	//		log(res);
-	//	});
-
-	// 모두 모아져 있는 이미지 만들기
-	//	api.gridster.makeImage({
-	//		type : 'image/jpeg',
-	//		quality : 0.5,
-	//		bgColor : '#ff0000'
-	//	}, function(res){
-	//		log(res);
-	//	});
-
-	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
-	//		$('body').append('<img src="' + res + '" />');
-	//	});
-	
-	//	api.gridster.assignImage(
-	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
-	//		'./images/rg3144.jpg',
-	//		{
-	//			size: '80px auto',
-	//			position: '-20px -10px'
-	//		}
-	//	);
-
-	// api.side.attach([1,8]);
-	
-	// api.side.remove([1,2]);
-
-	// api.side.select([0,2,3]);
-
-	//api.side.unSelect([1,2,4]);
-
-	//api.side.toggleSelectAll();
-
-	// log(api.side.export());
-});
+//var api = window.PLE.api;
+//document.getElementById('fooo').addEventListener('click', function(e){
+//	// $('#gridster li').eq(0)
+//
+//	// 이미지를 경로 그대로 가져온다
+//	//	api.gridster.export(null, function(res){
+//	//		log(res);
+//	//	});
+//
+//	// 이미지를 base64코드로 변환하여 가져온다.
+//	//	api.gridster.export({
+//	//		type: 'image/jpeg',
+//	//		quality : 0.5
+//	//	}, function(res){
+//	//		log(res);
+//	//	});
+//
+//	// 모두 모아져 있는 이미지 만들기
+//	//	api.gridster.makeImage({
+//	//		type : 'image/jpeg',
+//	//		quality : 0.5,
+//	//		bgColor : '#ff0000'
+//	//	}, function(res){
+//	//		log(res);
+//	//	});
+//
+//	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
+//	//		$('body').append('<img src="' + res + '" />');
+//	//	});
+//
+//	//	api.gridster.assignImage(
+//	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
+//	//		'./images/rg3144.jpg',
+//	//		{
+//	//			size: '80px auto',
+//	//			position: '-20px -10px'
+//	//		}
+//	//	);
+//
+//	// api.side.attach([1,8]);
+//
+//	// api.side.remove([1,2]);
+//
+//	// api.side.select([0,2,3]);
+//
+//	//api.side.unSelect([1,2,4]);
+//
+//	//api.side.toggleSelectAll();
+//
+//	// log(api.side.export());
+//});
 //document.getElementById('fooo2').addEventListener('click', function(e){
 //	api.gridster.unSelect($('#gridster li').eq(2));
 //});
