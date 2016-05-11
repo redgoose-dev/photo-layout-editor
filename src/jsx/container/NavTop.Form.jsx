@@ -1,15 +1,30 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+const $ = require('jquery');
+
 module.exports = React.createClass({
 
 	displayName : 'NavTop-Form',
 	form : null,
 
 	propTypes : {
-		update : React.PropTypes.func
+		update : React.PropTypes.func,
+		preference : React.PropTypes.object
+	},
+
+	defaultPreference : {
+		width : 100,
+		height : 100,
+		max_col : 5,
+		max_scale : 2,
+		outer_margin : 10,
+		inner_margin : 10
 	},
 
 	getInitialState()
 	{
-		return {};
+		let defaultState = {};
+		return Object.assign(defaultState, this.defaultPreference);
 	},
 
 	componentDidMount()
@@ -17,16 +32,28 @@ module.exports = React.createClass({
 		this.form = ReactDOM.findDOMNode(this.refs.form);
 	},
 
-	update(e)
+	componentWillReceiveProps(props)
+	{
+		this.setState(Object.assign(this.state, props.preference));
+	},
+
+	submit(e)
 	{
 		e.preventDefault();
-		this.props.update({
+		this.props.submit({
 			width : parseInt(this.form.width.value),
 			height : parseInt(this.form.height.value),
 			max_col : parseInt(this.form.max_col.value),
 			max_scale : parseInt(this.form.max_scale.value),
 			outer_margin : parseInt(this.form.outer_margin.value),
 			inner_margin : parseInt(this.form.inner_margin.value)
+		});
+	},
+
+	change(e)
+	{
+		this.setState({
+			[e.target.name] : e.target.value
 		});
 	},
 
@@ -37,18 +64,19 @@ module.exports = React.createClass({
 	{
 		return (
 			<article className="form edit-setting" id="settings">
-				<form method="post" ref="form" onSubmit={this.update}>
+				<form method="post" ref="form" onSubmit={this.submit}>
 					<fieldset>
 						<legend className="blind">Settings form</legend>
 						<h1>Settings</h1>
 						<dl>
-							<dt><label htmlhtmlFor="frm_name">Min Width</label></dt>
+							<dt><label htmlFor="frm_name">Min Width</label></dt>
 							<dd>
 								<input
 									type="number" name="width" id="frm_name"
 									min="1" max="999" maxLength="3"
-									defaultValue={this.props.preference.width}
-									required/>
+									value={this.state.width}
+									onChange={this.change}
+									required />
 								<span>px</span>
 							</dd>
 						</dl>
@@ -58,7 +86,9 @@ module.exports = React.createClass({
 								<input
 									type="number" name="height" id="frm_height"
 									min="1" max="999"
-									defaultValue={this.props.preference.height}/>
+									value={this.state.height}
+									onChange={this.change}
+									required />
 								<span>px</span>
 							</dd>
 						</dl>
@@ -68,7 +98,9 @@ module.exports = React.createClass({
 								<input
 									type="number" name="max_col" id="frm_max_col"
 									min="1" max="99"
-									defaultValue={this.props.preference.max_col}/>
+									value={this.state.max_col}
+									onChange={this.change}
+									required />
 								<span>ea</span>
 							</dd>
 						</dl>
@@ -78,7 +110,9 @@ module.exports = React.createClass({
 								<input
 									type="number" name="max_scale" id="frm_max_scale"
 									min="1" max="99"
-									defaultValue={this.props.preference.max_scale}/>
+									defaultValue={this.state.max_scale}
+									onChange={this.change}
+									required />
 								<span>x</span>
 							</dd>
 						</dl>
@@ -88,7 +122,9 @@ module.exports = React.createClass({
 								<input
 									type="number" name="outer_margin" id="frm_outer_margin"
 									min="0" max="500"
-									defaultValue={this.props.preference.outer_margin}/>
+									value={this.state.outer_margin}
+									onChange={this.change}
+									required />
 								<span>px</span>
 							</dd>
 						</dl>
@@ -98,13 +134,15 @@ module.exports = React.createClass({
 								<input
 									type="number" name="inner_margin" id="frm_inner_margin"
 									min="0" max="500"
-									defaultValue={this.props.preference.inner_margin}/>
+									value={this.state.inner_margin}
+									onChange={this.change}
+									required />
 								<span>px</span>
 							</dd>
 						</dl>
 					</fieldset>
 					<nav>
-						<span><button type="reset" onClick={this.props.reset}>Reset</button></span>
+						<span><button type="button" onClick={this.props.reset}>Reset</button></span>
 						<span><button type="submit" className="submit">Apply</button></span>
 					</nav>
 				</form>

@@ -82,7 +82,9 @@ module.exports = React.createClass({
 		}
 
 		// act unselected
-		this.unSelectBlock();
+		setTimeout(() => {
+			this.unSelectBlock(null);
+		}, 50);
 	},
 
 	/**
@@ -104,11 +106,13 @@ module.exports = React.createClass({
 
 	/**
 	 * Clear blocks
+	 *
+	 * @param {boolean} save
 	 */
-	clear()
+	clear(save)
 	{
 		this.$gridster.find('li').removeAttr('style class');
-		this.saveBlocks = $(this.$gridster.children('ul').html());
+		this.saveBlocks = (save) ? $(this.$gridster.children('ul').html()) : null;
 		this.gridster.destroy(true);
 		this.$gridster.children().remove();
 		this.$gridster.removeClass('ready').removeAttr('style');
@@ -119,169 +123,97 @@ module.exports = React.createClass({
 	 */
 	init()
 	{
+		let pref = window.plePreference.gridster;
+
+		// create gridster
 		this.create();
-		this.randomAddBlocks(5, this.props.preference.max_scale, this.props.preference.max_scale);
+
+		// make random blocks
+		if (pref.params)
+		{
+			this.importParams(pref.params);
+		}
+		else if (pref.createNow)
+		{
+			this.randomAddBlocks(
+				(pref.createCount || 5),
+				this.props.preference.max_scale,
+				this.props.preference.max_scale
+			);
+		}
 	},
 
 	/**
-	 * Update preference
+	 * Reset gridster
+	 *
+	 * @param {boolean} save
 	 */
-	updatePreference()
+	reset(save)
 	{
-		this.clear();
+		this.clear(!!(save));
 		this.create();
+	},
+
+	/**
+	 * Import params
+	 *
+	 * @param {Array} arr
+	 */
+	importParams(arr)
+	{
+		if (!arr.length) return false;
+
+		arr.forEach((o) => {
+			this.block({
+				col : o.col,
+				row : o.row,
+				size_x : o.size_x,
+				size_y : o.size_y
+			});
+		});
 	},
 
 	/**
 	 * Make block
 	 *
-	 * @param {object} params
+	 * @param {Object} params
+	 * @param {int} params.col
+	 * @param {int} params.row
+	 * @param {int} params.size_x
+	 * @param {int} params.size_y
+	 * @param {String} params.classNames
+	 * @param {String} params.color
+	 * @param {String} params.text
 	 */
 	block(params)
 	{
-		if (!params.sizeX || !params.sizeY) return false;
+		if (!params.col || !params.row) return false;
 
-		var $li = $('<li' +
+		let $li = $('<li' +
 			((params.classNames) ? ' class="' + params.classNames + '"' : '') +
-			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) +
-			'" style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
+			' data-color="' + ((params.color) ? params.color : this.defaultBlockColor) + '"' +
+			' style="background: ' + ((params.color) ? params.color : this.defaultBlockColor) + '">' +
 			((params.text) ? params.text : '') +
 			'</li>');
 
 		// add gridster
-		this.gridster.add_widget($li, params.sizeX, params.sizeY, false);
-
-		// init event
-		this.initBlockEvent($li);
-	},
-
-	/**
-	 * Init block event
-	 *
-	 * @param {object} $block
-	 */
-	initBlockEvent($block)
-	{
-		$block.on('click', (e) => {
-			e.stopPropagation();
-			this.selectBlock($(e.currentTarget));
-		});
-	},
-
-	/**
-	 * Remove block
-	 */
-	removeBlock()
-	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, o) => {
-			this.gridster.remove_widget(o, null, null, true);
-		});
-		this.unSelectBlock();
-	},
-
-	/**
-	 * Empty block
-	 */
-	emptyBlock()
-	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
-			if ($(v).hasClass('attached'))
-			{
-				$(v).removeClass('attached').children('figure').remove();
-			}
-		});
-	},
-
-	/**
-	 * Duplicate block
-	 */
-	duplicateBlock()
-	{
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
-			this.block({
-				sizeX : parseInt(v.getAttribute('data-sizex')),
-				sizeY : parseInt(v.getAttribute('data-sizey')),
-				color : v.getAttribute('data-color'),
-				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
-				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
-			});
-		});
-	},
-
-	/**
-	 * Select block
-	 *
-	 * @param {object} $block
-	 */
-	selectBlock($block)
-	{
-		var $blocks = this.$gridster.find('li');
-
-		if ($block.hasClass(this.selectedClassName))
+		if (params.size_x)
 		{
-			if (window.keyboardEvent.readySelect)
-			{
-				$block.removeClass(this.selectedClassName);
-			}
-			else
-			{
-				$blocks.removeClass(this.selectedClassName);
-			}
-
-			if (!this.$gridster.find('li.' + this.selectedClassName).length)
-			{
-				this.props.selectBlock(null);
-			}
+			this.gridster.add_widget(
+				$li,
+				(params.size_x || 1),
+				(params.size_y || 1),
+				params.col,
+				params.row
+			);
 		}
 		else
 		{
-			if (window.keyboardEvent.readySelect)
-			{
-				$block.addClass(this.selectedClassName);
-			}
-			else
-			{
-				$blocks.removeClass(this.selectedClassName);
-				$block.addClass(this.selectedClassName);
-			}
-
-			this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
-
-			this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
-				$blocks.removeClass(this.selectedClassName);
-				this.props.selectBlock(null);
-				$(e.currentTarget).off('click.gridsterBlock');
-			});
+			this.gridster.add_widget( $li, params.col, params.row, false );
 		}
-	},
 
-	/**
-	 * unselect block
-	 *
-	 */
-	unSelectBlock()
-	{
-		setTimeout(() => {
-			this.$wrap.trigger('click.gridsterBlock');
-		}, 50);
-	},
-
-	/**
-	 * Random add blocks
-	 *
-	 * @param {int} count
-	 * @param {int} max_width
-	 * @param {int} max_height
-	 */
-	randomAddBlocks(count, max_width, max_height)
-	{
-		for (var i=0; i<count; i++)
-		{
-			this.block({
-				sizeX : util.getRandomRange(1, max_width),
-				sizeY : util.getRandomRange(1, max_height)
-			});
-		}
+		// init event
+		this.initBlockEvent($li);
 	},
 
 	/**
@@ -296,7 +228,162 @@ module.exports = React.createClass({
 		y = y || 1;
 		x = (x > this.props.preference.max_scale) ? this.props.preference.max_scale : x;
 		y = (y > this.props.preference.max_scale) ? this.props.preference.max_scale : y;
-		this.block({ sizeX : x, sizeY : y });
+		this.block({ col : x, row : y });
+	},
+
+	/**
+	 * Random add blocks
+	 *
+	 * @param {int} count
+	 * @param {int} max_width
+	 * @param {int} max_height
+	 */
+	randomAddBlocks(count, max_width, max_height)
+	{
+		for (var i=0; i<count; i++)
+		{
+			this.block({
+				col : util.getRandomRange(1, max_width),
+				row : util.getRandomRange(1, max_height)
+			});
+		}
+	},
+
+	/**
+	 * get selected blocks
+	 *
+	 * @return {object}
+	 */
+	getSelectedBlocks()
+	{
+		return this.$gridster.find('li.' + this.selectedClassName);
+	},
+
+	/**
+	 * Init block event
+	 *
+	 * @param {object} $block
+	 */
+	initBlockEvent($block)
+	{
+		$block.on('click', (e) => {
+			e.stopPropagation();
+			this.onSelectBlock($(e.currentTarget));
+		});
+	},
+
+	/**
+	 * Remove block
+	 *
+	 * @param {object} $target
+	 */
+	removeBlock($target)
+	{
+		$target.each((k, o) => {
+			this.gridster.remove_widget(o, null, null, true);
+		});
+		this.unSelectBlock(null);
+	},
+
+	/**
+	 * Empty block
+	 * clear image in block
+	 *
+	 * @param {object} $target
+	 */
+	emptyBlock($target)
+	{
+		$target.each((k, v) => {
+			if ($(v).hasClass('attached'))
+			{
+				$(v).removeClass('attached').children('figure').remove();
+			}
+		});
+	},
+
+	/**
+	 * Duplicate block
+	 *
+	 * @param {object} $target
+	 */
+	duplicateBlock($target)
+	{
+		$target.each((k, v) => {
+			this.block({
+				col : parseInt(v.getAttribute('data-sizex')),
+				row : parseInt(v.getAttribute('data-sizey')),
+				color : v.getAttribute('data-color'),
+				text : ($(v).hasClass('attached')) ? $(v).children('figure').prop('outerHTML') : '',
+				classNames : ($(v).hasClass('attached')) ? 'attached' : ''
+			});
+		});
+	},
+
+	/**
+	 * Select block by click
+	 *
+	 * @param {object} $block
+	 */
+	onSelectBlock($block)
+	{
+		var $blocks = this.$gridster.find('li');
+
+		if ($block.hasClass(this.selectedClassName))
+		{
+			this.unSelectBlock((window.keyboardEvent.readySelect) ? $block : $blocks);
+
+			if (!this.getSelectedBlocks().length)
+			{
+				this.props.selectBlock(null);
+			}
+		}
+		else
+		{
+			if (!window.keyboardEvent.readySelect)
+			{
+				$blocks.removeClass(this.selectedClassName);
+			}
+			this.selectBlock($block);
+		}
+	},
+
+	/**
+	 * Select block
+	 *
+	 * @param {object} $target
+	 */
+	selectBlock($target)
+	{
+		var $blocks = this.$gridster.find('li');
+		if (!$target)
+		{
+			$target = $blocks;
+		}
+
+		$target.addClass(this.selectedClassName);
+		this.props.selectBlock($blocks.filter('.' + this.selectedClassName));
+
+		this.$wrap.off('click.gridsterBlock').on('click.gridsterBlock', (e) => {
+			this.unSelectBlock($blocks);
+		});
+	},
+	
+	/**
+	 * unselect block
+	 *
+	 * @param {object} $target
+	 */
+	unSelectBlock($target)
+	{
+		$target = $target || this.$gridster.find('li');
+
+		$target.removeClass(this.selectedClassName);
+
+		if (!this.getSelectedBlocks().length)
+		{
+			this.props.selectBlock(null);
+			this.$wrap.off('click.gridsterBlock');
+		}
 	},
 
 	/**
@@ -304,7 +391,8 @@ module.exports = React.createClass({
 	 */
 	shuffleBlocks()
 	{
-		this.clear();
+		var scrollTop = $(window).scrollTop();
+		this.clear(true);
 
 		this.saveBlocks.each((k, o) => {
 			$(o).attr({
@@ -314,14 +402,17 @@ module.exports = React.createClass({
 				'data-sizey' : util.getRandomRange(1, this.props.preference.max_scale)
 			});
 		});
-
 		this.create();
+
+		$(window).scrollTop(scrollTop);
 	},
 
 	/**
 	 * Attach images
+	 * 빈 블럭에 이미지들을 붙여넣는 작업을 한다.
+	 * 만약 블럭의 갯수가 모자라면 블럭을 추가로 만들고 이미지를 붙여넣는다.
 	 *
-	 * @param {array} images
+	 * @param {Array} images
 	 */
 	attachImages(images)
 	{
@@ -332,7 +423,7 @@ module.exports = React.createClass({
 			let total = images.length - $blocks.length;
 			for (let i=0; i<total; i++)
 			{
-				this.addBlock();
+				this.addBlock(1,1);
 			}
 			$blocks = this.$gridster.find('li').not('.attached');
 		}
@@ -348,13 +439,11 @@ module.exports = React.createClass({
 		baskets.forEach((o, k) => {
 			this.assignImage($(o), images[k], null);
 		});
-
-		// act unselected
-		this.unSelectBlock();
 	},
 
 	/**
 	 * Assign image
+	 * 블럭 하나에다 이미지를 붙이는 작업을 한다.
 	 *
 	 * @param {object} $target
 	 * @param {string} image
@@ -362,6 +451,8 @@ module.exports = React.createClass({
 	 */
 	assignImage($target, image, imageOptions)
 	{
+		if (!$target.length) return false;
+
 		var $figure = $('<figure/>');
 		$figure.css({
 			'background-image' : 'url(' + image + ')',
@@ -383,12 +474,14 @@ module.exports = React.createClass({
 	/**
 	 * Change block color
 	 *
+	 * @param {object} $target
 	 * @param {string} color
 	 */
-	changeBlockColor(color)
+	changeBlockColor($target, color)
 	{
+		if (!$target || !$target.length) return false;
 		color = color || this.defaultBlockColor;
-		this.$gridster.find('li.' + this.selectedClassName).each((k, v) => {
+		$target.each((k, v) => {
 			$(v).attr('data-color', color).css('backgroundColor', color);
 		});
 	},
@@ -399,14 +492,23 @@ module.exports = React.createClass({
 	render()
 	{
 		// act action
-		if (typeof this[this.props.action] === 'function')
+		switch(this.props.action)
 		{
-			this[this.props.action]();
+			case 'updatePreference':
+				this.reset(true);
+				break;
+			default:
+				if (typeof this[this.props.action] === 'function')
+				{
+					this[this.props.action]();
+				}
+
+				break;
 		}
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster" id="gridster"></div>
+				<div ref="gridster" className="gridster" id={window.plePreference.gridster.nameID}></div>
         	</div>
 		);
 	}

@@ -122,7 +122,7 @@ module.exports = React.createClass({
 	onSelect($el)
 	{
 		var newVisible = this.state.visible;
-		if ($el)
+		if ($el && $el.length)
 		{
 			newVisible.duplicate = true;
 			newVisible.remove = true;
@@ -141,6 +141,23 @@ module.exports = React.createClass({
 
 		this.toggleFormEvent(false);
 
+		this.setState({
+			visible: newVisible
+		});
+	},
+
+	/**
+	 * On empty
+	 *
+	 * @param {object} e
+	 */
+	onEmpty(e)
+	{
+		this.props.actControl(e);
+
+		// update toolbar
+		var newVisible = this.state.visible;
+		newVisible.edit = false;
 		this.setState({
 			visible: newVisible
 		});
@@ -171,7 +188,7 @@ module.exports = React.createClass({
 							<i className="sp-ico ico-setting abs">Setting</i>
 						</button>
 						<NavTopForm
-							update={this.props.update}
+							submit={this.props.updatePreference}
 							reset={this.props.reset}
 							preference={this.props.preference}/>
 					</div>
@@ -191,7 +208,7 @@ module.exports = React.createClass({
 						</button>
 					</div>
 					<div className={'block color-bg-key' + ((this.state.visible.empty) ? ' is-show' : '')}>
-						<button type="button" title="Remove image in block" onClick={this.props.actControl} data-type="empty">
+						<button type="button" title="Remove image in block" onClick={this.onEmpty} data-type="empty">
 							<i className="sp-ico ico-empty abs">Remove image</i>
 						</button>
 					</div>

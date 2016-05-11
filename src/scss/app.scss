@@ -16,9 +16,7 @@ body, input, select, textarea {
 
 
 /* popup mode */
-html.ple-popup-mode {
-	overflow: hidden;
-}
+html.ple-popup-mode {overflow: hidden;}
 
 
 /* Attributes */
@@ -49,8 +47,7 @@ html.ple-popup-mode {
 .ple-header {
 	h1 {
 		margin: -5px 0 0;
-		font-size: 36px; color: #222;
-		font-family: $font-eng;
+		font-family: $font-eng; font-size: 36px; color: #222;
 	}
 	p {
 		margin: 3px 0 0;
@@ -67,10 +64,10 @@ html.ple-popup-mode {
 		&:after {content: ''; display: block; clear: both;}
 	}
 	.nav-top {
-		position: absolute; z-index: 1000;
+		position: absolute; z-index: 11;
 		top: 0; width: 100%; height: 43px;
 		background: #fff;
-		&.fix {position: fixed; top: 0;}
+		&.fix {position: fixed; top: 0; z-index: 1000;}
 		.block {
 			float: left; margin-right: 1px;
 			display: none;
@@ -78,10 +75,7 @@ html.ple-popup-mode {
 				display: block; position: relative;
 				margin: 0; padding: 0; width: 42px; height: 42px;
 				border: none; background: $col-blur; cursor: pointer;
-				i {
-					position: absolute; display: block;
-					left: 50%; top: 50%;
-				}
+				i {position: absolute; display: block; left: 50%; top: 50%;}
 			}
 			&.is-show {display: block;}
 			&.color-bg-key {
@@ -152,7 +146,7 @@ html.ple-popup-mode {
 			.preview {
 				position: relative; margin: 5px 0 0 0;
 				input {
-					display: block; width: 100%; margin: 0; padding: 5px 50px 5px 5px;
+					display: block; width: 175px; margin: 0; padding: 5px 50px 5px 5px;
 					font-size: 13px; color: #222;
 					border: 1px solid #aaa;
 					outline: 0;
@@ -173,7 +167,10 @@ html.ple-popup-mode {
 			}
 		}
 	}
-	.gridster-wrap {padding: 50px 30px; background: $col-bg-blur;}
+	.gridster-wrap {
+		padding: 50px 30px;
+		@extend %transparent-background;
+	}
 	.gridster {
 		margin: 0 auto;
 		background: #fff;
@@ -188,6 +185,13 @@ html.ple-popup-mode {
 					border: 4px solid $col-active;
 				}
 			}
+			&.hover {
+				&:after {
+					content: ''; position: absolute; z-index: 2;
+					left: 0; right: 0; top: 0; bottom: 0;
+					background: rgba(32,178,146,.3);
+				}
+			}
 			.gs-resize-handle {}
 			figure {
 				margin: 0;
@@ -198,14 +202,18 @@ html.ple-popup-mode {
 		}
 	}
 	.nav-bottom {
-		margin: 30px 0; text-align: center;
+		margin: 30px 0; text-align: left;
+		p {margin: 2px 0;}
 		button {
-			margin: 0; padding: 15px 34px;
+			margin: 0 1px; padding: 10px 15px;
 			border: none; background: $col-key;
 			font-size: 0; cursor: pointer;
 			> * {vertical-align: middle;}
 			i {margin-right: 3px;}
-			span { font-weight: bold; font-size: 15px; color: #fff;}
+			span {
+				font-family: $font-eng;
+				font-size: 15px; color: #fff;
+			}
 		}
 	}
 }
@@ -221,9 +229,7 @@ html.ple-popup-mode {
 	transition: transform $sidebar-toggle-speed ease-in-out;
 	-webkit-transform: translateX(0);
 	transform: translateX(0);
-	&.loading {
-
-	}
+	&.loading {}
 	.toggle {
 		position: absolute; left: -25px; top: 20px; z-index: 10;
 		padding: 10px 5px; margin: 0;
@@ -258,7 +264,7 @@ html.ple-popup-mode {
 			position: relative; float: left; width: 25%; height: 36px;
 			border-width: 0 0 0 1px; border-style: solid;
 			border-color: #626164; border-color: rgba(255,255,255,.3);
-			background: none; cursor: pointer;
+			background: none; cursor: pointer; overflow: hidden;
 			&:first-child {border-width: 0;}
 		}
 		input[type=file] {
@@ -397,7 +403,54 @@ html.ple-popup-mode {
 }
 
 
-// fix gridster
+/* Result */
+.ple-result {
+	display: none;
+	position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999;
+	overflow: auto; background: #fff;
+	&.show {display: block;}
+	header {
+		margin: 0 0 15px;
+		h1 {
+			margin: 0;
+			font-family: $font-eng; font-size: 30px; color: #222;
+		}
+		p {
+			margin: 5px 0;
+			font-size: 13px;
+		}
+	}
+	.wrap {
+		position: relative; z-index: 2;
+		max-width: 1000px; padding: 15px 30px 30px; margin: 0 auto;
+		textarea {
+			display: none; width: 100%; height: 78vh; padding: 20px;
+			font-size: 12px; color: #222;
+			font-family: 'Monaco', 'Tahoma', sans-serif;
+			border: 1px solid #ccc;
+			&.show {display: block;}
+		}
+		figure {
+			display: none; margin: 0; padding: 30px;
+			@extend %transparent-background;
+			&.show {display: block;}
+			img {display: block; max-width: 100%; margin: 0 auto;}
+		}
+	}
+	.close {
+		position: absolute; right: 30px; top: 15px; z-index: 2;
+		margin: 0; padding: 5px;
+		border: none; background: none; cursor: pointer;
+		overflow: hidden;
+		i {
+			@extend %icon-close;
+			width: 32px; height: 32px;
+		}
+	}
+}
+
+
+/* fix gridster */
 .gridster .dragging,
 .gridster .resizing {
 	z-index: 10 !important;
@@ -405,4 +458,22 @@ html.ple-popup-mode {
 	-moz-transition: none !important;
 	-o-transition: all 0s !important;
 	transition: none !important;
+}
+
+
+/* placeholder */
+.ple-sidebar-placeholder {
+	display: block; position: absolute; z-index: 10000; list-style: none;
+	left: -999px; top: -999px;
+	opacity: .8;
+	span {
+		position: relative; display: block;
+		width: 100%; height: 100%;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-color: #fff;
+		text-indent: -9999px;
+		cursor: pointer;
+	}
 }

@@ -5,7 +5,7 @@ module.exports = React.createClass({
 	getInitialState()
 	{
 		return {
-			inputFile : <input type="file" onChange={this.upload} multiple />
+			timestamp : Date.now()
 		};
 	},
 
@@ -19,8 +19,9 @@ module.exports = React.createClass({
 		this.props.upload(e.target.files);
 
 		// reset input[type=file]
-		var $input = $(this.refs.inputFile);
-		$input.replaceWith($input.val('').clone(true));
+		this.setState({
+			timestamp : Date.now()
+		});
 	},
 
 	/**
@@ -37,7 +38,7 @@ module.exports = React.createClass({
 					<button type="button" title="toggle select" onClick={this.props.toggleSelect}>
 						<i className="sp-ico ico-select abs">Toggle all select</i>
 					</button>
-					<span title="upload images">
+					<span title="upload images" key={this.state.timestamp}>
 						<input type="file" ref="inputFile" onChange={this.upload} multiple />
 						<i className="sp-ico ico-upload abs">upload images</i>
 					</span>

@@ -19,3 +19,18 @@ $sidebar-toggle-speed : .3s;
 
 
 // placeholders
+%icon-close {
+	position: relative;
+	display: inline-block;
+	text-indent: -9999px;
+	transform: rotate(45deg);
+	&:before, &:after {
+		content: ''; position: absolute; display: block;
+		background: #222;
+	}
+	&:before {width: 2px; height: 100%; margin-left: -1px; left: 50%; top: 0;}
+	&:after {height: 2px; width: 100%; margin-top: -1px; top: 50%; left: 0;}
+}
+%transparent-background {
+	background: $col-bg-blur url('../img/bg-space.png') 0 0 repeat;
+}

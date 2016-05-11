@@ -17,35 +17,67 @@ var dist = './dist';
 var maps = 'maps';
 
 
-// set vendor files
-var minifis = {
-	js : [
-		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.js'
-	],
-	css : [
-		src + '/vendor/jquery-minicolors/jquery.minicolors.css'
-	]
-};
-var vendors = {
-	js : [
-		'./node_modules/react/dist/react.js',
-		'./node_modules/react-dom/dist/react-dom.min.js',
-		'./node_modules/jquery/dist/jquery.min.js',
-		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js',
-		src + '/vendor/jquery-minicolors/jquery.minicolors.min.js'
-	],
-	css : [
-		src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css',
-		src + '/vendor/jquery-minicolors/jquery.minicolors.min.css'
-	]
+/**
+ * make external resource
+ *
+ * @param {string} type
+ * @param {string} extType
+ * @param {boolean} isDevelop
+ * @return {array}
+ */
+var externalResource = function(type, extType, isDevelop)
+{
+	switch(type)
+	{
+		case 'minify':
+			switch(extType)
+			{
+				case 'js':
+					return [
+						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.js'
+					];
+					break;
+				case 'css':
+					return [
+						src + '/vendor/jquery-minicolors/jquery.minicolors.css'
+					];
+					break;
+			}
+			break;
+		case 'vendor':
+			switch(extType)
+			{
+				case 'js':
+					return [
+						(
+							(isDevelop) ?
+								'./node_modules/react/dist/react.js' :
+								'./node_modules/react/dist/react.min.js'
+						),
+						'./node_modules/react-dom/dist/react-dom.min.js',
+						'./node_modules/jquery/dist/jquery.min.js',
+						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js',
+						src + '/vendor/jquery-minicolors/jquery.minicolors.min.js'
+					];
+					break;
+				case 'css':
+					return [
+						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css',
+						src + '/vendor/jquery-minicolors/jquery.minicolors.min.css'
+					];
+					break;
+			}
+			break;
+	}
+	return [];
 };
 
 
 // Minify files
 gulp.task('minify', function(){
-	if (minifis.js.length)
+	if (externalResource('minify', 'js', false).length)
 	{
-		minifis.js.forEach(function(o){
+		externalResource('minify', 'js', false).forEach(function(o){
 			var dir = o.substring(0,o.lastIndexOf("/")+1);
 			gulp.src(o)
 				.pipe(uglify())
@@ -53,9 +85,9 @@ gulp.task('minify', function(){
 				.pipe(gulp.dest(dir));
 		});
 	}
-	if (minifis.css.length)
+	if (externalResource('minify', 'css', false).length)
 	{
-		minifis.css.forEach(function(o){
+		externalResource('minify', 'css', false).forEach(function(o){
 			var dir = o.substring(0,o.lastIndexOf("/")+1);
 			gulp.src(o)
 				.pipe(scss({
@@ -70,13 +102,19 @@ gulp.task('minify', function(){
 
 // build vendor files
 gulp.task('vendor', function(){
-	gulp.src(vendors.js)
+	gulp.src(externalResource('vendor', 'js', true))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(concat('vendor.pkgd.js', { newLine: '\n\n' }))
 		.pipe(sourcemaps.write(maps))
 		.pipe(gulp.dest(dist + '/js'));
 
-	gulp.src(vendors.css)
+	gulp.src(externalResource('vendor', 'js', false))
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(concat('vendor.pkgd.min.js', { newLine: '\n\n' }))
+		.pipe(sourcemaps.write(maps))
+		.pipe(gulp.dest(dist + '/js'));
+
+	gulp.src(externalResource('vendor', 'css', false))
 		.pipe(sourcemaps.init())
 		.pipe(scss({
 			outputStyle: 'compressed'
@@ -106,6 +144,10 @@ gulp.task('scss:watch', function(){
 
 gulp.task('js', function() {
 	return gulp.src(src + '/jsx/App.jsx')
-		.pipe(webpack( require('./webpack.config.js') ))
+		.pipe(
+			webpack(
+				require('./webpack.config.js')
+			)
+		)
 		.pipe(gulp.dest(dist + '/js/'));
 });

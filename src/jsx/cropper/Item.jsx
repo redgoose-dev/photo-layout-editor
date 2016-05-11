@@ -1,3 +1,5 @@
+const util = require('../lib/util.js');
+
 
 module.exports = React.createClass({
 
@@ -7,6 +9,11 @@ module.exports = React.createClass({
 	$img : null,
 	dragMeta : {},
 	imageMeta : {},
+	controlEvent : {
+		start : (util.isTouchDevice()) ? 'touchstart' : 'mousedown',
+		move : (util.isTouchDevice()) ? 'touchmove' : 'mousemove',
+		end : (util.isTouchDevice()) ? 'touchend' : 'mouseup'
+	},
 
 	setInitialProps()
 	{
@@ -31,7 +38,6 @@ module.exports = React.createClass({
 		if (this.props.options)
 		{
 			this.imageMeta = this.props.options;
-			//log(this.props.options);
 			if (this.props.options.size !== 'cover')
 			{
 				let $img = this.$figure.find('> .img-wrap > img');
@@ -98,8 +104,8 @@ module.exports = React.createClass({
 	 */
 	initDragEvent()
 	{
-		this.$figure.on('mousedown.area', '.area', this.startMoving);
-		this.$figure.on('mousedown.resize', '.resize', this.startResizing);
+		this.$figure.on(this.controlEvent.start + '.area', '.area', this.startMoving);
+		this.$figure.on(this.controlEvent.start + '.resize', '.resize', this.startResizing);
 	},
 
 	/**
@@ -123,8 +129,8 @@ module.exports = React.createClass({
 		this.$img.removeClass('animate');
 
 		// init event
-		$(document).on('mousemove.area', this.moving);
-		$(document).on('mouseup.area', this.endMoving);
+		$(document).on(this.controlEvent.move + '.area', this.moving);
+		$(document).on(this.controlEvent.end + '.area', this.endMoving);
 	},
 
 	/**
@@ -136,29 +142,29 @@ module.exports = React.createClass({
 	{
 		let mouse = {};
 		let position = {};
+		let evt = (e.type == 'touchmove') ? e.originalEvent.touches[0] : e;
 
 		e.preventDefault();
 		e.stopPropagation();
 
 		// set mouse position
-		mouse.x = (e.clientX || e.pageX) + $(window).scrollLeft();
-		mouse.y = (e.clientY || e.pageY) + $(window).scrollTop();
+		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
+		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
 
 		// set position x,y
 		position.left = mouse.x - ( this.dragMeta.mouseX - this.dragMeta.containerLeft );
 		position.top = mouse.y - ( this.dragMeta.mouseY - this.dragMeta.containerTop );
 
-		// set position area
-		this.$area.offset({
+		let cssProperty = {
 			'left': position.left,
 			'top': position.top
-		});
+		};
+
+		// set position area
+		this.$area.offset(cssProperty);
 
 		// set position image
-		this.$img.offset({
-			'left': position.left,
-			'top': position.top
-		});
+		this.$img.offset(cssProperty);
 	},
 
 	/**
@@ -173,7 +179,9 @@ module.exports = React.createClass({
 		this.dragMeta = {};
 		this.$img = null;
 
-		$(document).off('mousemove.area').off('mouseup.area');
+		$(document)
+			.off(this.controlEvent.move + '.area')
+			.off(this.controlEvent.end + '.area');
 
 		this.saveImageMeta();
 	},
@@ -198,8 +206,8 @@ module.exports = React.createClass({
 		this.$img.removeClass('animate');
 
 		// init event
-		$(document).on('mousemove.resize', this.resizing);
-		$(document).on('mouseup.resize', this.endResizing);
+		$(document).on(this.controlEvent.move + '.resize', this.resizing);
+		$(document).on(this.controlEvent.end + '.resize', this.endResizing);
 	},
 
 	/**
@@ -209,12 +217,15 @@ module.exports = React.createClass({
 	 */
 	resizing(e)
 	{
-		var mouse = {};
+		e.preventDefault();
+
 		var width = 0;
+		let mouse = {};
+		let evt = (e.type == 'touchmove') ? e.originalEvent.touches[0] : e;
 
 		// set mouse position
-		mouse.x = (e.clientX || e.pageX || e.originalEvent.touches[0].clientX) + $(window).scrollLeft();
-		mouse.y = (e.clientY || e.pageY || e.originalEvent.touches[0].clientY) + $(window).scrollTop();
+		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
+		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
 
 		width = mouse.x - this.dragMeta.containerLeft;
 		//height = mouse.y  - this.dragMeta.containerTop; // free resize
@@ -239,7 +250,9 @@ module.exports = React.createClass({
 		this.dragMeta = {};
 		this.$img = null;
 
-		$(document).off('mousemove.resize').off('mouseup.resize');
+		$(document)
+			.off(this.controlEvent.move + '.resize')
+			.off(this.controlEvent.end + '.resize');
 
 		this.saveImageMeta();
 	},
@@ -299,8 +312,8 @@ module.exports = React.createClass({
 			if (showArea)
 			{
 				styleObject = {
-					'left' : this.props.options.position.split(' ')[0],
-					'top' : this.props.options.position.split(' ')[1],
+					'left' : (this.props.options.position.split(' ')[0] + 'px').replace('pxpx', 'px'),
+					'top' : (this.props.options.position.split(' ')[1] + 'px').replace('pxpx', 'px'),
 					'width' : this.props.options.size.split(' ')[0]
 				};
 				img = (

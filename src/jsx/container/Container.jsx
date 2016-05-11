@@ -1,3 +1,6 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+
 const NavTop = require('./NavTop.jsx');
 const Gridster = require('./Gridster.jsx');
 const NavBottom = require('./NavBottom.jsx');
@@ -7,6 +10,7 @@ module.exports = React.createClass({
 
 	displayName : 'Container',
 	originalPreference : {},
+	gridster : null,
 
 	getInitialState()
 	{
@@ -52,14 +56,6 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Generate
-	 */
-	generate()
-	{
-		log('generate output');
-	},
-
-	/**
 	 * On select block
 	 * 
 	 */
@@ -80,17 +76,17 @@ module.exports = React.createClass({
 		switch(type)
 		{
 			case 'shuffle':
-				this.refs.gridster.shuffleBlocks();
+				this.gridster.shuffleBlocks();
 				break;
 			case 'addBlock':
-				this.refs.gridster.addBlock();
+				this.gridster.addBlock();
 				break;
 			case 'edit':
-				var $selectedItem = this.refs.gridster.$gridster.find('li.selected');
+				var $selectedItem = this.gridster.$gridster.find('li.selected');
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
-					window.cropper.open({
+					window.PLE_cropper.open({
 						$selected : $selectedItem,
 						color : $selectedItem.attr('data-color'),
 						image : {
@@ -102,16 +98,13 @@ module.exports = React.createClass({
 				}
 				break;
 			case 'empty':
-				this.refs.gridster.emptyBlock();
+				this.gridster.emptyBlock(this.gridster.getSelectedBlocks());
 				break;
 			case 'duplicate':
-				this.refs.gridster.duplicateBlock();
+				this.gridster.duplicateBlock(this.gridster.getSelectedBlocks());
 				break;
 			case 'remove':
-				this.refs.gridster.removeBlock();
-				break;
-			case 'changeColor':
-				log('change item color');
+				this.gridster.removeBlock(this.gridster.getSelectedBlocks());
 				break;
 		}
 	},
@@ -123,7 +116,8 @@ module.exports = React.createClass({
 	 */
 	updateBlockColor(color)
 	{
-		this.refs.gridster.changeBlockColor(color);
+		// change color
+		this.gridster.changeBlockColor(this.gridster.getSelectedBlocks(), color);
 		
 		// close form
 		this.refs.navTop.toggleFormEvent(false);
@@ -139,7 +133,7 @@ module.exports = React.createClass({
 				<NavTop
 					ref="navTop"
 					parent={this}
-					update={this.updatePreference}
+					updatePreference={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
 					actControl={this.topNavControl}
@@ -151,7 +145,8 @@ module.exports = React.createClass({
 					resizeWidth={this.props.resizeWidth}
 					selectBlock={this.onSelectBlock}/>
 				<NavBottom
-					generate={this.generate} />
+					container={this}
+					gridster={this.refs.gridster} />
 			</div>
 		);
 	}

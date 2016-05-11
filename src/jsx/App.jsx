@@ -7,6 +7,12 @@ window.plePreference = {
 	uploadScript : '',
 	removeScript : '',
 	defaultImagesScript : '',
+	gridster : {
+		nameID : 'ple_gridster',
+		createNow : true,
+		createCount : 6,
+		importParams : []
+	},
 	block : {
 		defaultColor : '#DDDDDD'
 	},
@@ -33,16 +39,19 @@ const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
 const Cropper = require('./cropper/Cropper.jsx');
+const Result = require('./result/Result.jsx');
+const API = require('./lib/API.js');
 
 
 // App
 const App = React.createClass({
-
+	
 	displayName : 'photo-layout-editor',
 	saveWidth : 0,
 	$editor : null,
 	$sidebar : null,
 	show_sidebar : (localStorage.getItem('sidebar') != 'false'),
+	api : new API(),
 
 	getInitialState()
 	{
@@ -51,6 +60,9 @@ const App = React.createClass({
 
 	componentDidMount()
 	{
+		// init api
+		this.api.init(this);
+		
 		this.$editor = $(ReactDOM.findDOMNode(this.refs.editor));
 		this.$sidebar = $(ReactDOM.findDOMNode(this.refs.sidebar));
 
@@ -124,5 +136,6 @@ window.keyboardEvent = new KeyboardEvent();
 
 
 // render App
-window.app = ReactDOM.render(<App/>, document.getElementById('app'));
-window.cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));
+window.PLE = ReactDOM.render(<App/>, document.getElementById('app'));
+window.PLE_cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));
+window.PLE_result = ReactDOM.render(<Result/>, document.getElementById('result'));
