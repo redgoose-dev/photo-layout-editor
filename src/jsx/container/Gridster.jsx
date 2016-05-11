@@ -83,7 +83,7 @@ module.exports = React.createClass({
 
 		// act unselected
 		setTimeout(() => {
-			this.unSelectBlock();
+			this.unSelectBlock(null);
 		}, 50);
 	},
 
@@ -282,7 +282,7 @@ module.exports = React.createClass({
 		$target.each((k, o) => {
 			this.gridster.remove_widget(o, null, null, true);
 		});
-		this.unSelectBlock();
+		this.unSelectBlock(null);
 	},
 
 	/**
@@ -391,6 +391,7 @@ module.exports = React.createClass({
 	 */
 	shuffleBlocks()
 	{
+		var scrollTop = $(window).scrollTop();
 		this.clear(true);
 
 		this.saveBlocks.each((k, o) => {
@@ -401,8 +402,9 @@ module.exports = React.createClass({
 				'data-sizey' : util.getRandomRange(1, this.props.preference.max_scale)
 			});
 		});
-
 		this.create();
+
+		$(window).scrollTop(scrollTop);
 	},
 
 	/**
