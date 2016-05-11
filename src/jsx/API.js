@@ -2,7 +2,7 @@ var app = null;
 var container = null;
 var gridster = null;
 var sidebar = null;
-var exp = require('../lib/Export.js');
+var exp = null;
 
 
 /**
@@ -193,6 +193,7 @@ function GridsterForAPI() {
 		}
 		else
 		{
+			log(callback);
 			if (callback)
 			{
 				callback(exp.exportGridster());
@@ -308,6 +309,7 @@ module.exports = function API() {
 		container = app.container;
 		gridster = container.refs.gridster;
 		sidebar = app.side;
+		exp = app.export;
 
 		this.gridster = new GridsterForAPI();
 		this.side = new SidebarForAPI();

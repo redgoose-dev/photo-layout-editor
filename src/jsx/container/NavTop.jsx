@@ -37,7 +37,7 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Toggle setting form
+	 * toggle setting form
 	 */
 	toggleSettingForm(e)
 	{
@@ -98,7 +98,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Close setting layer
+	 * close setting layer
+	 *
 	 */
 	closeSetting()
 	{
@@ -106,7 +107,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Play scroll event
+	 * play scroll event
+	 *
 	 */
 	scrollEvent()
 	{
@@ -172,7 +174,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * RENDER
+	 * render
+	 *
 	 */
 	render()
 	{

@@ -11,11 +11,16 @@ module.exports = React.createClass({
 	{
 		return {
 			show : false,
-			color : window.plePreference.block.defaultColor,
+			color : '#DDDDDD',
 			wrapStyle : null,
 			image : null,
 			showImageResize : false
 		};
+	},
+
+	componentDidMount()
+	{
+		this.setState({ color : PLE.preference.gridster.blockColor });
 	},
 
 	/**

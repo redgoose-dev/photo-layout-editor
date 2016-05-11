@@ -6,6 +6,7 @@
 <title>Photo layout editor program</title>
 <link rel="stylesheet" href="../dist/css/vendor.pkgd.css"/>
 <link rel="stylesheet" href="../dist/css/app.pkgd.css"/>
+<script>function log(o){console.log(o);}</script>
 </head>
 <body>
 <main class="ple-editor" id="app">
@@ -20,8 +21,16 @@
 		<!-- PLE container -->
 		<div id="ple_app"></div>
 		<!-- // PLE container -->
-		<nav>
-			.control buttons area
+		<nav class="ple-nav-bottom">
+			<p>
+				<button type="button" title="Export json" data-action="printJson"><span>Export</span></button>
+				<button type="button" title="Export json(packed)" data-action="printJsonPacked"><span>Export(packed)</span></button>
+				<button type="button" title="Image" data-action="printImage"><span>Make Image</span></button>
+				<button type="button" title="Console" data-action="console"><span>Print console.log</span></button>
+			</p>
+			<p>
+				<button type="button" title="Replace example" data-action="replaceExample"><span>Replace example</span></button>
+			</p>
 		</nav>
 	</div>
 
@@ -32,32 +41,6 @@
 <div id="cropper"></div>
 <div id="result"></div>
 <script src="../dist/js/vendor.pkgd.js"></script>
-<script>
-function log(o){console.log(o);}
-window.pleUserPreference = {
-	uploadScript : './script/imageUpload.php',
-	removeScript : './script/imageRemove.php',
-	defaultImagesScript : './script/defaultImages.php',
-	replaceScript : './assets/example.json',
-	gridster : {
-		nameID : 'gridster',
-		createNow : true,
-		createCount : 3
-		//params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
-	},
-	block : {
-		defaultColor : '#DDDDDD'
-	},
-	setting : {
-		width : 100,
-		height : 100,
-		max_col : 5,
-		max_scale : 2,
-		outer_margin : 10,
-		inner_margin : 10
-	}
-};
-</script>
 <script src="../dist/js/app.pkgd.js"></script>
 <script>
 PLE.init({
@@ -68,10 +51,80 @@ PLE.init({
 		cropper : document.getElementById('cropper'),
 		result : document.getElementById('result')
 	},
-	show_side : (localStorage.getItem('sidebar') != 'false')
+	preference : {
+		uploadScript : './script/imageUpload.php',
+		removeScript : './script/imageRemove.php',
+		defaultImagesScript : './script/defaultImages.php',
+		replaceScript : './assets/example.json',
+		showSide : (localStorage.getItem('sidebar') != 'false'),
+		gridster : {
+			nameID : 'gridster',
+			createNow : true,
+			createCount : 4,
+			blockColor : '#DDDDDD'
+		},
+		setting : {
+			width : 100,
+			height : 100,
+			max_col : 5,
+			max_scale : 2,
+			outer_margin : 10,
+			inner_margin : 10
+		}
+	}
 });
 
 
+jQuery(function($){
+	// bottom controller
+	$('.ple-nav-bottom button').on('click', function(){
+		switch($(this).data('action'))
+		{
+			case 'printJson':
+				PLE.api.gridster.export(null, function(res){
+					var result = {
+						gridster : res,
+						preference : PLE.api.gridster.exportPreference()
+					};
+					PLE.result.open(
+						PLE.export.objectToJson(result, 4),
+						'code',
+						'json데이터로 만들어서 출력합니다. 이미지 경로는 서버에 저장된 위치로 지정됩니다.'
+					);
+				});
+				break;
+
+			case 'printJsonPacked':
+				PLE.api.gridster.export({ type: 'image/jpeg', quality : 0.75 }, function(res){
+					var result = {
+						gridster : res,
+						preference : PLE.api.gridster.exportPreference()
+					};
+					PLE.result.open(
+						PLE.export.objectToJson(result, 0),
+						'code',
+						'json 데이터로 만들어서 출력합니다.<br>이미지를 base64데이터로 변환하여 json데이터에 같이 들어갑니다.'
+					);
+				});
+				break;
+
+			case 'printImage':
+				break;
+
+			case 'console':
+				PLE.api.gridster.export(null, function(res){
+					console.log({
+						gridster : res,
+						preference : PLE.api.gridster.exportPreference()
+					});
+				});
+				break;
+
+			case 'replaceExample':
+				break;
+		}
+	});
+});
 
 
 // TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.

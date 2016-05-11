@@ -7,7 +7,7 @@ module.exports = React.createClass({
 	{
 		return {
 			show : false,
-			currentColor : window.plePreference.block.defaultColor
+			currentColor : '#dddddd'
 		};
 	},
 
@@ -15,6 +15,8 @@ module.exports = React.createClass({
 	{
 		// set $color element
 		this.$color = $(ReactDOM.findDOMNode(this.refs.color));
+
+		this.setState({ currentColor : PLE.preference.gridster.blockColor })
 
 		// init plugin
 		setTimeout(() => {

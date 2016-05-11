@@ -3,7 +3,6 @@ const ReactDOM = require('ReactDOM');
 
 const NavTop = require('./NavTop.jsx');
 const Gridster = require('./Gridster.jsx');
-const NavBottom = require('./NavBottom.jsx');
 
 
 module.exports = React.createClass({
@@ -17,7 +16,7 @@ module.exports = React.createClass({
 	getInitialState()
 	{
 		return {
-			preference : window.plePreference.setting,
+			preference : null,
 			action : null
 		};
 	},
@@ -26,8 +25,9 @@ module.exports = React.createClass({
 	{
 		this.root = this.props.parent;
 		this.root.$container = $(ReactDOM.findDOMNode(this));
-		this.originalPreference = this.state.preference;
 		this.gridster = this.refs.gridster;
+		this.originalPreference = PLE.preference.setting;
+		this.setState({ preference : this.originalPreference });
 	},
 
 	/**
@@ -90,7 +90,7 @@ module.exports = React.createClass({
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
-					window.PLE.cropper.open({
+					PLE.cropper.open({
 						$selected : $selectedItem,
 						color : $selectedItem.attr('data-color'),
 						image : {
@@ -137,7 +137,6 @@ module.exports = React.createClass({
 				<NavTop
 					ref="navTop"
 					parent={this}
-					root={this.root}
 					updatePreference={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
@@ -146,7 +145,6 @@ module.exports = React.createClass({
 				<Gridster
 					ref="gridster"
 					parent={this}
-					root={this.root}
 					preference={this.state.preference}
 					action={this.state.action}
 					selectBlock={this.onSelectBlock}/>

@@ -11,17 +11,19 @@ module.exports = React.createClass({
 	gridster : null,
 	saveBlocks : null,
 	selectedClassName : 'selected',
-	defaultBlockColor : window.plePreference.block.defaultColor,
+	defaultBlockColor : '#dddddd',
 
 	componentDidMount()
 	{
 		this.parent = this.props.parent;
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 		this.$wrap = this.$gridster.parent();
+		this.defaultBlockColor = PLE.preference.gridster.blockColor;
 	},
 
 	/**
 	 * Create block
+	 *
 	 */
 	create()
 	{
@@ -90,6 +92,7 @@ module.exports = React.createClass({
 
 	/**
 	 * Resize container
+	 *
 	 */
 	resizeWrapWidth()
 	{
@@ -102,7 +105,7 @@ module.exports = React.createClass({
 		var width_sidebar = $('.ple-sidebar').width();
 		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
 
-		this.props.root.resizeWidthContainer(bodyWidth);
+		PLE.resizeWidthContainer(bodyWidth);
 	},
 
 	/**
@@ -121,10 +124,11 @@ module.exports = React.createClass({
 
 	/**
 	 * Init gridster
+	 * 
 	 */
 	init()
 	{
-		let pref = window.plePreference.gridster;
+		let pref = PLE.preference.gridster;
 
 		// create gridster
 		this.create();
@@ -331,7 +335,7 @@ module.exports = React.createClass({
 
 		if ($block.hasClass(this.selectedClassName))
 		{
-			this.unSelectBlock((window.PLE.keyboardEvent.readySelect) ? $block : $blocks);
+			this.unSelectBlock((PLE.keyboardEvent.readySelect) ? $block : $blocks);
 
 			if (!this.getSelectedBlocks().length)
 			{
@@ -340,7 +344,7 @@ module.exports = React.createClass({
 		}
 		else
 		{
-			if (!window.PLE.keyboardEvent.readySelect)
+			if (!PLE.keyboardEvent.readySelect)
 			{
 				$blocks.removeClass(this.selectedClassName);
 			}
@@ -389,6 +393,7 @@ module.exports = React.createClass({
 
 	/**
 	 * Shuffle blocks
+	 * 
 	 */
 	shuffleBlocks()
 	{
@@ -489,6 +494,7 @@ module.exports = React.createClass({
 
 	/**
 	 * render
+	 * 
 	 */
 	render()
 	{
@@ -503,13 +509,12 @@ module.exports = React.createClass({
 				{
 					this[this.props.action]();
 				}
-
 				break;
 		}
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster" id={window.plePreference.gridster.nameID}></div>
+				<div ref="gridster" className="gridster" id={PLE.preference.gridster.nameID}></div>
         	</div>
 		);
 	}

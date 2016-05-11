@@ -279,7 +279,7 @@ module.exports = React.createClass({
 	{
 		if (images.length)
 		{
-			window.PLE.refs.container.refs.gridster.attachImages(images);
+			PLE.container.refs.gridster.attachImages(images);
 		}
 		else
 		{

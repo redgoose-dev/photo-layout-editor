@@ -21,7 +21,7 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		this.$gridster = $('#' + window.plePreference.gridster.nameID);
+		this.$gridster = $('#' + PLE.preference.gridster.nameID);
 	},
 
 	/**
@@ -36,7 +36,7 @@ module.exports = React.createClass({
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
 		let uploadImages = this.props.uploadImages;
 
-		if (window.PLE.keyboardEvent.readySelect)
+		if (PLE.keyboardEvent.readySelect)
 		{
 			uploadImages[currentKey].on = !uploadImages[currentKey].on;
 		}
@@ -140,7 +140,7 @@ module.exports = React.createClass({
 		if (this.dragTarget)
 		{
 			let img = this.props.uploadImages[parseInt(e.currentTarget.getAttribute('data-key'))].image;
-			window.PLE.refs.container.refs.gridster.assignImage($(this.dragTarget), img, null);
+			PLE.container.refs.gridster.assignImage($(this.dragTarget), img, null);
 			this.dragTarget = null;
 		}
 	},

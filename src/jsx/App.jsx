@@ -1,36 +1,6 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 
-
-// set preference
-window.plePreference = {
-	uploadScript : '',
-	removeScript : '',
-	defaultImagesScript : '',
-	gridster : {
-		nameID : 'ple_gridster',
-		createNow : true,
-		createCount : 6,
-		importParams : []
-	},
-	block : {
-		defaultColor : '#DDDDDD'
-	},
-	setting : {
-		width : 80,
-		height : 80,
-		max_col : 5,
-		max_scale : 2,
-		outer_margin : 10,
-		inner_margin : 10
-	}
-};
-if (pleUserPreference)
-{
-	Object.assign(window.plePreference, pleUserPreference);
-}
-
-
 // load libs
 const KeyboardEvent = require('./lib/KeyboardEvent.js');
 
@@ -39,9 +9,12 @@ const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
 const Cropper = require('./cropper/Cropper.jsx');
 const Result = require('./result/Result.jsx');
-const API = require('./lib/API.js');
+const API = require('./API.js');
+const Export = require('./lib/Export.js');
 
 
+
+// Photo layout editor object
 window.PLE = {
 	
 	// components
@@ -52,8 +25,11 @@ window.PLE = {
 	keyboardEvent : null,
 	
 	// API
-	api : null,
+	api : new API(),
 
+	// export
+	export : Export,
+	
 	// elements
 	$app : null,
 	$container : null,
@@ -69,31 +45,39 @@ window.PLE = {
 		// set elements
 		this.$app = $(this.option.elements.app);
 		
-		// TODO : preference값을 이 객체속에다 집어넣기
+		// init preference
+		this.preference = this.mergePreference(this.option.preference);
 		
 		// init container
 		this.container = ReactDOM.render(<Container parent={this} resizeWidth="" />, options.elements.container);
 
 		// init side
-		this.side = ReactDOM.render(<Sidebar
-			parent={this}
-			uploadScript={window.plePreference.uploadScript}
-			removeScript={window.plePreference.removeScript}
-			defaultImagesScript={window.plePreference.defaultImagesScript}
-			show={this.option.show_side}
-			toggleSidebar={this.toggleSidebar} />, options.elements.side);
-		
+		this.side = ReactDOM.render(
+			(
+				<Sidebar
+					parent={this}
+					uploadScript={this.preference.uploadScript}
+					removeScript={this.preference.removeScript}
+					defaultImagesScript={this.preference.defaultImagesScript}
+					show={this.preference.showSide}
+					toggleSidebar={this.toggleSidebar} />
+			),
+			this.option.elements.side
+		);
+
 		// init Cropper
-		this.cropper = ReactDOM.render(<Cropper parent={this} />, options.elements.cropper);
-		
+		this.cropper = ReactDOM.render(<Cropper parent={this} />, this.option.elements.cropper);
+
 		// ini result
-		this.result = ReactDOM.render(<Result parent={this} />, options.elements.result);
-		
+		this.result = ReactDOM.render(<Result parent={this} />, this.option.elements.result);
+
 		// init keyboard event
 		this.keyboardEvent = new KeyboardEvent();
 
+		// init Export
+		this.export.init(this.container);
+		
 		// init API
-		this.api = new API();
 		this.api.init(this);
 
 		// play gridster
@@ -120,5 +104,43 @@ window.PLE = {
 	{
 		this.saveWidth = (this.side.state.show) ? width : width - this.$side.width();
 		this.$app.css('min-width', this.saveWidth);
+	},
+
+	/**
+	 * merge preference
+	 *
+	 * @param {Object} userPreference
+	 */
+	mergePreference(userPreference)
+	{
+		var pref = {
+			uploadScript : '',
+			removeScript : '',
+			defaultImagesScript : '',
+			replaceScript : '',
+			showSide : true,
+			gridster : {
+				nameID : 'ple_gridster',
+				createNow : true,
+				createCount : 5,
+				blockColor : '#DDDDDD'
+				//params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
+			},
+			setting : {
+				width : 80,
+				height : 80,
+				max_col : 5,
+				max_scale : 2,
+				outer_margin : 10,
+				inner_margin : 10
+			}
+		};
+
+		if (userPreference)
+		{
+			Object.assign(pref, userPreference);
+		}
+
+		return pref;
 	}
 };
