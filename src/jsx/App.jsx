@@ -49,13 +49,13 @@ window.PLE = {
 		this.preference = this.mergePreference(this.option.preference);
 		
 		// init container
-		this.container = ReactDOM.render(<Container parent={this} resizeWidth="" />, options.elements.container);
+		this.container = ReactDOM.render(<Container root={this} resizeWidth="" />, options.elements.container);
 
 		// init side
 		this.side = ReactDOM.render(
 			(
 				<Sidebar
-					parent={this}
+					root={this}
 					uploadScript={this.preference.uploadScript}
 					removeScript={this.preference.removeScript}
 					defaultImagesScript={this.preference.defaultImagesScript}
@@ -66,10 +66,10 @@ window.PLE = {
 		);
 
 		// init Cropper
-		this.cropper = ReactDOM.render(<Cropper parent={this} />, this.option.elements.cropper);
+		this.cropper = ReactDOM.render(<Cropper root={this} />, this.option.elements.cropper);
 
 		// ini result
-		this.result = ReactDOM.render(<Result parent={this} />, this.option.elements.result);
+		this.result = ReactDOM.render(<Result root={this} />, this.option.elements.result);
 
 		// init keyboard event
 		this.keyboardEvent = new KeyboardEvent();

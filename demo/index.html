@@ -55,7 +55,6 @@ PLE.init({
 		uploadScript : './script/imageUpload.php',
 		removeScript : './script/imageRemove.php',
 		defaultImagesScript : './script/defaultImages.php',
-		replaceScript : './assets/example.json',
 		showSide : (localStorage.getItem('sidebar') != 'false'),
 		gridster : {
 			nameID : 'gridster',
@@ -109,6 +108,13 @@ jQuery(function($){
 				break;
 
 			case 'printImage':
+				PLE.api.gridster.makeImage({ type: 'image/jpeg', quality: 0.8, bgColor: '#ffffff' }, function(res){
+					PLE.result.open(
+						res,
+						'image',
+						'데이터를 토대로 이미지 형식으로 결과물을 만들었습니다. 이미지 저장을 할 수 있습니다.'
+					);
+				});
 				break;
 
 			case 'console':
@@ -121,6 +127,33 @@ jQuery(function($){
 				break;
 
 			case 'replaceExample':
+				$.getJSON('./assets/example.json', function(res) {
+					if (res.preference)
+					{
+						PLE.api.gridster.importPreference(res.preference);
+					}
+					log(res);
+
+					if (res.gridster)
+					{
+						// replace gridster blocks
+						if (res.gridster.params)
+						{
+							PLE.api.gridster.reset(false);
+							PLE.api.gridster.importParams(res.gridster.params);
+						}
+					}
+
+					if (res.gridster.figure && res.gridster.figure.length)
+					{
+						var newImages = res.gridster.figure.map(function(o){
+							return o.image;
+						});
+						PLE.api.gridster.attachImages(newImages);
+					}
+
+					// TODO : 사이드에 이미지를 등록하기. 아마 기존 이미지 전부 삭제하고 등록해야하지 않을까 싶음.
+				});
 				break;
 		}
 	});

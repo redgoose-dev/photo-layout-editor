@@ -13,7 +13,6 @@ module.exports = React.createClass({
 		uploadScript : React.PropTypes.string,
 		defaultUploadFiles : React.PropTypes.array
 	},
-
 	uploader : new Uploader(),
 
 	getDefaultProps()
@@ -29,6 +28,8 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+		
 		return {
 			uploadImages : [],
 			is_loading : false,
@@ -38,9 +39,7 @@ module.exports = React.createClass({
 
 	componentDidMount()
 	{
-		this.parent = this.props.parent;
-
-		this.parent.$side = $(ReactDOM.findDOMNode(this));
+		this.root.$side = $(ReactDOM.findDOMNode(this));
 
 		if (this.props.defaultImagesScript)
 		{
@@ -279,7 +278,7 @@ module.exports = React.createClass({
 	{
 		if (images.length)
 		{
-			PLE.container.refs.gridster.attachImages(images);
+			this.root.container.refs.gridster.attachImages(images);
 		}
 		else
 		{
@@ -336,7 +335,7 @@ module.exports = React.createClass({
 	 */
 	showSide()
 	{
-		let $app = $(this.parent.option.elements.app);
+		let $app = $(this.root.option.elements.app);
 		$app.addClass('on-sidebar');
 		this.updateSide(true);
 	},
@@ -347,7 +346,7 @@ module.exports = React.createClass({
 	 */
 	hideSide()
 	{
-		let $app = $(this.parent.option.elements.app);
+		let $app = $(this.root.option.elements.app);
 		$app.removeClass('on-sidebar');
 		this.updateSide(false);
 	},
@@ -361,7 +360,7 @@ module.exports = React.createClass({
 	{
 		this.setState({ show : sw });
 		localStorage.setItem('sidebar', sw);
-		this.parent.resizeWidthSide(sw);
+		this.root.resizeWidthSide(sw);
 	},
 
 	/**
@@ -398,6 +397,7 @@ module.exports = React.createClass({
 					 attach={this.attachSelectImages}
 					 toggleSelect={this.toggleSelect} />
                 <UploadFiles ref="files"
+							 root={this.root}
 							 uploadImages={this.state.uploadImages}
 							 update={this.update} />
 			</aside>

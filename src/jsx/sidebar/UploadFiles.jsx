@@ -1,3 +1,5 @@
+const React = require('React');
+
 module.exports = React.createClass({
 
 	displayName: 'UploadFiles',
@@ -16,12 +18,14 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+
 		return {}
 	},
 
 	componentDidMount()
 	{
-		this.$gridster = $('#' + PLE.preference.gridster.nameID);
+		this.$gridster = $('#' + this.root.preference.gridster.nameID);
 	},
 
 	/**
@@ -36,7 +40,7 @@ module.exports = React.createClass({
 		let currentKey = parseInt(e.currentTarget.getAttribute('data-key'));
 		let uploadImages = this.props.uploadImages;
 
-		if (PLE.keyboardEvent.readySelect)
+		if (this.root.keyboardEvent.readySelect)
 		{
 			uploadImages[currentKey].on = !uploadImages[currentKey].on;
 		}
@@ -140,7 +144,7 @@ module.exports = React.createClass({
 		if (this.dragTarget)
 		{
 			let img = this.props.uploadImages[parseInt(e.currentTarget.getAttribute('data-key'))].image;
-			PLE.container.refs.gridster.assignImage($(this.dragTarget), img, null);
+			this.root.container.refs.gridster.assignImage($(this.dragTarget), img, null);
 			this.dragTarget = null;
 		}
 	},

@@ -109,6 +109,15 @@ function GridsterForAPI() {
 	};
 
 	/**
+	 * reset gridster
+	 *
+	 * @param {Boolean} sw gridster를 삭제할때 블럭의 내용을 저장할것인지에 대한 여부
+	 */
+	this.reset = (sw) => {
+		gridster.reset(sw);
+	};
+
+	/**
 	 * duplicate block
 	 *
 	 * @param {object} $target
@@ -154,7 +163,7 @@ function GridsterForAPI() {
 	/**
 	 * import preference
 	 *
-	 * @param {object} setting
+	 * @param {Object} setting
 	 */
 	this.importPreference = (setting) => {
 		if (setting && (typeof setting === 'object'))
@@ -165,9 +174,18 @@ function GridsterForAPI() {
 	};
 
 	/**
+	 * import gridster parameter
+	 *
+	 * @param {Array} arr
+	 */
+	this.importParams = (arr) => {
+		gridster.importParams(arr);
+	};
+
+	/**
 	 * export preference
 	 *
-	 * @return {object}
+	 * @return {Object}
 	 */
 	this.exportPreference = () => {
 		return container.state.preference;
@@ -176,10 +194,10 @@ function GridsterForAPI() {
 	/**
 	 * export
 	 *
-	 * @param {object}   packImageOptions
-	 * @param {string}   packImageOptions.type    (image/jpeg, image/png)
+	 * @param {Object}   packImageOptions
+	 * @param {String}   packImageOptions.type    (image/jpeg, image/png)
 	 * @param {int}      packImageOptions.quality (0~1)
-	 * @param {function} callback
+	 * @param {Function} callback
 	 */
 	this.export = (packImageOptions, callback) => {
 		if (packImageOptions && (typeof packImageOptions === 'object'))
@@ -193,7 +211,6 @@ function GridsterForAPI() {
 		}
 		else
 		{
-			log(callback);
 			if (callback)
 			{
 				callback(exp.exportGridster());

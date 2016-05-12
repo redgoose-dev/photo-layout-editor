@@ -13,12 +13,16 @@ module.exports = React.createClass({
 	selectedClassName : 'selected',
 	defaultBlockColor : '#dddddd',
 
+	componentWillMount()
+	{
+		this.root = this.props.root;
+		this.defaultBlockColor = this.root.preference.gridster.blockColor;
+	},
+	
 	componentDidMount()
 	{
-		this.parent = this.props.parent;
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
 		this.$wrap = this.$gridster.parent();
-		this.defaultBlockColor = PLE.preference.gridster.blockColor;
 	},
 
 	/**
@@ -105,13 +109,13 @@ module.exports = React.createClass({
 		var width_sidebar = $('.ple-sidebar').width();
 		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
 
-		PLE.resizeWidthContainer(bodyWidth);
+		this.root.resizeWidthContainer(bodyWidth);
 	},
 
 	/**
 	 * Clear blocks
 	 *
-	 * @param {boolean} save
+	 * @param {Boolean} save 블럭을 저장해둘것인지에 대한 여부. 저장하면 다시만들때 복구를 할 수 있다.
 	 */
 	clear(save)
 	{
@@ -128,7 +132,7 @@ module.exports = React.createClass({
 	 */
 	init()
 	{
-		let pref = PLE.preference.gridster;
+		let pref = this.root.preference.gridster;
 
 		// create gridster
 		this.create();
@@ -149,13 +153,13 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Reset gridster
+	 * reset gridster
 	 *
-	 * @param {boolean} save
+	 * @param {Boolean} isSave gridster를 삭제할때 블럭의 내용을 저장할것인지에 대한 여부
 	 */
-	reset(save)
+	reset(isSave)
 	{
-		this.clear(!!(save));
+		this.clear(!!(isSave));
 		this.create();
 	},
 
@@ -335,7 +339,7 @@ module.exports = React.createClass({
 
 		if ($block.hasClass(this.selectedClassName))
 		{
-			this.unSelectBlock((PLE.keyboardEvent.readySelect) ? $block : $blocks);
+			this.unSelectBlock((this.root.keyboardEvent.readySelect) ? $block : $blocks);
 
 			if (!this.getSelectedBlocks().length)
 			{
@@ -344,7 +348,7 @@ module.exports = React.createClass({
 		}
 		else
 		{
-			if (!PLE.keyboardEvent.readySelect)
+			if (!this.root.keyboardEvent.readySelect)
 			{
 				$blocks.removeClass(this.selectedClassName);
 			}
@@ -514,7 +518,7 @@ module.exports = React.createClass({
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster" id={PLE.preference.gridster.nameID}></div>
+				<div ref="gridster" className="gridster" id={this.root.preference.gridster.nameID}></div>
         	</div>
 		);
 	}

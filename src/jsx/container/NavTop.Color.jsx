@@ -1,3 +1,6 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+
 module.exports = React.createClass({
 
 	displayName : 'NavTop-Color',
@@ -5,9 +8,11 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+
 		return {
 			show : false,
-			currentColor : '#dddddd'
+			currentColor : this.root.preference.gridster.blockColor
 		};
 	},
 
@@ -15,8 +20,6 @@ module.exports = React.createClass({
 	{
 		// set $color element
 		this.$color = $(ReactDOM.findDOMNode(this.refs.color));
-
-		this.setState({ currentColor : PLE.preference.gridster.blockColor })
 
 		// init plugin
 		setTimeout(() => {

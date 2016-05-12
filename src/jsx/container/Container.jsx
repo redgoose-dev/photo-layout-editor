@@ -15,18 +15,24 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+
 		return {
 			preference : null,
 			action : null
 		};
 	},
 
+	componentWillMount()
+	{
+		//this.root = this.props.root;
+	},
+
 	componentDidMount()
 	{
-		this.root = this.props.parent;
 		this.root.$container = $(ReactDOM.findDOMNode(this));
 		this.gridster = this.refs.gridster;
-		this.originalPreference = PLE.preference.setting;
+		this.originalPreference = this.root.preference.setting;
 		this.setState({ preference : this.originalPreference });
 	},
 
@@ -90,7 +96,7 @@ module.exports = React.createClass({
 				if ($selectedItem.length)
 				{
 					let $figure = $selectedItem.children('figure');
-					PLE.cropper.open({
+					this.root.cropper.open({
 						$selected : $selectedItem,
 						color : $selectedItem.attr('data-color'),
 						image : {
@@ -136,7 +142,7 @@ module.exports = React.createClass({
 			<div className="ple-container">
 				<NavTop
 					ref="navTop"
-					parent={this}
+					root={this.root}
 					updatePreference={this.updatePreference}
 					updateColor={this.updateBlockColor}
 					reset={this.resetPreference}
@@ -144,7 +150,7 @@ module.exports = React.createClass({
 					preference={this.state.preference}/>
 				<Gridster
 					ref="gridster"
-					parent={this}
+					root={this.root}
 					preference={this.state.preference}
 					action={this.state.action}
 					selectBlock={this.onSelectBlock}/>
