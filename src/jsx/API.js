@@ -2,7 +2,7 @@ var app = null;
 var container = null;
 var gridster = null;
 var sidebar = null;
-var exp = require('../lib/Export.js');
+var exp = null;
 
 
 /**
@@ -24,6 +24,7 @@ function itemToArray(item, type)
 	}
 	return item;
 }
+
 
 /**
  * Gridster for API
@@ -108,6 +109,15 @@ function GridsterForAPI() {
 	};
 
 	/**
+	 * reset gridster
+	 *
+	 * @param {Boolean} sw gridster를 삭제할때 블럭의 내용을 저장할것인지에 대한 여부
+	 */
+	this.reset = (sw) => {
+		gridster.reset(sw);
+	};
+
+	/**
 	 * duplicate block
 	 *
 	 * @param {object} $target
@@ -153,7 +163,7 @@ function GridsterForAPI() {
 	/**
 	 * import preference
 	 *
-	 * @param {object} setting
+	 * @param {Object} setting
 	 */
 	this.importPreference = (setting) => {
 		if (setting && (typeof setting === 'object'))
@@ -164,9 +174,18 @@ function GridsterForAPI() {
 	};
 
 	/**
+	 * import gridster parameter
+	 *
+	 * @param {Array} arr
+	 */
+	this.importParams = (arr) => {
+		gridster.importParams(arr);
+	};
+
+	/**
 	 * export preference
 	 *
-	 * @return {object}
+	 * @return {Object}
 	 */
 	this.exportPreference = () => {
 		return container.state.preference;
@@ -175,10 +194,10 @@ function GridsterForAPI() {
 	/**
 	 * export
 	 *
-	 * @param {object}   packImageOptions
-	 * @param {string}   packImageOptions.type    (image/jpeg, image/png)
+	 * @param {Object}   packImageOptions
+	 * @param {String}   packImageOptions.type    (image/jpeg, image/png)
 	 * @param {int}      packImageOptions.quality (0~1)
-	 * @param {function} callback
+	 * @param {Function} callback
 	 */
 	this.export = (packImageOptions, callback) => {
 		if (packImageOptions && (typeof packImageOptions === 'object'))
@@ -293,7 +312,10 @@ function SidebarForAPI() {
 
 
 module.exports = function API() {
-
+	
+	this.gridster = null;
+	this.side = null;
+	
 	/**
 	 * Init
 	 *
@@ -301,9 +323,10 @@ module.exports = function API() {
 	 */
 	this.init = (parent) => {
 		app = parent;
-		container = app.refs.container;
+		container = app.container;
 		gridster = container.refs.gridster;
-		sidebar = app.refs.sidebar;
+		sidebar = app.side;
+		exp = app.export;
 
 		this.gridster = new GridsterForAPI();
 		this.side = new SidebarForAPI();

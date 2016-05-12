@@ -11,6 +11,8 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+		
 		return {
 			showForm : false,
 			showColorForm : false,
@@ -28,8 +30,16 @@ module.exports = React.createClass({
 		};
 	},
 
+	componentDidMount()
+	{
+		// scroll event
+		$(window).on('scroll', (e) => {
+			this.scrollEvent();
+		});
+	},
+
 	/**
-	 * Toggle setting form
+	 * toggle setting form
 	 */
 	toggleSettingForm(e)
 	{
@@ -51,7 +61,7 @@ module.exports = React.createClass({
 				case 'showForm':
 					break;
 				case 'showColorForm':
-					let color = $(this.props.parent.gridster.$gridster).find('li.selected').get(0).getAttribute('data-color');
+					let color = $(this.root.container.refs.gridster.$gridster).find('li.selected').get(0).getAttribute('data-color');
 					this.refs.color.import(color);
 					break;
 			}
@@ -90,7 +100,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Close setting layer
+	 * close setting layer
+	 *
 	 */
 	closeSetting()
 	{
@@ -98,7 +109,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Play scroll event
+	 * play scroll event
+	 *
 	 */
 	scrollEvent()
 	{
@@ -164,7 +176,8 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * RENDER
+	 * render
+	 *
 	 */
 	render()
 	{
@@ -190,6 +203,7 @@ module.exports = React.createClass({
 						<NavTopForm
 							submit={this.props.updatePreference}
 							reset={this.props.reset}
+							root={this.root}
 							preference={this.props.preference}/>
 					</div>
 					<div className={'block' + ((this.state.visible.random) ? ' is-show' : '')}>
@@ -231,7 +245,7 @@ module.exports = React.createClass({
 							onClick={this.toggleSettingForm}>
 							<i className="sp-ico ico-palette abs">Change color</i>
 						</button>
-						<NavTopColor ref="color" updateColor={this.props.updateColor} />
+						<NavTopColor ref="color" root={this.root} updateColor={this.props.updateColor} />
 					</div>
 				</nav>
 			</div>

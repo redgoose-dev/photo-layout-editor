@@ -201,19 +201,22 @@ html.ple-popup-mode {overflow: hidden;}
 			}
 		}
 	}
-	.nav-bottom {
-		margin: 30px 0; text-align: left;
-		p {margin: 2px 0;}
-		button {
-			margin: 0 1px; padding: 10px 15px;
-			border: none; background: $col-key;
-			font-size: 0; cursor: pointer;
-			> * {vertical-align: middle;}
-			i {margin-right: 3px;}
-			span {
-				font-family: $font-eng;
-				font-size: 15px; color: #fff;
-			}
+}
+
+
+/* Container */
+.ple-nav-bottom {
+	margin: 30px 0; text-align: left;
+	p {margin: 2px 0; font-size: 0;}
+	button {
+		margin: 0 1px; padding: 10px 15px;
+		border: none; background: $col-key;
+		font-size: 0; cursor: pointer;
+		> * {vertical-align: middle;}
+		i {margin-right: 3px;}
+		span {
+			font-family: $font-eng;
+			font-size: 15px; color: #fff;
 		}
 	}
 }

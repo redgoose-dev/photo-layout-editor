@@ -9,14 +9,18 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+
 		return {
 			show : false,
-			color : window.plePreference.block.defaultColor,
+			color : this.root.preference.gridster.blockColor,
 			wrapStyle : null,
 			image : null,
 			showImageResize : false
 		};
 	},
+
+	componentDidMount() {},
 
 	/**
 	 * resize window event
