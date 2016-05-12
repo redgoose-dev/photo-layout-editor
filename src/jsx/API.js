@@ -266,6 +266,14 @@ function SidebarForAPI() {
 	};
 
 	/**
+	 * clear images
+	 *
+	 */
+	this.clear = () => {
+		log('is clear method')
+	};
+
+	/**
 	 * select images
 	 *
 	 * @param {number|Array} keys

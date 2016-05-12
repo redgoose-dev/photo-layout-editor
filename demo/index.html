@@ -132,7 +132,6 @@ jQuery(function($){
 					{
 						PLE.api.gridster.importPreference(res.preference);
 					}
-					log(res);
 
 					if (res.gridster)
 					{
@@ -150,6 +149,9 @@ jQuery(function($){
 							return o.image;
 						});
 						PLE.api.gridster.attachImages(newImages);
+
+						// replace images in sidebar
+						PLE.api.side.clear();
 					}
 
 					// TODO : 사이드에 이미지를 등록하기. 아마 기존 이미지 전부 삭제하고 등록해야하지 않을까 싶음.
