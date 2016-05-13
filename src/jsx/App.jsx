@@ -138,7 +138,7 @@ window.PLE = {
 
 		if (userPreference)
 		{
-			Object.assign(pref, userPreference);
+			$.extend(pref, userPreference);
 		}
 
 		return pref;

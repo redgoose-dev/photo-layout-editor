@@ -13,7 +13,7 @@ body {
 body, input, select, textarea {
 	font-family: 'Apple SD Gothic Neo', 'Noto Sans', 'MalgunGothic', 'Helvetica Neue', sans-serif;
 }
-
+main {display: block;}
 
 /* popup mode */
 html.ple-popup-mode {overflow: hidden;}

@@ -168,7 +168,7 @@ function GridsterForAPI() {
 	this.importPreference = (setting) => {
 		if (setting && (typeof setting === 'object'))
 		{
-			setting = Object.assign(container.state.preference, setting);
+			setting = $.extend(container.state.preference, setting);
 			container.updatePreference(setting);
 		}
 	};
