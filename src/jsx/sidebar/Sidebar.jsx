@@ -383,7 +383,7 @@ module.exports = React.createClass({
 		this.state.uploadImages.forEach((o, k) => {
 			if ((selected == true && o.on == true) || selected == false)
 			{
-				keys.push(this.refs.files.$items.children().eq(k).data('key'));
+				keys.push(this.refs.files.$items.children('[data-key=' + k + ']').data('key'));
 			}
 		});
 		return keys;

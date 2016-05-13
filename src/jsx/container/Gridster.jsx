@@ -447,7 +447,10 @@ module.exports = React.createClass({
 		});
 
 		baskets.forEach((o, k) => {
-			this.assignImage($(o), images[k], null);
+			if (images[k])
+			{
+				this.assignImage($(o), images[k], null);
+			}
 		});
 	},
 
