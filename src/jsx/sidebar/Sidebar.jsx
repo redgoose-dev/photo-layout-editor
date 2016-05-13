@@ -190,7 +190,6 @@ module.exports = React.createClass({
 	 */
 	removeSelectImages()
 	{
-		var selectedKeys = [];
 		var removeKeys = [];
 		var confirmBool = false;
 
@@ -201,12 +200,7 @@ module.exports = React.createClass({
 		}
 
 		// get select items
-		this.state.uploadImages.forEach((o, k) => {
-			if (o.on)
-			{
-				selectedKeys.push(k);
-			}
-		});
+		var selectedKeys = this.getItems(true);
 
 		if (selectedKeys.length)
 		{
@@ -221,9 +215,7 @@ module.exports = React.createClass({
 			if (confirm('선택된 사진이 없습니다. 전부 삭제할까요?'))
 			{
 				confirmBool = true;
-				this.state.uploadImages.forEach((o, k) => {
-					removeKeys.push(k);
-				});
+				removeKeys = this.getItems(false);
 			}
 		}
 
@@ -377,6 +369,24 @@ module.exports = React.createClass({
 		{
 			this.showSide();
 		}
+	},
+
+	/**
+	 * get items
+	 *
+	 * @param {Boolean} selected (true : selected images, false : all images)
+	 * @return {Array}
+	 */
+	getItems(selected)
+	{
+		var keys = [];
+		this.state.uploadImages.forEach((o, k) => {
+			if ((selected == true && o.on == true) || selected == false)
+			{
+				keys.push(this.refs.files.$items.children().eq(k).data('key'));
+			}
+		});
+		return keys;
 	},
 
 	/**

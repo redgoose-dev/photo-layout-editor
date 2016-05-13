@@ -270,7 +270,7 @@ function SidebarForAPI() {
 	 *
 	 */
 	this.clear = () => {
-		log('is clear method')
+		sidebar.remove(sidebar.getItems(false));
 	};
 
 	/**
@@ -300,7 +300,7 @@ function SidebarForAPI() {
 	};
 
 	/**
-	 * export
+	 * export images
 	 *
 	 * @return {Array}
 	 */
@@ -315,6 +315,15 @@ function SidebarForAPI() {
 	 */
 	this.attach = (keys) => {
 		sidebar.attachImagesByKey(itemToArray(keys, 'number'));
+	};
+
+	/**
+	 * get items
+	 *
+	 * @param {Array} selected
+	 */
+	this.getItems = (selected) => {
+		sidebar.getItems(selected);
 	};
 }
 

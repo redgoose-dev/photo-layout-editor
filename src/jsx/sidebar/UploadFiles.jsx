@@ -1,4 +1,5 @@
 const React = require('React');
+const ReactDOM = require('ReactDOM');
 
 module.exports = React.createClass({
 
@@ -10,6 +11,7 @@ module.exports = React.createClass({
 	},
 
 	$gridster : null,
+	$items : null,
 	dragTarget : null,
 
 	$dragEl : null,
@@ -26,6 +28,7 @@ module.exports = React.createClass({
 	componentDidMount()
 	{
 		this.$gridster = $('#' + this.root.preference.gridster.nameID);
+		this.$items = $(ReactDOM.findDOMNode(this.refs.items));
 	},
 
 	/**
