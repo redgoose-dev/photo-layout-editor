@@ -6,7 +6,6 @@
 <title>Photo layout editor program</title>
 <link rel="stylesheet" href="../dist/css/vendor.pkgd.css"/>
 <link rel="stylesheet" href="../dist/css/app.pkgd.css"/>
-<script>function log(o){console.log(o);}</script>
 </head>
 <body>
 <main class="ple-editor" id="app">
@@ -27,8 +26,6 @@
 				<button type="button" title="Export json(packed)" data-action="printJsonPacked"><span>Export(packed)</span></button>
 				<button type="button" title="Image" data-action="printImage"><span>Make Image</span></button>
 				<button type="button" title="Console" data-action="console"><span>Print console.log</span></button>
-			</p>
-			<p>
 				<button type="button" title="Replace example" data-action="replaceExample"><span>Replace example</span></button>
 			</p>
 		</nav>
@@ -61,6 +58,7 @@ PLE.init({
 			createNow : true,
 			createCount : 4,
 			blockColor : '#DDDDDD'
+			//params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
 		},
 		setting : {
 			width : 100,
@@ -127,12 +125,11 @@ jQuery(function($){
 				break;
 
 			case 'replaceExample':
-				$.getJSON('./assets/example.json', function(res) {
+				$.getJSON('./script/replaceData.json', function(res) {
 					if (res.preference)
 					{
 						PLE.api.gridster.importPreference(res.preference);
 					}
-					log(res);
 
 					if (res.gridster)
 					{
@@ -150,72 +147,16 @@ jQuery(function($){
 							return o.image;
 						});
 						PLE.api.gridster.attachImages(newImages);
-					}
 
-					// TODO : 사이드에 이미지를 등록하기. 아마 기존 이미지 전부 삭제하고 등록해야하지 않을까 싶음.
+						// replace images in sidebar
+						PLE.api.side.clear();
+						PLE.api.side.add(newImages);
+					}
 				});
 				break;
 		}
 	});
 });
-
-
-// TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.
-
-//var api = window.PLE.api;
-//document.getElementById('fooo').addEventListener('click', function(e){
-//	// $('#gridster li').eq(0)
-//
-//	// 이미지를 경로 그대로 가져온다
-//	//	api.gridster.export(null, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 이미지를 base64코드로 변환하여 가져온다.
-//	//	api.gridster.export({
-//	//		type: 'image/jpeg',
-//	//		quality : 0.5
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 모두 모아져 있는 이미지 만들기
-//	//	api.gridster.makeImage({
-//	//		type : 'image/jpeg',
-//	//		quality : 0.5,
-//	//		bgColor : '#ff0000'
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
-//	//		$('body').append('<img src="' + res + '" />');
-//	//	});
-//
-//	//	api.gridster.assignImage(
-//	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
-//	//		'./images/rg3144.jpg',
-//	//		{
-//	//			size: '80px auto',
-//	//			position: '-20px -10px'
-//	//		}
-//	//	);
-//
-//	// api.side.attach([1,8]);
-//
-//	// api.side.remove([1,2]);
-//
-//	// api.side.select([0,2,3]);
-//
-//	//api.side.unSelect([1,2,4]);
-//
-//	//api.side.toggleSelectAll();
-//
-//	// log(api.side.export());
-//});
-//document.getElementById('fooo2').addEventListener('click', function(e){
-//	api.gridster.unSelect($('#gridster li').eq(2));
-//});
 </script>
 </body>
 </html>

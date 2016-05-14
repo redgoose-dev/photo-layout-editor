@@ -13,7 +13,7 @@ body {
 body, input, select, textarea {
 	font-family: 'Apple SD Gothic Neo', 'Noto Sans', 'MalgunGothic', 'Helvetica Neue', sans-serif;
 }
-
+main {display: block;}
 
 /* popup mode */
 html.ple-popup-mode {overflow: hidden;}
@@ -173,8 +173,7 @@ html.ple-popup-mode {overflow: hidden;}
 	}
 	.gridster {
 		margin: 0 auto;
-		background: #fff;
-		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
+		background: #fff; box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
 		ul {padding:0; list-style: none;}
 		li {
 			background: #ddd; cursor: pointer; overflow: hidden;
@@ -192,10 +191,14 @@ html.ple-popup-mode {overflow: hidden;}
 					background: rgba(32,178,146,.3);
 				}
 			}
-			.gs-resize-handle {}
+			.gs-resize-handle {
+				html.touch & {
+					opacity: 1; width: 36px; height: 36px; bottom: 0; right: 0;
+					background-position: 24px 24px;
+				}
+			}
 			figure {
-				margin: 0;
-				width: 100%; height: 100%;
+				margin: 0; width: 100%; height: 100%;
 				background-repeat: no-repeat;
 				pointer-events: none;
 			}

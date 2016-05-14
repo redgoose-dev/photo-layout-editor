@@ -168,7 +168,7 @@ function GridsterForAPI() {
 	this.importPreference = (setting) => {
 		if (setting && (typeof setting === 'object'))
 		{
-			setting = Object.assign(container.state.preference, setting);
+			setting = $.extend(container.state.preference, setting);
 			container.updatePreference(setting);
 		}
 	};
@@ -266,6 +266,14 @@ function SidebarForAPI() {
 	};
 
 	/**
+	 * clear images
+	 *
+	 */
+	this.clear = () => {
+		sidebar.remove(sidebar.getItems(false));
+	};
+
+	/**
 	 * select images
 	 *
 	 * @param {number|Array} keys
@@ -292,7 +300,7 @@ function SidebarForAPI() {
 	};
 
 	/**
-	 * export
+	 * export images
 	 *
 	 * @return {Array}
 	 */
@@ -307,6 +315,15 @@ function SidebarForAPI() {
 	 */
 	this.attach = (keys) => {
 		sidebar.attachImagesByKey(itemToArray(keys, 'number'));
+	};
+
+	/**
+	 * get items
+	 *
+	 * @param {Array} selected
+	 */
+	this.getItems = (selected) => {
+		sidebar.getItems(selected);
 	};
 }
 

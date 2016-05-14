@@ -24,7 +24,7 @@ module.exports = React.createClass({
 	getInitialState()
 	{
 		let defaultState = {};
-		return Object.assign(defaultState, this.defaultPreference);
+		return $.extend(defaultState, this.defaultPreference);
 	},
 
 	componentDidMount()
@@ -34,7 +34,7 @@ module.exports = React.createClass({
 
 	componentWillReceiveProps(props)
 	{
-		this.setState(Object.assign(this.state, props.preference));
+		this.setState($.extend(this.state, props.preference));
 	},
 
 	submit(e)
