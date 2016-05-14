@@ -11,8 +11,14 @@ module.exports = React.createClass({
 	gridster : null,
 	saveBlocks : null,
 	selectedClassName : 'selected',
-	defaultBlockColor : window.plePreference.block.defaultColor,
+	defaultBlockColor : '#dddddd',
 
+	componentWillMount()
+	{
+		this.root = this.props.root;
+		this.defaultBlockColor = this.root.preference.gridster.blockColor;
+	},
+	
 	componentDidMount()
 	{
 		this.$gridster = $(ReactDOM.findDOMNode(this.refs.gridster));
@@ -21,6 +27,7 @@ module.exports = React.createClass({
 
 	/**
 	 * Create block
+	 *
 	 */
 	create()
 	{
@@ -89,6 +96,7 @@ module.exports = React.createClass({
 
 	/**
 	 * Resize container
+	 *
 	 */
 	resizeWrapWidth()
 	{
@@ -101,13 +109,13 @@ module.exports = React.createClass({
 		var width_sidebar = $('.ple-sidebar').width();
 		var bodyWidth = this.$gridster.outerWidth() + margin_gridster + margin_editor + width_sidebar;
 
-		this.props.resizeWidth(bodyWidth);
+		this.root.resizeWidthContainer(bodyWidth);
 	},
 
 	/**
 	 * Clear blocks
 	 *
-	 * @param {boolean} save
+	 * @param {Boolean} save 블럭을 저장해둘것인지에 대한 여부. 저장하면 다시만들때 복구를 할 수 있다.
 	 */
 	clear(save)
 	{
@@ -120,10 +128,11 @@ module.exports = React.createClass({
 
 	/**
 	 * Init gridster
+	 * 
 	 */
 	init()
 	{
-		let pref = window.plePreference.gridster;
+		let pref = this.root.preference.gridster;
 
 		// create gridster
 		this.create();
@@ -144,13 +153,13 @@ module.exports = React.createClass({
 	},
 
 	/**
-	 * Reset gridster
+	 * reset gridster
 	 *
-	 * @param {boolean} save
+	 * @param {Boolean} isSave gridster를 삭제할때 블럭의 내용을 저장할것인지에 대한 여부
 	 */
-	reset(save)
+	reset(isSave)
 	{
-		this.clear(!!(save));
+		this.clear(!!(isSave));
 		this.create();
 	},
 
@@ -330,7 +339,7 @@ module.exports = React.createClass({
 
 		if ($block.hasClass(this.selectedClassName))
 		{
-			this.unSelectBlock((window.keyboardEvent.readySelect) ? $block : $blocks);
+			this.unSelectBlock((this.root.keyboardEvent.readySelect) ? $block : $blocks);
 
 			if (!this.getSelectedBlocks().length)
 			{
@@ -339,7 +348,7 @@ module.exports = React.createClass({
 		}
 		else
 		{
-			if (!window.keyboardEvent.readySelect)
+			if (!this.root.keyboardEvent.readySelect)
 			{
 				$blocks.removeClass(this.selectedClassName);
 			}
@@ -388,6 +397,7 @@ module.exports = React.createClass({
 
 	/**
 	 * Shuffle blocks
+	 * 
 	 */
 	shuffleBlocks()
 	{
@@ -437,7 +447,10 @@ module.exports = React.createClass({
 		});
 
 		baskets.forEach((o, k) => {
-			this.assignImage($(o), images[k], null);
+			if (images[k])
+			{
+				this.assignImage($(o), images[k], null);
+			}
 		});
 	},
 
@@ -488,6 +501,7 @@ module.exports = React.createClass({
 
 	/**
 	 * render
+	 * 
 	 */
 	render()
 	{
@@ -502,13 +516,12 @@ module.exports = React.createClass({
 				{
 					this[this.props.action]();
 				}
-
 				break;
 		}
 
 		return (
             <div className="gridster-wrap">
-				<div ref="gridster" className="gridster" id={window.plePreference.gridster.nameID}></div>
+				<div ref="gridster" className="gridster" id={this.root.preference.gridster.nameID}></div>
         	</div>
 		);
 	}

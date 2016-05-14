@@ -1,141 +1,150 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 
-
-// set preference
-window.plePreference = {
-	uploadScript : '',
-	removeScript : '',
-	defaultImagesScript : '',
-	gridster : {
-		nameID : 'ple_gridster',
-		createNow : true,
-		createCount : 6,
-		importParams : []
-	},
-	block : {
-		defaultColor : '#DDDDDD'
-	},
-	setting : {
-		width : 80,
-		height : 80,
-		max_col : 5,
-		max_scale : 2,
-		outer_margin : 10,
-		inner_margin : 10
-	}
-};
-if (pleUserPreference)
-{
-	Object.assign(window.plePreference, pleUserPreference);
-}
-
-
 // load libs
 const KeyboardEvent = require('./lib/KeyboardEvent.js');
 
 // init components
-const Header = require('./header/Header.jsx');
 const Container = require('./container/Container.jsx');
 const Sidebar = require('./sidebar/Sidebar.jsx');
 const Cropper = require('./cropper/Cropper.jsx');
 const Result = require('./result/Result.jsx');
-const API = require('./lib/API.js');
+const API = require('./API.js');
+const Export = require('./lib/Export.js');
+const util = require('./lib/util.js');
 
 
-// App
-const App = React.createClass({
+
+// Photo layout editor object
+window.PLE = {
 	
-	displayName : 'photo-layout-editor',
-	saveWidth : 0,
-	$editor : null,
-	$sidebar : null,
-	show_sidebar : (localStorage.getItem('sidebar') != 'false'),
+	// components
+	container : null,
+	side : null,
+	cropper : null,
+	result : null,
+	keyboardEvent : null,
+	
+	// API
 	api : new API(),
 
-	getInitialState()
-	{
-		return {};
-	},
+	// export
+	export : Export,
+	
+	// elements
+	$app : null,
+	$container : null,
+	$side : null,
+	
+	option : {},
+	saveWidth : 0,
 
-	componentDidMount()
+	init(options)
 	{
-		// init api
-		this.api.init(this);
+		this.option = options;
+
+		// check touch device
+		if (util.isTouchDevice()) $('html').addClass('touch');
+
+		// set elements
+		this.$app = $(this.option.elements.app);
 		
-		this.$editor = $(ReactDOM.findDOMNode(this.refs.editor));
-		this.$sidebar = $(ReactDOM.findDOMNode(this.refs.sidebar));
+		// init preference
+		this.preference = this.mergePreference(this.option.preference);
+		
+		// init container
+		this.container = ReactDOM.render(<Container root={this} resizeWidth="" />, options.elements.container);
 
-		// scroll event
-		$(window).on('scroll', (e) => {
-			this.refs.container.refs.navTop.scrollEvent();
-		});
+		// init side
+		this.side = ReactDOM.render(
+			(
+				<Sidebar
+					root={this}
+					uploadScript={this.preference.uploadScript}
+					removeScript={this.preference.removeScript}
+					defaultImagesScript={this.preference.defaultImagesScript}
+					show={this.preference.showSide}
+					toggleSidebar={this.toggleSidebar} />
+			),
+			this.option.elements.side
+		);
 
-		// show sidebar
-		if (this.show_sidebar)
-		{
-			this.$editor.addClass('on-sidebar');
-		}
+		// init Cropper
+		this.cropper = ReactDOM.render(<Cropper root={this} />, this.option.elements.cropper);
+
+		// ini result
+		this.result = ReactDOM.render(<Result root={this} />, this.option.elements.result);
+
+		// init keyboard event
+		this.keyboardEvent = new KeyboardEvent();
+
+		// init Export
+		this.export.init(this.container);
+		
+		// init API
+		this.api.init(this);
 
 		// play gridster
-		this.refs.container.actGridster();
+		this.container.actGridster();
 	},
 
 	/**
-	 * Toggle side bar
+	 * resize width in the side
+	 *
+	 * @param {Boolean} showSide
 	 */
-	toggleSidebar()
+	resizeWidthSide(showSide)
 	{
-		var bool = !this.show_sidebar;
-		localStorage.setItem('sidebar', bool);
-		this.show_sidebar = bool;
-
-		this.saveWidth = (bool) ? this.saveWidth + this.$sidebar.width() : this.saveWidth - this.$sidebar.width();
-
-		this.$editor.toggleClass('on-sidebar');
-		this.$editor.css('min-width', this.saveWidth);
+		this.saveWidth = (showSide) ? this.saveWidth + this.$side.width() : this.saveWidth - this.$side.width();
+		this.$app.css('min-width', this.saveWidth);
 	},
 
 	/**
-	 * Resize container width
+	 * resize width in the container
 	 *
 	 * @param {int} width
 	 */
-	resizeWidth(width)
+	resizeWidthContainer(width)
 	{
-		this.saveWidth = (this.show_sidebar) ? width : width - this.$sidebar.width();
-		this.$editor.css('min-width', this.saveWidth);
+		this.saveWidth = (this.side.state.show) ? width : width - this.$side.width();
+		this.$app.css('min-width', this.saveWidth);
 	},
 
 	/**
-	 * render
+	 * merge preference
+	 *
+	 * @param {Object} userPreference
 	 */
-	render()
+	mergePreference(userPreference)
 	{
-		return (
-			<div ref="editor" className="ple-editor">
-				<Header ref="header" />
-				<Container
-					ref="container"
-					resizeWidth={this.resizeWidth}/>
-				<Sidebar
-					ref="sidebar"
-					uploadScript={window.plePreference.uploadScript}
-					removeScript={window.plePreference.removeScript}
-					defaultImagesScript={window.plePreference.defaultImagesScript}
-					show={this.state.show_sidebar}
-					toggleSidebar={this.toggleSidebar}/>
-			</div>
-		);
+		var pref = {
+			uploadScript : '',
+			removeScript : '',
+			defaultImagesScript : '',
+			replaceScript : '',
+			showSide : true,
+			gridster : {
+				nameID : 'ple_gridster',
+				createNow : true,
+				createCount : 5,
+				blockColor : '#DDDDDD',
+				params : null
+			},
+			setting : {
+				width : 80,
+				height : 80,
+				max_col : 5,
+				max_scale : 2,
+				outer_margin : 10,
+				inner_margin : 10
+			}
+		};
+
+		if (userPreference)
+		{
+			$.extend(pref, userPreference);
+		}
+
+		return pref;
 	}
-});
-
-
-// event
-window.keyboardEvent = new KeyboardEvent();
-
-
-// render App
-window.PLE = ReactDOM.render(<App/>, document.getElementById('app'));
-window.PLE_cropper = ReactDOM.render(<Cropper/>, document.getElementById('cropper'));
-window.PLE_result = ReactDOM.render(<Result/>, document.getElementById('result'));
+};

@@ -1,3 +1,6 @@
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+
 module.exports = React.createClass({
 
 	displayName : 'NavTop-Color',
@@ -5,9 +8,11 @@ module.exports = React.createClass({
 
 	getInitialState()
 	{
+		this.root = this.props.root;
+
 		return {
 			show : false,
-			currentColor : window.plePreference.block.defaultColor
+			currentColor : this.root.preference.gridster.blockColor
 		};
 	},
 
