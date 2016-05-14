@@ -11,6 +11,7 @@ const Cropper = require('./cropper/Cropper.jsx');
 const Result = require('./result/Result.jsx');
 const API = require('./API.js');
 const Export = require('./lib/Export.js');
+const util = require('./lib/util.js');
 
 
 
@@ -41,6 +42,9 @@ window.PLE = {
 	init(options)
 	{
 		this.option = options;
+
+		// check touch device
+		if (util.isTouchDevice()) $('html').addClass('touch');
 
 		// set elements
 		this.$app = $(this.option.elements.app);
@@ -123,8 +127,8 @@ window.PLE = {
 				nameID : 'ple_gridster',
 				createNow : true,
 				createCount : 5,
-				blockColor : '#DDDDDD'
-				//params : [{"col":1,"row":1,"size_x":2,"size_y":2},{"col":3,"row":1,"size_x":2,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1}]
+				blockColor : '#DDDDDD',
+				params : null
 			},
 			setting : {
 				width : 80,

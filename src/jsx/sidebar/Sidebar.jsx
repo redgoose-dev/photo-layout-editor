@@ -134,7 +134,7 @@ module.exports = React.createClass({
 					}
 					else
 					{
-						log(response.message);
+						console.log(response.message);
 					}
 				}
 			);
@@ -178,7 +178,7 @@ module.exports = React.createClass({
 		if (this.props.removeScript && removeImages.length)
 		{
 			$.post(this.props.removeScript, { 'images[]' : removeImages }, (response) => {
-				// log(response);
+				// console.log(response);
 			});
 		}
 	},
