@@ -1,4 +1,4 @@
-# PhotoLayoutEditor(PLE)
+# Photo Layout Editor (PLE)
 사진 레이아웃을 편집하는 웹 프로그램입니다.
 
 Instagram blog( http://blog.instagram.com/ )에 있는 정렬된 이미지의 모습에 매료되어 저런 모습을 직접 편집하여 게시물로 올렸으면 좋겠다는 생각이 들어 만들게 되었습니다.  
@@ -47,80 +47,6 @@ PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
 - http://gridster.net/
 - https://github.com/claviska/jquery-minicolors
 
-
-## Start PLE
-
-데모파일(`./demoindex.html`)의 소스를 보시면 기본적으로 구성되어있는 형태를 확인할 수 있습니다. 소스는 다음과 같습니다.
-
-### html
-```
-<div class="ple-editor" id="app">
-	<div class="container">
-		<div id="ple_app"></div>
-	</div>
-	<div id="ple_side"></div>
-</div>
-
-<div id="cropper"></div>
-<div id="result"></div>
-```
-
-### javascript
-```
-PLE.init({
-	elements : {
-		app : document.getElementById('app'),
-		container : document.getElementById('ple_app'),
-		side : document.getElementById('ple_side'),
-		cropper : document.getElementById('cropper'),
-		result : document.getElementById('result')
-	},
-	preference : {}
-});
-```
-
-위 소스와 같이 `PLE.init()` 메서드 실행으로 PLE를 초기화 및 구동을 합니다.  
-여기에 들어가는 옵션이 많지만 꼭 필요한 옵션은 `elements`의 객체이며 이것은 각각 역할을 하는 부분에 대한 엘리먼트를 지정합니다.  
-이렇게 한 이유는 프로그램 수정없이 레이아웃 변경이 가능하도록 하기 위함입니다.
-
-`elements`값의 옵션 설명은 다음과 같습니다.
-
-- app : PLE의 컨테이너
-- container : 왼쪽 레이아웃 에디터와 툴바버튼 영역
-- side : 오른쪽 이미지 목록영역
-- cropper : 블럭을 편집할때 팝업으로 뜨는 영역
-- result : 결과물을 팝업으로 뜨는 영역
-
-#### preference
-preference값은 좀더 디테일한 옵션값들을 담고 있습니다. 이 값이 없으면 설정되어있는 기본값으로 사용됩니다.
-
-기본값은 다음과 같습니다.
-
-```
-{
-	uploadScript : '',
-	removeScript : '',
-	defaultImagesScript : '',
-	showSide : true,
-	gridster : {
-		nameID : 'gridster',
-		createNow : true,
-		createCount : 4,
-		blockColor : '#DDDDDD',
-		params : null
-	},
-	setting : {
-		width : 100,
-		height : 100,
-		max_col : 5,
-		max_scale : 2,
-		outer_margin : 10,
-		inner_margin : 10
-	}
-}
-```
-
-(TODO : 옵션값에 대한 설명..)
 
 
 ## API
