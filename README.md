@@ -44,7 +44,7 @@ http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
 
 개발에 필요한 위키 링크입니다.
 
-- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start-PLE
+- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start
 - API : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/API
 - Development : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Development
 
