@@ -40,6 +40,16 @@ http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
 
 
 
+## Develop links
+
+개발에 필요한 위키 링크입니다.
+
+- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start-PLE
+- API : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/API
+- Development : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Development
+
+
+
 ## Vendor list
 
 PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
@@ -48,13 +58,3 @@ PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
 - https://facebook.github.io/react/
 - http://gridster.net/
 - https://github.com/claviska/jquery-minicolors
-
-
-
-## Develop links
-
-개발에 필요한 위키 링크입니다.
-
-- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start-PLE
-- API : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/API
-- Development : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Development
