@@ -5,6 +5,7 @@ Instagram blog( http://blog.instagram.com/ )에 있는 정렬된 이미지의 �
 블럭을 드래그 앤 드롭으로 위치와 크기를 편집하여 모던하게 정렬된 이미지나 레이아웃 만들 수 있습니다.
 
 
+
 ## Feature
 
 PLE는 이런 특징들을 가지고 있습니다.
@@ -38,6 +39,7 @@ PLE는 이런 특징들을 가지고 있습니다.
 http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
 
 
+
 ## Vendor list
 
 PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
@@ -49,113 +51,10 @@ PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
 
 
 
-## API
+## Develop links
 
-직접만든 이벤트로 PLE를 컨트롤 하고싶을겁니다.  
-그럴때마다 프로그램을 직접고치거나 객체를 헤집고 들어가는 수고를 덜기 위하여 API 컴포넌트를 별도로 만들었습니다.  
-API를 통하여 최대한 많은일을 할 수 있도록 많은 메서드들을 만들었습니다. 이것들을 조합하여 다른 멋진 기능들을 만들 수 있다는것을 기대하고 있습니다.
+개발에 필요한 위키 링크입니다.
 
-### Gridster
-
-에디터 영역에 관한 메서드들입니다. 객체는 `PLE.gridster`
-
-#### shuffle
-블럭을 무작위로 위치와 사이즈를 변경합니다.
-
-```
-PLE.gridster.shuffle();
-```
-
-(TODO : API 메서드에 대한설명)
-
-### Side
-
-업로드한 이미지들을 담고있는 사이드 영역입니다. 객체는 `PLE.side`
-
-(TODO : API 메서드에 대한설명)
-
-```
-// TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.
-
-//var api = window.PLE.api;
-//document.getElementById('fooo').addEventListener('click', function(e){
-//	// $('#gridster li').eq(0)
-//
-//	// 이미지를 경로 그대로 가져온다
-//	//	api.gridster.export(null, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 이미지를 base64코드로 변환하여 가져온다.
-//	//	api.gridster.export({
-//	//		type: 'image/jpeg',
-//	//		quality : 0.5
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 모두 모아져 있는 이미지 만들기
-//	//	api.gridster.makeImage({
-//	//		type : 'image/jpeg',
-//	//		quality : 0.5,
-//	//		bgColor : '#ff0000'
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
-//	//		$('body').append('<img src="' + res + '" />');
-//	//	});
-//
-//	//	api.gridster.assignImage(
-//	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
-//	//		'./images/rg3144.jpg',
-//	//		{
-//	//			size: '80px auto',
-//	//			position: '-20px -10px'
-//	//		}
-//	//	);
-//
-//	// api.side.attach([1,8]);
-//
-//	// api.side.remove([1,2]);
-//
-//	// api.side.select([0,2,3]);
-//
-//	//api.side.unSelect([1,2,4]);
-//
-//	//api.side.toggleSelectAll();
-//
-//	// log(api.side.export());
-//});
-//document.getElementById('fooo2').addEventListener('click', function(e){
-//	api.gridster.unSelect($('#gridster li').eq(2));
-//});
-```
-
-
-
-## Development
-
-PLE의 기능을 수정하거나 더하려면 개발할 수 있는 환경을 구성해야합니다.  
-우선 node.js v5.0이상의 버전이 설치되어 있어야 하고, 커멘드라인에서 다음과 같은 형태로 설치해줍니다.
-
-```
-git clone https://github.com/RedgooseDev/PhotoLayoutEditor.git
-cd PhotoLayoutEditor
-npm install
-```
-
-### build vendor
-외부 라이브러리는 로딩 개선을 위하여 `./dist/vendor.pkgd.min.js`파일로 묶었습니다.  
-개발용으로 vendor를 사용하려면 `./dist/vendor.pkgd.js`파일을 사용하는것을 권장합니다.
-
-만약 vendor를 수정하고 싶다면 `./gulpfile.js`파일에서 `externalResource`함수의 내용을 수정한 뒤에 커멘드라인에서 `gulp vendor` 명령을 실행해주시면 벤더 파일을 빌드합니다.
-
-### build App
-커멘드라인에서 `gulp js`을 실행하여 빌드합니다.  
-webpack을 통하여 빌드하며 빌드를 실행하면 빌드 대기상태가 되며, `./src/jsx/`에 있는 코드가 변경되면 빌드합니다.
-
-
-### build scss to css
-`gulp scss`를 실행하여 빌드하거나 `gulp scss:watch`를 실행하여 빌드 대기상태로 두어 scss가 수정되면 빌드가 되도록 할 수 있습니다.
+- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start-PLE
+- API : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/API
+- Development : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Development
