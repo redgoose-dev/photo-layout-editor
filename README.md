@@ -1,92 +1,60 @@
-# LayoutEditor
+# Photo Layout Editor (PLE)
 사진 레이아웃을 편집하는 웹 프로그램입니다.
 
-### Demo
-
-* 체험하기 : http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
-
-
-### Development app
-
-css를 수정하거나 javascript 개발하려면 다음 명령어를 이용하여 모듈을 설치할 필요가 있습니다.
-
-```
-npm install
-```
-
-#### build vendor
-외부 라이브러리 빌드
-
-```
-gulp vendor
-```
-
-#### build App
-`gulp js`을 실행하여 빌드합니다.  
-webpack을 통하여 빌드하며 빌드를 실행하면 빌드 대기상태가 되며, `src/jsx/`에 있는 코드가 변경되면 빌드합니다.
-
-
-#### build scss to css
-`gulp scss`를 실행하여 빌드하거나 `gulp scss:watch`를 실행하여 빌드 대기를 유지합니다.
+Instagram blog( http://blog.instagram.com/ )에 있는 정렬된 이미지의 모습에 매료되어 저런 모습을 직접 편집하여 게시물로 올렸으면 좋겠다는 생각이 들어 만들게 되었습니다.  
+블럭을 드래그 앤 드롭으로 위치와 크기를 편집하여 모던하게 정렬된 이미지나 레이아웃 만들 수 있습니다.
 
 
 
+## Feature
 
-```
-// TODO : 아래 주석된 api호출 예제코드들을 도큐먼트를 작성하는데 사용하기.
+PLE는 이런 특징들을 가지고 있습니다.
 
-//var api = window.PLE.api;
-//document.getElementById('fooo').addEventListener('click', function(e){
-//	// $('#gridster li').eq(0)
-//
-//	// 이미지를 경로 그대로 가져온다
-//	//	api.gridster.export(null, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 이미지를 base64코드로 변환하여 가져온다.
-//	//	api.gridster.export({
-//	//		type: 'image/jpeg',
-//	//		quality : 0.5
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	// 모두 모아져 있는 이미지 만들기
-//	//	api.gridster.makeImage({
-//	//		type : 'image/jpeg',
-//	//		quality : 0.5,
-//	//		bgColor : '#ff0000'
-//	//	}, function(res){
-//	//		log(res);
-//	//	});
-//
-//	//	api.gridster.makeImage({ type: 'image/png', quality: 0.1, bgColor: '#7e04f2' }, function(res){
-//	//		$('body').append('<img src="' + res + '" />');
-//	//	});
-//
-//	//	api.gridster.assignImage(
-//	//		$('#gridster').find('li:nth-child(1), li:nth-child(3)'),
-//	//		'./images/rg3144.jpg',
-//	//		{
-//	//			size: '80px auto',
-//	//			position: '-20px -10px'
-//	//		}
-//	//	);
-//
-//	// api.side.attach([1,8]);
-//
-//	// api.side.remove([1,2]);
-//
-//	// api.side.select([0,2,3]);
-//
-//	//api.side.unSelect([1,2,4]);
-//
-//	//api.side.toggleSelectAll();
-//
-//	// log(api.side.export());
-//});
-//document.getElementById('fooo2').addEventListener('click', function(e){
-//	api.gridster.unSelect($('#gridster li').eq(2));
-//});
-```
+#### 이미지 관리
+
+사이드바에 이미지를 업로드하여 사진을 배치하기 전에 이미지를 담아둘 수 있습니다.
+
+#### 에디터 속성변경
+
+블럭의 갯수나 사이즈, 여백등을 조절할 수 있습니다.
+
+#### 드래그 앤 드롭
+
+이미지를 드래그하여 이미지를 블럭에 넣거나 블럭의 위치를 옮기거나 수정할 수 있습니다.
+
+#### 이미지 영역의 편집
+
+블럭을 선택하고 펜 모양의 툴바(edit block)를 선택하면 편집창이 뜨면서 영역을 변경할 수 있습니다.
+
+#### 배경색 변경
+
+블럭의 배경색을 바꿀 수 있습니다. 빈 블럭을 만들고 색상을 수정할 수 있습니다.
+
+
+
+## Demo
+
+다음 경로를 통하여 사진 레이아웃 에디터를 체험해볼 수 있습니다.
+
+http://projects.redgoose.me/2016/PhotoLayoutEditor/demo/
+
+
+
+## Develop links
+
+개발에 필요한 위키 링크입니다.
+
+- Start PLE : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Start
+- API : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/API
+- Development : https://github.com/RedgooseDev/PhotoLayoutEditor/wiki/Development
+
+
+
+## Vendor list
+
+PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
+
+- http://jquery.com/
+- https://facebook.github.io/react/
+- http://gridster.net/
+- https://github.com/claviska/jquery-minicolors
