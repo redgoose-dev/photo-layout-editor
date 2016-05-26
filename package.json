@@ -1,6 +1,6 @@
 {
   "name": "photo-layout-editor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Photo layout editor program",
   "repository": {
     "type": "git",
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/RedgooseDev/PhotoLayoutEditor#readme",
   "dependencies": {
-    "jquery": "^2.2.3",
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2"
+    "jquery": "^2.2.4",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
