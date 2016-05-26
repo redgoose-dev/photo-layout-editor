@@ -319,11 +319,13 @@ function SidebarForAPI() {
 
 	/**
 	 * get items
+	 * 이미지의 키값을 가져온다.
 	 *
-	 * @param {Array} selected
+	 * @param {Boolean} selected
+	 * @return {Array}
 	 */
 	this.getItems = (selected) => {
-		sidebar.getItems(selected);
+		return sidebar.getItems(selected);
 	};
 }
 
