@@ -13,6 +13,18 @@ $uploadDir = '../upload';
 $uploadUrl = './upload';
 
 
+// make unique filename
+function generateRandomString($length = 10) {
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+	}
+	return $randomString;
+}
+
+
 // check directory
 if (!$uploadDir || !is_dir($uploadDir))
 {
@@ -48,12 +60,13 @@ for ($i=0; $i<$count; $i++)
 {
 	if ($files['tmp_name'][$i])
 	{
-		move_uploaded_file($files['tmp_name'][$i], $uploadDir.'/'.$files['name'][$i]);
+		$filename = generateRandomString(15).'.'.pathinfo($files['name'][$i])['extension'];
+		move_uploaded_file($files['tmp_name'][$i], $uploadDir.'/'.$filename);
 		$copyFiles[] = [
-			'loc' => $uploadUrl.'/'.$files['name'][$i],
+			'loc' => $uploadUrl.'/'.$filename,
 			'type' => $files['type'][$i],
 			'size' => $files['size'][$i],
-			'name' => $files['name'][$i]
+			'name' => $filename
 		];
 	}
 }

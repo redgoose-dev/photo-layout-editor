@@ -100,8 +100,7 @@ module.exports = React.createClass({
 					.removeAttr('draggable')
 					.addClass('ple-sidebar-placeholder')
 					.width($(e.currentTarget).width())
-					.height($(e.currentTarget).height())
-				;
+					.height($(e.currentTarget).height());
 
 				$('body').append(this.$dragEl);
 				$(e.currentTarget).on('touchmove', (te) => {
@@ -140,7 +139,7 @@ module.exports = React.createClass({
 				$(e.currentTarget).off('touchmove');
 
 				// check gridster item area
-				this.dragTarget = this.getGridsterItem()
+				this.dragTarget = this.getGridsterItem();
 				break;
 		}
 
@@ -149,6 +148,7 @@ module.exports = React.createClass({
 			let img = this.props.uploadImages[parseInt(e.currentTarget.getAttribute('data-key'))].image;
 			this.root.container.refs.gridster.assignImage($(this.dragTarget), img, null);
 			this.dragTarget = null;
+			this.dragPosition = [];
 		}
 	},
 
