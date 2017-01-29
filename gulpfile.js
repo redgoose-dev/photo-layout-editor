@@ -1,69 +1,52 @@
-var log = function(o) { console.log(o); };
-
 // log modules
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
-var scss = require('gulp-sass');
-var rename = require('gulp-rename');
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const scss = require('gulp-sass');
+const rename = require('gulp-rename');
 
-var webpack = require('webpack-stream');
+const webpack = require('webpack-stream');
 
 
 // set directory
-var src = './src';
-var dist = './dist';
-var maps = 'maps';
+const src = './src';
+const dist = './dist';
+const maps = 'maps';
 
 
 /**
  * make external resource
  *
- * @param {string} type
- * @param {string} extType
- * @param {boolean} isDevelop
- * @return {array}
+ * @param {String} type
+ * @param {String} extType
+ * @param {Boolean} isDevelop
+ * @return {Array}
  */
-var externalResource = function(type, extType, isDevelop)
+const externalResource = function(type, extType, isDevelop)
 {
 	switch(type)
 	{
-		case 'minify':
-			switch(extType)
-			{
-				case 'js':
-					return [
-						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.js'
-					];
-					break;
-				case 'css':
-					return [
-						src + '/vendor/jquery-minicolors/jquery.minicolors.css'
-					];
-					break;
-			}
-			break;
 		case 'vendor':
 			switch(extType)
 			{
 				case 'js':
 					return [
-						(
-							(isDevelop) ?
-								'./node_modules/react/dist/react.js' :
-								'./node_modules/react/dist/react.min.js'
-						),
-						'./node_modules/react-dom/dist/react-dom.min.js',
+						(isDevelop) ?
+							'./node_modules/react/dist/react.js' :
+							'./node_modules/react/dist/react.min.js',
+						(isDevelop) ?
+							'./node_modules/react-dom/dist/react-dom.js' :
+							'./node_modules/react-dom/dist/react-dom.min.js',
 						'./node_modules/jquery/dist/jquery.min.js',
-						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.js',
-						src + '/vendor/jquery-minicolors/jquery.minicolors.min.js'
+						'./vendors/gridster.js/jquery.gridster.min.js',
+						'./vendors/jquery-minicolors/jquery.minicolors.min.js',
 					];
 					break;
 				case 'css':
 					return [
-						src + '/vendor/ducksboard-gridster.js/dist/jquery.gridster.min.css',
-						src + '/vendor/jquery-minicolors/jquery.minicolors.min.css'
+						'./vendors/gridster.js/jquery.gridster.min.css',
+						'./vendors/jquery-minicolors/jquery.minicolors.min.css',
 					];
 					break;
 			}
@@ -73,81 +56,50 @@ var externalResource = function(type, extType, isDevelop)
 };
 
 
-// Minify files
-gulp.task('minify', function(){
-	if (externalResource('minify', 'js', false).length)
-	{
-		externalResource('minify', 'js', false).forEach(function(o){
-			var dir = o.substring(0,o.lastIndexOf("/")+1);
-			gulp.src(o)
-				.pipe(uglify())
-				.pipe(rename({ suffix : '.min' }))
-				.pipe(gulp.dest(dir));
-		});
-	}
-	if (externalResource('minify', 'css', false).length)
-	{
-		externalResource('minify', 'css', false).forEach(function(o){
-			var dir = o.substring(0,o.lastIndexOf("/")+1);
-			gulp.src(o)
-				.pipe(scss({
-					outputStyle: 'compressed'
-				}).on('error', scss.logError))
-				.pipe(rename({ suffix : '.min' }))
-				.pipe(gulp.dest(dir));
-		});
-	}
-});
-
-
 // build vendor files
 gulp.task('vendor', function(){
+	// development vendors
 	gulp.src(externalResource('vendor', 'js', true))
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(concat('vendor.pkgd.js', { newLine: '\n\n' }))
-		.pipe(sourcemaps.write(maps))
-		.pipe(gulp.dest(dist + '/js'));
+		.pipe(concat('photoLayoutEditor.vendors.dev.js', { newLine: '\n\n' }))
+		.pipe(gulp.dest(dist));
 
+	// production vendors
 	gulp.src(externalResource('vendor', 'js', false))
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(concat('vendor.pkgd.min.js', { newLine: '\n\n' }))
-		.pipe(sourcemaps.write(maps))
-		.pipe(gulp.dest(dist + '/js'));
+		.pipe(concat('photoLayoutEditor.vendors.js', { newLine: '\n\n' }))
+		.pipe(gulp.dest(dist));
 
 	gulp.src(externalResource('vendor', 'css', false))
-		.pipe(sourcemaps.init())
 		.pipe(scss({
 			outputStyle: 'compressed'
 		}).on('error', scss.logError))
-		.pipe(concat('vendor.pkgd.css', { newLine: '\n\n' }))
-		.pipe(sourcemaps.write(maps))
-		.pipe(gulp.dest(dist + '/css'));
+		.pipe(concat('photoLayoutEditor.vendors.css', { newLine: '\n\n' }))
+		.pipe(gulp.dest(dist));
 });
 
 
 // build scss
 gulp.task('scss', function(){
-	gulp.src(src + '/scss/app.scss')
+	gulp.src(`${src}/scss/app.scss`)
 		.pipe(sourcemaps.init())
 		.pipe(scss({
 			//outputStyle : 'compact'
 			outputStyle: 'compressed'
 		}).on('error', scss.logError))
-		.pipe(rename({ suffix: '.pkgd' }))
+		.pipe(rename('photoLayoutEditor.css'))
 		.pipe(sourcemaps.write(maps))
-		.pipe(gulp.dest(dist + '/css'));
+		.pipe(gulp.dest(dist));
 });
 gulp.task('scss:watch', function(){
-	gulp.watch(src + '/scss/*.scss', ['scss']);
+	gulp.watch(`${src}/scss/*.scss`, ['scss']);
 });
 
 
 gulp.task('js', function() {
-	return gulp.src(src + '/jsx/App.jsx')
+	return gulp.src(`${src}/js/App.js`)
 		.pipe(
 			webpack(
 				require('./webpack.config.js')
 			)
 		)
-		.pipe(gulp.dest(dist + '/js/'));
+		.pipe(gulp.dest(dist));
 });

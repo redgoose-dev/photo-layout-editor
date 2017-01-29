@@ -6,7 +6,7 @@ module.exports = {
 		extensions: ['', '.jsx', '.js']
 	},
 	output: {
-		filename: 'app.pkgd.js'
+		filename: 'photoLayoutEditor.js'
 	},
 	externals: {
 		'jquery': '$',
