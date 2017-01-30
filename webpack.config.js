@@ -3,20 +3,22 @@ module.exports = {
 	devtool: 'eval',
 	resolve: {
 		modulesDirectories: ['src/js'],
-		extensions: ['', '.jsx', '.js']
+		extensions: ['', '.js']
 	},
 	output: {
 		filename: 'photoLayoutEditor.js'
 	},
 	externals: {
 		'jquery': '$',
-		'React': 'React',
-		'ReactDOM': 'ReactDOM'
+		'react': 'React',
+		'react-dom': 'ReactDOM',
+		'redux' : 'Redux',
+		'react-redux' : 'ReactRedux',
 	},
 	module: {
 		loaders: [
 			{
-				test: /\.(jsx|js)$/,
+				test: /\.(js)$/,
 				loader: 'babel-loader',
 				exclude: /node_modules/,
 				query: {

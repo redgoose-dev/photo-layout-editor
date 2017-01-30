@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<title>Photo layout editor program</title>
+<link rel="stylesheet" href="../dist/photoLayoutEditor.vendors.css"/>
+<link rel="stylesheet" href="../dist/photoLayoutEditor.css"/>
+</head>
+<body>
+<main class="ple-editor" id="app">
+	<div class="ple-container">
+		<div class="ple-body"></div>
+	</div>
+	<aside class="ple-side"></aside>
+</main>
+
+<script src="../dist/photoLayoutEditor.vendors.dev.js"></script>
+<script src="../dist/photoLayoutEditor.js"></script>
+<script>
+var ple = new PLE(document.getElementById('app'), {
+	body: {
+		settings: {
+			width: 200,
+		}
+	}
+});
+</script>
+</body>
+</html>

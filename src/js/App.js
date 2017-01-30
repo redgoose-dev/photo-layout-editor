@@ -1,150 +1,87 @@
-const React = require('React');
-const ReactDOM = require('ReactDOM');
+import $ from 'jquery';
+import React from 'react';
+import { render } from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-// load libs
-const KeyboardEvent = require('./lib/KeyboardEvent.js');
-
-// init components
-const Container = require('./container/Container.jsx');
-const Sidebar = require('./sidebar/Sidebar.jsx');
-const Cropper = require('./cropper/Cropper.jsx');
-const Result = require('./result/Result.jsx');
-const API = require('./API.js');
-const Export = require('./lib/Export.js');
-const util = require('./lib/util.js');
+import deepAssign from './lib/deep-assign';
+import defaultPreference from './lib/defaultPreference';
+import Util from './lib/Util';
+import reducers from './reducers';
+import Body from './Body';
+import Side from './Side';
 
 
+/**
+ * Photo layout editor
+ *
+ * @param {Object} el
+ * @param {Object} options
+ */
+window.PLE = function(el, options)
+{
+	// set preference
+	this.preference = deepAssign(defaultPreference, options);
 
-// Photo layout editor object
-window.PLE = {
-	
-	// components
-	container : null,
-	side : null,
-	cropper : null,
-	result : null,
-	keyboardEvent : null,
-	
-	// API
-	api : new API(),
+	// set elements
+	this.el = {
+		app: el,
+		container: el.querySelector('.ple-container'),
+		body: el.querySelector('.ple-body'),
+		side: el.querySelector('.ple-side'),
+	};
 
-	// export
-	export : Export,
-	
-	// elements
-	$app : null,
-	$container : null,
-	$side : null,
-	
-	option : {},
-	saveWidth : 0,
+	// set store
+	this.store = {
+		body: createStore(reducers.body),
+		side: createStore(reducers.side),
+	};
 
-	init(options)
+	// set components
+	//this.components = {};
+
+	// check touch device
+	if (Util.isTouchDevice())
 	{
-		this.option = options;
-
-		// check touch device
-		if (util.isTouchDevice()) $('html').addClass('touch');
-
-		// set elements
-		this.$app = $(this.option.elements.app);
-		
-		// init preference
-		this.preference = this.mergePreference(this.option.preference);
-		
-		// init container
-		this.container = ReactDOM.render(<Container root={this} resizeWidth="" />, options.elements.container);
-
-		// init side
-		this.side = ReactDOM.render(
-			(
-				<Sidebar
-					root={this}
-					uploadScript={this.preference.uploadScript}
-					removeScript={this.preference.removeScript}
-					defaultImagesScript={this.preference.defaultImagesScript}
-					show={this.preference.showSide}
-					toggleSidebar={this.toggleSidebar} />
-			),
-			this.option.elements.side
-		);
-
-		// init Cropper
-		this.cropper = ReactDOM.render(<Cropper root={this} />, this.option.elements.cropper);
-
-		// ini result
-		this.result = ReactDOM.render(<Result root={this} />, this.option.elements.result);
-
-		// init keyboard event
-		this.keyboardEvent = new KeyboardEvent();
-
-		// init Export
-		this.export.init(this.container);
-		
-		// init API
-		this.api.init(this);
-
-		// play gridster
-		this.container.actGridster();
-	},
-
-	/**
-	 * resize width in the side
-	 *
-	 * @param {Boolean} showSide
-	 */
-	resizeWidthSide(showSide)
-	{
-		this.saveWidth = (showSide) ? this.saveWidth + this.$side.width() : this.saveWidth - this.$side.width();
-		this.$app.css('min-width', this.saveWidth);
-	},
-
-	/**
-	 * resize width in the container
-	 *
-	 * @param {int} width
-	 */
-	resizeWidthContainer(width)
-	{
-		this.saveWidth = (this.side.state.show) ? width : width - this.$side.width();
-		this.$app.css('min-width', this.saveWidth);
-	},
-
-	/**
-	 * merge preference
-	 *
-	 * @param {Object} userPreference
-	 */
-	mergePreference(userPreference)
-	{
-		var pref = {
-			uploadScript : '',
-			removeScript : '',
-			defaultImagesScript : '',
-			replaceScript : '',
-			showSide : true,
-			gridster : {
-				nameID : 'ple_gridster',
-				createNow : true,
-				createCount : 5,
-				blockColor : '#DDDDDD',
-				params : null
-			},
-			setting : {
-				width : 80,
-				height : 80,
-				max_col : 5,
-				max_scale : 2,
-				outer_margin : 10,
-				inner_margin : 10
-			}
-		};
-
-		if (userPreference)
-		{
-			$.extend(pref, userPreference);
-		}
-
-		return pref;
+		$('html').addClass('ple-touch');
 	}
+
+	// set body component
+	if (this.el.body)
+	{
+		reduxRender(this.el.body, this.store.body, ( <Body root={this}/> ));
+	}
+
+	// set side component
+	if (this.el.side)
+	{
+		reduxRender(this.el.side, this.store.side, ( <Side root={this}/> ));
+	}
+
+	// TODO : init keyboard event
+	// TODO : init Export
+	// TODO : init API
+	// TODO : play gridster
+	// TODO : `this.store.body.dispatch(foo())` 형태로 외부 리듀스에 접근할 수 있다.
+	// TODO : dispatch(foo()) 형식으로 action으로 호출
 };
+
+
+/**
+ * Redux render
+ * react renders using the redux
+ *
+ * @param {Object} el
+ * @param {Object} store
+ * @param {Object} component
+ * @return {Object}
+ */
+function reduxRender(el, store, component)
+{
+	return render(
+		<Provider store={store}>
+			{component}
+		</Provider>,
+		el,
+	);
+}

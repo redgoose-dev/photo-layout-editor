@@ -330,11 +330,14 @@ function SidebarForAPI() {
 }
 
 
-module.exports = function API() {
-	
+/**
+ * API
+ */
+function API() {
+
 	this.gridster = null;
 	this.side = null;
-	
+
 	/**
 	 * Init
 	 *
@@ -350,4 +353,7 @@ module.exports = function API() {
 		this.gridster = new GridsterForAPI();
 		this.side = new SidebarForAPI();
 	};
-};
+}
+
+
+export default API;

@@ -15,10 +15,14 @@ $sidebar-toggle-speed : .3s;
 
 
 // fonts
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+//@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
 
 
 // placeholders
+%blind {
+	position: absolute; overflow: hidden; visibility: hidden;
+	width: 0; height: 0; font-size: 0; line-height: 0;
+}
 %icon-close {
 	position: relative;
 	display: inline-block;

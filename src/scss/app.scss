@@ -1,40 +1,22 @@
 @import "lib";
 
-*, *:before, *:after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-body {
-	margin: 0; padding: 0;
-	//min-width: 768px;
-	font-size: 14px; color: #333; line-height: 1.428;
-}
-body, input, select, textarea {
-	font-family: 'Apple SD Gothic Neo', 'Noto Sans', 'MalgunGothic', 'Helvetica Neue', sans-serif;
-}
-main {display: block;}
-
 /* popup mode */
 html.ple-popup-mode {overflow: hidden;}
 
 
-/* Attributes */
-.blind {
-	position: absolute !important; overflow: hidden !important; visibility: hidden !important;
-	width: 0 !important; height: 0 !important; font-size: 0 !important; line-height: 0 !important;
-}
-
-
 .ple-editor {
-	padding: 30px 0 30px 30px;
-	.ple-container, .ple-header {
+	*, *:before, *:after {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	.ple-container {
 		margin-right: 30px;
 		-webkit-transition: margin-right $sidebar-toggle-speed ease-in-out;
 		transition: margin-right $sidebar-toggle-speed ease-in-out;
 	}
 	&.on-sidebar {
-		.ple-container, .ple-header {margin-right: $sidebar-width + 30px;}
+		.ple-container {margin-right: $sidebar-width + 30px;}
 		.ple-sidebar {
 			-webkit-transform: translateX(0 - $sidebar-width);
 			transform: translateX(0 - $sidebar-width);
@@ -43,130 +25,9 @@ html.ple-popup-mode {overflow: hidden;}
 }
 
 
-/* Header */
-.ple-header {
-	h1 {
-		margin: -5px 0 0;
-		font-family: $font-eng; font-size: 36px; color: #222;
-	}
-	p {
-		margin: 3px 0 0;
-		font-size: 13px; color: #555;
-	}
-}
-
-
 /* Container */
 .ple-container {
-	margin: 30px 0 0;
-	.nav-top-wrap {
-		position: relative; height: 43px;
-		&:after {content: ''; display: block; clear: both;}
-	}
-	.nav-top {
-		position: absolute; z-index: 11;
-		top: 0; width: 100%; height: 43px;
-		background: #fff;
-		&.fix {position: fixed; top: 0; z-index: 1000;}
-		.block {
-			float: left; margin-right: 1px;
-			display: none;
-			> button {
-				display: block; position: relative;
-				margin: 0; padding: 0; width: 42px; height: 42px;
-				border: none; background: $col-blur; cursor: pointer;
-				i {position: absolute; display: block; left: 50%; top: 50%;}
-			}
-			&.is-show {display: block;}
-			&.color-bg-key {
-				> button {background: $col-active;}
-				&.show {display: block;}
-			}
-			&.is-active {
-				> button {background: $col-key;}
-				.form {display: block;}
-			}
-		}
-		.form {position: relative; display: none;}
-		.edit-setting {
-			form {
-				position: absolute; left: -5px; top: 0; z-index: 99999; min-width: 270px;
-				background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
-				fieldset {margin: 0; padding: 20px; border: none;}
-			}
-			h1 {
-				margin: 0 0 10px;
-				font-size: 18px; color: $col-key;
-			}
-			dl {
-				display: table; width: 100%; margin: 1px 0;
-				> * {
-					display: table-cell; vertical-align: middle;
-					padding: 3px 0;
-				}
-				dt {
-					width: 95px;
-					font-size: 12px; color: #333;
-					label {display: inline;}
-				}
-				dd {
-					margin: 0 0 0 100px;
-					input[type=number] {
-						margin: 0; padding: 6px 6px;
-						font-size: 12px; color: #111;
-						border: 1px solid #c4c7c8; border-radius: 2px;
-						box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
-					}
-					span {
-						padding-left: 5px;
-						font-size: 12px; color: #333;
-					}
-				}
-			}
-			nav {
-				&:after {content: ''; display: block; clear: both;}
-				span {
-					display: block; width: 50%; float: left;
-					&:first-child {padding-right: 1px;}
-				}
-				button {
-					margin: 0; padding: 12px 0; width: 100%;
-					font-size: 12px; color: #fff;
-					background: $col-blur; border: none; cursor: pointer;
-					-webkit-appearance: none;
-					&.submit {background: $col-key;}
-				}
-			}
-		}
-		.edit-color {
-			padding: 0;
-			background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
-			form {margin: 0;}
-			fieldset {margin: 0; padding: 20px; border: none;}
-			.preview {
-				position: relative; margin: 5px 0 0 0;
-				input {
-					display: block; width: 175px; margin: 0; padding: 5px 50px 5px 5px;
-					font-size: 13px; color: #222;
-					border: 1px solid #aaa;
-					outline: 0;
-				}
-				span {
-					position: absolute; display: block;
-					right: 0; top: 0; bottom: 0;
-					width: 50px; height: 100%;
-				}
-			}
-			nav {
-				button {
-					width: 100%; display: block; margin: 0; padding: 12px 5px;
-					font-size: 12px; color: #fff;
-					background: $col-key; border: none; cursor: pointer;
-					-webkit-appearance: none;
-				}
-			}
-		}
-	}
+	margin: 0;
 	.gridster-wrap {
 		padding: 50px 30px;
 		@extend %transparent-background;
@@ -192,7 +53,7 @@ html.ple-popup-mode {overflow: hidden;}
 				}
 			}
 			.gs-resize-handle {
-				html.touch & {
+				html.ple-touch & {
 					opacity: 1; width: 36px; height: 36px; bottom: 0; right: 0;
 					background-position: 24px 24px;
 				}
@@ -206,20 +67,121 @@ html.ple-popup-mode {overflow: hidden;}
 	}
 }
 
+/* Body */
+.ple-body {}
 
-/* Container */
-.ple-nav-bottom {
-	margin: 30px 0; text-align: left;
-	p {margin: 2px 0; font-size: 0;}
-	button {
-		margin: 0 1px; padding: 10px 15px;
-		border: none; background: $col-key;
-		font-size: 0; cursor: pointer;
-		> * {vertical-align: middle;}
-		i {margin-right: 3px;}
-		span {
-			font-family: $font-eng;
-			font-size: 15px; color: #fff;
+
+/* Toolbar */
+.ple-toolbar {
+	position: relative; height: 43px;
+	&:after {content: ''; display: block; clear: both;}
+	.wrap {
+		position: absolute; z-index: 11;
+		top: 0; width: 100%; height: 43px;
+		background: #fff;
+		&.fix {position: fixed; top: 0; z-index: 1000;}
+	}
+	.pop {position: relative; display: none;}
+	.block {
+		float: left; margin-right: 1px;
+		> button {
+			display: block; position: relative;
+			margin: 0; padding: 0; width: 42px; height: 42px;
+			border: none; background: $col-blur; cursor: pointer;
+			i {
+				position: absolute; display: block; left: 50%; top: 50%;
+			}
+		}
+		&.active {
+			> button {background: $col-key;}
+			.pop {display: block;}
+		}
+		//&.color-bg-key {
+		//	> button {background: $col-active;}
+		//	&.show {display: block;}
+		//}
+	}
+	.edit-setting {
+		form {
+			position: absolute; left: -5px; top: 0; z-index: 99999; min-width: 270px;
+			background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
+			fieldset {margin: 0; padding: 20px; border: none;}
+		}
+		legend {@extend %blind;}
+		h1 {
+			margin: 0 0 10px;
+			font-size: 18px; color: $col-key;
+		}
+		dl {
+			display: table; width: 100%; margin: 1px 0;
+			> * {
+				display: table-cell; vertical-align: middle;
+				padding: 3px 0;
+			}
+			dt {
+				width: 95px;
+				font-size: 12px; color: #333;
+				label {display: inline;}
+			}
+			dd {
+				margin: 0 0 0 100px;
+				input[type=number] {
+					margin: 0; padding: 6px 6px;
+					font-size: 12px; color: #111;
+					border: 1px solid #c4c7c8; border-radius: 2px;
+					box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+				}
+				span {
+					padding-left: 5px;
+					font-size: 12px; color: #333;
+				}
+			}
+		}
+		nav {
+			&:after {content: ''; display: block; clear: both;}
+			span {
+				display: block; width: 50%; float: left;
+				&:first-child {padding-right: 1px;}
+			}
+			button {
+				margin: 0; padding: 12px 0; width: 100%;
+				font-size: 12px; color: #fff;
+				background: $col-blur; border: none; cursor: pointer;
+				-webkit-appearance: none;
+				&.submit {background: $col-key;}
+			}
+		}
+	}
+
+	.edit-color {
+		form {
+			margin: 0; padding: 0;
+			position: absolute; left: -5px; top: 0; z-index: 99999;
+			background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
+		}
+		legend {@extend %blind;}
+		fieldset {margin: 0; padding: 20px; border: none;}
+		.preview {
+			position: relative; margin: 5px 0 0 0;
+			input {
+				display: block; width: 175px; margin: 0; padding: 5px 50px 5px 5px;
+				font-size: 13px; color: #222;
+				border: 1px solid #aaa;
+				outline: 0;
+			}
+			span {
+				position: absolute; display: block;
+				right: 0; top: 0; bottom: 0;
+				width: 50px; height: 100%;
+			}
+		}
+		nav {
+			button {
+				width: 100%; display: block; margin: 0; padding: 12px 5px;
+				font-size: 12px; color: #fff;
+				background: $col-key; border: none; cursor: pointer;
+				-webkit-appearance: none;
+			}
 		}
 	}
 }
@@ -325,7 +287,7 @@ html.ple-popup-mode {overflow: hidden;}
 }
 
 
-/* Cropper */
+/* Popup - Cropper */
 .ple-cropper {
 	display: none;
 	position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999;
@@ -409,7 +371,7 @@ html.ple-popup-mode {overflow: hidden;}
 }
 
 
-/* Result */
+/* Popup - Result */
 .ple-result {
 	display: none;
 	position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999;
