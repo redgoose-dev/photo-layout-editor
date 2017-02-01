@@ -5,22 +5,18 @@ html.ple-popup-mode {overflow: hidden;}
 
 
 .ple-editor {
+	position: relative;
+	min-height: 480px;
+	overflow: hidden;
+	border: 1px solid green;
 	*, *:before, *:after {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
-	.ple-container {
-		margin-right: 30px;
-		-webkit-transition: margin-right $sidebar-toggle-speed ease-in-out;
-		transition: margin-right $sidebar-toggle-speed ease-in-out;
-	}
-	&.on-sidebar {
-		.ple-container {margin-right: $sidebar-width + 30px;}
-		.ple-sidebar {
-			-webkit-transform: translateX(0 - $sidebar-width);
-			transform: translateX(0 - $sidebar-width);
-		}
+
+	&.side-active {
+		.ple-container {margin-right: $sidebar-width;}
 	}
 }
 
@@ -28,6 +24,14 @@ html.ple-popup-mode {overflow: hidden;}
 /* Container */
 .ple-container {
 	margin: 0;
+	padding: 15px;
+	//-webkit-transition: margin-right $sidebar-toggle-speed ease-in-out;
+	//transition: margin-right $sidebar-toggle-speed ease-in-out;
+}
+
+/* Body */
+.ple-body {
+	border: 1px solid #000;
 	.gridster-wrap {
 		padding: 50px 30px;
 		@extend %transparent-background;
@@ -66,9 +70,6 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 	}
 }
-
-/* Body */
-.ple-body {}
 
 
 /* Toolbar */
@@ -188,16 +189,22 @@ html.ple-popup-mode {overflow: hidden;}
 
 
 /* Sidebar */
-.ple-sidebar {
-	position: fixed; z-index: 9999;
-	right: 0 - $sidebar-width; top: 0; bottom: 0; width: $sidebar-width;
-	padding: 0;
-	background: $col-key;
-	-webkit-transition: -webkit-transform $sidebar-toggle-speed ease-in-out;
-	transition: transform $sidebar-toggle-speed ease-in-out;
-	-webkit-transform: translateX(0);
-	transform: translateX(0);
-	&.loading {}
+.ple-side {
+	> .wrap {
+		position: absolute; z-index: 100;
+		right: 0; top: 0; bottom: 0;
+		width: $sidebar-width;
+		padding: 0;
+		background: $col-key;
+		//-webkit-transition: -webkit-transform $sidebar-toggle-speed ease-in-out;
+		//transition: transform $sidebar-toggle-speed ease-in-out;
+		-webkit-transform: translateX($sidebar-width);
+		transform: translateX($sidebar-width);
+		&.show {
+			-webkit-transform: translateX(0);
+			transform: translateX(0);
+		}
+	}
 	.toggle {
 		position: absolute; left: -25px; top: 20px; z-index: 10;
 		padding: 10px 5px; margin: 0;
@@ -211,14 +218,12 @@ html.ple-popup-mode {overflow: hidden;}
 			box-shadow: inset -1px 0 6px rgba(0,0,0,.4);
 		}
 		i {display: block; position: absolute; left: 50%; top: 50%;}
-		.ple-editor.on-sidebar & {
-			i {
-				width: 7px; height: 12px; background-position: -112px 0;
-				&.abs {margin-left: -4px; margin-top: -6px;}
-			}
-		}
 	}
-	.nav-top {
+	&.active .toggle i {
+		width: 7px; height: 12px; background-position: -112px 0;
+		&.abs {margin-left: -4px; margin-top: -6px;}
+	}
+	.navigation {
 		position: absolute; z-index: 2; left: 0; right: 0; top: 0;
 		background: $col-key;
 		.wrap {
@@ -250,38 +255,28 @@ html.ple-popup-mode {overflow: hidden;}
 			left: 50%; top: 50%;
 		}
 	}
-	.upload-files {
+	.items {
 		height: 100%; margin: 0; padding: 75px 0 0;
 		.wrap {
-			height: 100%; padding: 0 15px;
+			height: 100%; padding: 0 10px 20px;
 			overflow-x: hidden; overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 			background: $col-key;
 		}
 		ul {
-			margin: 0 -5px; padding: 0; list-style: none;
-			&:after {content: ''; display: block; clear: both;}
+			margin: 0; padding: 0; list-style: none;
+			display: -webkit-flex; display: flex;
+			flex-flow: row wrap;
 		}
-		li {
-			float: left; width: 33.33333%; padding: 5px;
-			span {
-				position: relative; display: block;
-				width:100%; height: 63px;
-				background-size: cover;
-				background-repeat: no-repeat;
-				background-position: 50% 50%;
-				background-color: #fff;
-				text-indent: -9999px;
-				cursor: pointer;
-				&.on {
-					&:after {
-						content: ''; position: absolute;
-						left: 0; right: 0; top: 0; bottom: 0;
-						border: 3px solid $col-active;
-
-					}
-				}
-			}
+		li {width: 33.3333%; padding: 5px;}
+		button {
+			display: block; margin: 0 auto; padding: 0; border: none;
+			width: 100%; height: 63px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+			background-color: #fff;
+			text-indent: -9999px;
 		}
 	}
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { updateBody } from '../actions/body';
-import defaultPreference from '../lib/defaultPreference';
 import Util from '../lib/Util';
 import Toolbar from './Toolbar';
 import Gridster from './Gridster';
@@ -36,6 +35,7 @@ class Body extends Component {
 			</div>
 		);
 	}
+
 }
 
 

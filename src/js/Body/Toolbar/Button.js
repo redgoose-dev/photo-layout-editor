@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 export default class Button extends Component {
 
 	render() {
-
 		const { children, title, iconClass, className, onClick } = this.props;
 
 		return (

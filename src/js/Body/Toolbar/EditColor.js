@@ -8,7 +8,7 @@ export default class EditPreference extends Component {
 		super(props);
 
 		this.state = {
-			currentColor: props.color,
+			currentColor: props.color || '#ffffff',
 		}
 	}
 
@@ -22,10 +22,6 @@ export default class EditPreference extends Component {
 			changeDelay: 0,
 			change : (hex, opacity) => this.update(hex)
 		});
-	}
-
-	submit() {
-		console.log('submit');
 	}
 
 	update(color) {

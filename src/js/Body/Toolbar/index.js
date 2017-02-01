@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { updateBody } from '../../actions/body';
 import Button from './Button';
 import EditSettings from './EditSettings';
 import EditColor from './EditColor';
@@ -28,9 +29,29 @@ export default class Toolbar extends Component {
 		};
 	}
 
-	changeActive(keyName, userSW) {
+	changeActive(keyName, userSW, event) {
 		const { active } = this.state;
 		const sw = userSW || !active[keyName];
+		const cTarget = event ? event.currentTarget : null;
+
+		if (sw)
+		{
+			$(document).on('click.pleToolbar', (e) => {
+				if ($(e.target).closest('.pop').length)
+				{
+					return;
+				}
+
+				if (!(e.target === cTarget) && !(e.target.parentNode === cTarget))
+				{
+					this.changeActive(keyName, false);
+				}
+			});
+		}
+		else
+		{
+			$(document).off('click.pleToolbar');
+		}
 
 		this.setState({
 			active: Object.assign({}, {
@@ -43,15 +64,27 @@ export default class Toolbar extends Component {
 	}
 
 	submitEditSetting(state) {
-		// TODO : dispatch 실행하여 업데이트 하기
-		console.log(state);
-		this.changeActive('settings');
+		const { dispatch, env } = this.props;
+		// update data
+		dispatch(updateBody(
+			Object.assign({}, env, {
+				settings: state
+			})
+		));
+		// close popup
+		this.changeActive('settings', false);
 	}
 
 	submitEditColor(color) {
-		// TODO : dispatch 실행하여 업데이트 하기
-		console.log(color);
-		this.changeActive('editColor');
+		const { dispatch, env } = this.props;
+		// update data
+		dispatch(updateBody(
+			Object.assign({}, env, {
+				blockColor: color
+			})
+		));
+		// close popup
+		this.changeActive('editColor', false);
 	}
 
 	render() {
@@ -65,7 +98,7 @@ export default class Toolbar extends Component {
 						<Button
 							iconClass="ico-setting"
 							className={`edit-setting ${active.settings ? 'active' : ''}`}
-							onClick={() => this.changeActive('settings')}
+							onClick={(e) => this.changeActive('settings', null, e)}
 							title="Edit preference">
 							<EditSettings
 								submit={this.submitEditSetting.bind(this)}
@@ -108,7 +141,7 @@ export default class Toolbar extends Component {
 						<Button
 							iconClass="ico-palette"
 							className={`edit-color ${active.editColor ? 'active' : ''}`}
-							onClick={() => this.changeActive('editColor')}
+							onClick={(e) => this.changeActive('editColor', null, e)}
 							title="Change color">
 							<EditColor
 								submit={this.submitEditColor.bind(this)}

@@ -11,7 +11,7 @@ const initialEnv = {
 		outerMargin: 10,
 		innerMargin: 10,
 	},
-	blockColor: '#f00',
+	blockColor: '#ff0000',
 };
 
 

@@ -14,7 +14,7 @@ export default class EditSettings extends Component {
 
 	change(e) {
 		this.setState({
-			[e.target.name] : e.target.value
+			[e.target.name] : parseInt(e.target.value)
 		});
 	}
 

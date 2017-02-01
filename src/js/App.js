@@ -10,6 +10,7 @@ import Util from './lib/Util';
 import reducers from './reducers';
 import Body from './Body';
 import Side from './Side';
+import API from './API';
 
 
 /**
@@ -45,6 +46,9 @@ window.PLE = function(el, options)
 	{
 		$('html').addClass('ple-touch');
 	}
+
+	// set API
+	this.api = new API(this);
 
 	// set body component
 	if (this.el.body)

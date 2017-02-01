@@ -1,14 +1,29 @@
 import { combineReducers } from 'redux';
+import { SIDE_VISIBLE } from '../actions/types';
 
 
-const initialBaseState = {
-	foo: 'bar',
+const initialVisible = {
+	visible: false,
 };
 
 
-function base(state=initialBaseState, action)
+function layout(state=initialVisible, action)
 {
 	switch (action.type) {
+		case SIDE_VISIBLE:
+			return Object.assign({}, state, {
+				visible: action.value,
+			});
+			break;
+		default:
+			return state;
+	}
+}
+
+function files(state=[], action)
+{
+	switch (action.type) {
+
 		default:
 			return state;
 	}
@@ -16,7 +31,8 @@ function base(state=initialBaseState, action)
 
 
 const ple = combineReducers({
-	base,
+	layout,
+	files,
 });
 
 export default ple;
