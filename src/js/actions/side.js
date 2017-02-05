@@ -30,11 +30,12 @@ export function removeFiles(idx)
 	};
 }
 
-export function changeActiveFile(n, key)
+export function changeActiveFile(n, key, first)
 {
 	return {
 		type: CHANGE_ACTIVE_FILE,
 		num: n,
 		keyName: key,
+		firstNum: first,
 	};
 }

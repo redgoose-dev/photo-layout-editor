@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
 
-import Util from '../lib/Util';
 import { visible, addFiles } from '../actions/side';
 import { changeActiveFile } from '../actions/side';
+//import Objects from '../lib/';
 
 import ToggleButton from './ToggleButton';
 import Navigation from './Navigation';
 import Items from './Items';
+
+let firstSelectIdx = null;
 
 
 class Side extends Component {
@@ -78,12 +80,46 @@ class Side extends Component {
 	 * @param {Number} n
 	 */
 	onSelectItem(n) {
-		const { root, dispatch } = this.props;
-		dispatch(changeActiveFile(n, root.keyboard.keyName));
+		const { root, dispatch, files } = this.props;
+		const { keyName } = root.keyboard;
+
+		if (keyName !== 'shift')
+		{
+			let currentItem = null;
+			files.forEach((o) => {
+				if (o.id === n)
+				{
+					currentItem = o;
+					return false;
+				}
+			});
+			firstSelectIdx = (currentItem.active === true) ? null : n;
+		}
+		dispatch(changeActiveFile(n, keyName, firstSelectIdx));
+	}
+
+	/**
+	 * Toggle select all items
+	 */
+	_toggleSelect() {
+		const { files, dispatch } = this.props;
+
+		let active = false;
+		files.forEach((o) => {
+			if (o.active) active = true;
+		});
+		if (active)
+		{
+			dispatch(changeActiveFile(null, 'none', null));
+		}
+		else
+		{
+			dispatch(changeActiveFile(null, 'all', null));
+		}
 	}
 
 	render() {
-		const { root, layout, files } = this.props;
+		const { root, dispatch, layout, files } = this.props;
 
 		// update root element
 		this.updateRootElement(layout.visible);
@@ -94,17 +130,15 @@ class Side extends Component {
 					show={layout.visible}
 					onClick={() => root.api.layout.toggleSide()}/>
 				<Navigation
+					attach={() => {
+						console.log('attach files');
+					}}
+					toggleSelect={this._toggleSelect.bind(this)}
 					upload={() => {
 						console.log('on upload');
 					}}
 					remove={() => {
 						console.log('on remove');
-					}}
-					toggleSelect={() => {
-						console.log('on toggle select');
-					}}
-					attach={() => {
-						console.log('on toggle select');
 					}}
 				/>
 				<Items
