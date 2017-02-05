@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import deepAssign from './lib/deep-assign';
 import defaultPreference from './lib/defaultPreference';
 import Util from './lib/Util';
+import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
 import Body from './Body';
 import Side from './Side';
@@ -40,6 +41,10 @@ window.PLE = function(el, options)
 
 	// set components
 	//this.components = {};
+
+	// init keyboard event
+	this.keyboard = Keyboard;
+	this.keyboard.init();
 
 	// check touch device
 	if (Util.isTouchDevice())

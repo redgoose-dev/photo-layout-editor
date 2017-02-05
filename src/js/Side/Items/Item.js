@@ -7,12 +7,13 @@ export default class SideItem extends Component {
 		const { image, onClick, active } = this.props;
 
 		return (
-			<li className={active ? 'active' : ''}>
+			<li>
 				<button
 					type="button"
-					onClick={onClick}
 					data-image={image}
-					style={{ backgroundImage: `url('${image}')` }}/>
+					style={{ backgroundImage: `url('${image}')` }}
+					className={active ? 'active' : ''}
+					onClick={onClick}/>
 			</li>
 		);
 	}

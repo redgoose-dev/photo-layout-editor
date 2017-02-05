@@ -15,6 +15,7 @@ export default {
 		uploadScript : '',
 		removeScript : '',
 		visible: true,
+		items: [],
 	},
 }
 

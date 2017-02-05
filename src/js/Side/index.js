@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import $ from 'jquery';
 
 import Util from '../lib/Util';
-import { visible } from '../actions/side';
+import { visible, addFiles } from '../actions/side';
+import { changeActiveFile } from '../actions/side';
 
 import ToggleButton from './ToggleButton';
 import Navigation from './Navigation';
@@ -13,24 +15,78 @@ class Side extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			show: true
-		};
 	}
 
 	componentDidMount() {
 		const { root, dispatch } = this.props;
+		const { visible, items } = root.preference.side;
 
 		// update visible
-		root.api.layout.toggleSide(root.preference.side.visible);
+		root.api.layout.toggleSide(visible);
+
+		// get items
+		this.getItems(items);
+	}
+
+	/**
+	 * Get items
+	 *
+	 * @param {Array|String} items
+	 */
+	getItems(items) {
+		const { dispatch } = this.props;
+
+		// get items
+		if (typeof items === 'string')
+		{
+			// get json data
+			$.get(items, (res) => {
+				dispatch(addFiles(res));
+			});
+		}
+		else if (items instanceof Array)
+		{
+			// get array data
+			dispatch(addFiles(items));
+		}
+	}
+
+	/**
+	 * Update root element
+	 *
+	 * @param {Boolean} sw
+	 */
+	updateRootElement(sw) {
+		const { root } = this.props;
+		const $el = $(root.el.app);
+		const className = 'side-active';
+
+		// edit root element
+		if (sw)
+		{
+			$el.addClass(className);
+		}
+		else
+		{
+			$el.removeClass(className);
+		}
+	}
+
+	/**
+	 * On select item
+	 *
+	 * @param {Number} n
+	 */
+	onSelectItem(n) {
+		const { root, dispatch } = this.props;
+		dispatch(changeActiveFile(n, root.keyboard.keyName));
 	}
 
 	render() {
+		const { root, layout, files } = this.props;
 
-		const { root, dispatch, layout, files } = this.props;
-		const { show } = this.state;
-		//const params = Util.makeProps(this.props, { files });
+		// update root element
+		this.updateRootElement(layout.visible);
 
 		return (
 			<div className={`wrap${layout.visible ? ' show' : ''}`}>
@@ -38,12 +94,22 @@ class Side extends Component {
 					show={layout.visible}
 					onClick={() => root.api.layout.toggleSide()}/>
 				<Navigation
-					upload={() => {}}
-					remove={() => {}}
-					toggleSelect={() => {}}
-					attach={() => {}}
+					upload={() => {
+						console.log('on upload');
+					}}
+					remove={() => {
+						console.log('on remove');
+					}}
+					toggleSelect={() => {
+						console.log('on toggle select');
+					}}
+					attach={() => {
+						console.log('on toggle select');
+					}}
 				/>
-				<Items/>
+				<Items
+					files={files}
+					select={this.onSelectItem.bind(this)}/>
 			</div>
 		);
 	}

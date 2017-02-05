@@ -39,7 +39,7 @@ export default class SideNavigation extends Component {
 						<i className="sp-ico ico-select abs">Toggle all select</i>
 					</button>
 					<span title="upload images" key={timestamp}>
-						<input type="file" ref="inputFile" onChange={this.upload} multiple />
+						<input type="file" ref="inputFile" onChange={this.upload.bind(this)} multiple />
 						<i className="sp-ico ico-upload abs">upload images</i>
 					</span>
 					<button type="button" title="remove images" onClick={remove}>

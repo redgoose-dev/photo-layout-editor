@@ -270,13 +270,22 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 		li {width: 33.3333%; padding: 5px;}
 		button {
-			display: block; margin: 0 auto; padding: 0; border: none;
+			position: relative; display: block; margin: 0 auto; padding: 0; border: none;
 			width: 100%; height: 63px;
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 50% 50%;
 			background-color: #fff;
+			cursor: pointer;
 			text-indent: -9999px;
+			outline: none;
+			&.active {
+				&:after {
+					content: ''; display: block; position: absolute;
+					left: 0; right: 0; top: 0; bottom: 0;
+					border: 4px solid $col-active;
+				}
+			}
 		}
 	}
 }
