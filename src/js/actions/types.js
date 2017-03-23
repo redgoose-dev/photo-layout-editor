@@ -1,3 +1,4 @@
+export const INIT_PLE = 'INIT_PLE';
 export const UPDATE_BODY = 'UPDATE_BODY';
 export const SIDE_VISIBLE = 'SIDE_VISIBLE';
 export const ADD_FILES = 'ADD_FILES';

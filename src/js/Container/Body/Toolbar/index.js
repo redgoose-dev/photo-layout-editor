@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { updateBody } from '../../actions/body';
+import { updateBody } from '../../../actions/body';
 import Button from './Button';
 import EditSettings from './EditSettings';
 import EditColor from './EditColor';

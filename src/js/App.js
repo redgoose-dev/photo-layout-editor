@@ -4,14 +4,13 @@ import { render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
+import API from './API';
 import deepAssign from './lib/deep-assign';
 import defaultPreference from './lib/defaultPreference';
 import Util from './lib/Util';
 import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
-import Body from './Body';
-import Side from './Side';
-import API from './API';
+import Container from './Container';
 
 
 /**
@@ -26,18 +25,10 @@ window.PLE = function(el, options)
 	this.preference = deepAssign(defaultPreference, options);
 
 	// set elements
-	this.el = {
-		app: el,
-		container: el.querySelector('.ple-container'),
-		body: el.querySelector('.ple-body'),
-		side: el.querySelector('.ple-side'),
-	};
+	this.el = el;
 
 	// set store
-	this.store = {
-		body: createStore(reducers.body),
-		side: createStore(reducers.side),
-	};
+	this.store = createStore(reducers);
 
 	// set components
 	//this.components = {};
@@ -55,17 +46,12 @@ window.PLE = function(el, options)
 	// set API
 	this.api = new API(this);
 
-	// set body component
-	if (this.el.body)
-	{
-		reduxRender(this.el.body, this.store.body, ( <Body root={this}/> ));
-	}
-
-	// set side component
-	if (this.el.side)
-	{
-		reduxRender(this.el.side, this.store.side, ( <Side root={this}/> ));
-	}
+	render(
+		<Provider store={this.store}>
+			<Container PLE={this}/>
+		</Provider>,
+		el,
+	)
 
 	// TODO : init keyboard event
 	// TODO : init Export
@@ -74,23 +60,3 @@ window.PLE = function(el, options)
 	// TODO : `this.store.body.dispatch(foo())` 형태로 외부 리듀스에 접근할 수 있다.
 	// TODO : dispatch(foo()) 형식으로 action으로 호출
 };
-
-
-/**
- * Redux render
- * react renders using the redux
- *
- * @param {Object} el
- * @param {Object} store
- * @param {Object} component
- * @return {Object}
- */
-function reduxRender(el, store, component)
-{
-	return render(
-		<Provider store={store}>
-			{component}
-		</Provider>,
-		el,
-	);
-}

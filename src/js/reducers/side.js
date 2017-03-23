@@ -4,6 +4,7 @@ import {
 	ADD_FILES,
 	REMOVE_FILES,
 	CHANGE_ACTIVE_FILE,
+	INIT_PLE,
 } from '../actions/types';
 
 
@@ -85,6 +86,11 @@ function layout(state=initialLayout, action)
 		case SIDE_VISIBLE:
 			return Object.assign({}, state, {
 				visible: action.value,
+			});
+			break;
+		case INIT_PLE:
+			return Object.assign({}, state, {
+				visible: action.value.preference.side.visible,
 			});
 			break;
 		default:

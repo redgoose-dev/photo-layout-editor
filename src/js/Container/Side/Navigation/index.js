@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
-export default class SideNavigation extends Component {
+export default class SideNavigation extends React.Component {
 
 	constructor(props) {
 		super(props);

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
 
-import { visible, addFiles } from '../actions/side';
-import { changeActiveFile } from '../actions/side';
+import { addFiles } from '../../actions/side';
+import { changeActiveFile } from '../../actions/side';
 //import Objects from '../lib/';
 
 import ToggleButton from './ToggleButton';
@@ -13,21 +13,24 @@ import Items from './Items';
 let firstSelectIdx = null;
 
 
-class Side extends Component {
+class Side extends React.Component {
 
 	constructor(props) {
 		super(props);
 	}
 
 	componentDidMount() {
-		const { root, dispatch } = this.props;
-		const { visible, items } = root.preference.side;
+		try {
+			this.getItems(this.props.tree.ple.preference.side.items).then();
+		} catch (e) {}
+	}
 
-		// update visible
-		root.api.layout.toggleSide(visible);
-
-		// get items
-		this.getItems(items);
+	aaa() {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve('foooo');
+			}, 3000);
+		})
 	}
 
 	/**
@@ -35,42 +38,24 @@ class Side extends Component {
 	 *
 	 * @param {Array|String} items
 	 */
-	getItems(items) {
+	async getItems(items) {
 		const { dispatch } = this.props;
 
 		// get items
 		if (typeof items === 'string')
 		{
 			// get json data
-			$.get(items, (res) => {
-				dispatch(addFiles(res));
-			});
+			const fo = await this.aaa();
+			//const res = await $.get(items);
+			console.log('TEST', fo);
+
+			//ple.api.side.addItems(res);
+			// dispatch(addFiles(res));
 		}
 		else if (items instanceof Array)
 		{
 			// get array data
-			dispatch(addFiles(items));
-		}
-	}
-
-	/**
-	 * Update root element
-	 *
-	 * @param {Boolean} sw
-	 */
-	updateRootElement(sw) {
-		const { root } = this.props;
-		const $el = $(root.el.app);
-		const className = 'side-active';
-
-		// edit root element
-		if (sw)
-		{
-			$el.addClass(className);
-		}
-		else
-		{
-			$el.removeClass(className);
+			// dispatch(addFiles(items));
 		}
 	}
 
@@ -119,32 +104,31 @@ class Side extends Component {
 	}
 
 	render() {
-		const { root, dispatch, layout, files } = this.props;
-
-		// update root element
-		this.updateRootElement(layout.visible);
+		const { dispatch, tree } = this.props;
+		const { side, ple } = tree;
 
 		return (
-			<div className={`wrap${layout.visible ? ' show' : ''}`}>
-				<ToggleButton
-					show={layout.visible}
-					onClick={() => root.api.layout.toggleSide()}/>
-				<Navigation
-					attach={() => {
-						console.log('attach files');
-					}}
-					toggleSelect={this._toggleSelect.bind(this)}
-					upload={() => {
-						console.log('on upload');
-					}}
-					remove={() => {
-						console.log('on remove');
-					}}
-				/>
-				<Items
-					files={files}
-					select={this.onSelectItem.bind(this)}/>
-			</div>
+			<aside className="ple-side">
+				<div className={`wrap ${side.layout.visible ? 'show' : ''}`}>
+					<ToggleButton
+						show={side.layout.visible}
+						onClick={() => ple.api.layout.toggleSide()}/>
+					<Navigation
+						attach={() => {
+							console.log('attach files');
+						}}
+						toggleSelect={this._toggleSelect.bind(this)}
+						upload={() => {
+							console.log('on upload');
+						}}
+						remove={() => {
+							console.log('on remove');
+						}}/>
+					{/*<Items*/}
+						{/*files={files}*/}
+						{/*select={this.onSelectItem.bind(this)}/>*/}
+				</div>
+			</aside>
 		);
 	}
 }
