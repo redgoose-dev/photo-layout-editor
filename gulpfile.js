@@ -6,7 +6,8 @@ const uglify = require('gulp-uglify');
 const scss = require('gulp-sass');
 const rename = require('gulp-rename');
 
-const webpack = require('webpack-stream');
+const webpack = require('webpack');
+const webpackStream = require('webpack2-stream-watch');
 
 
 // set directory
@@ -103,8 +104,9 @@ gulp.task('scss:watch', function(){
 gulp.task('js', function() {
 	return gulp.src(`${src}/js/App.js`)
 		.pipe(
-			webpack(
-				require('./webpack.config.js')
+			webpackStream(
+				require('./webpack.config.js'),
+				webpack
 			)
 		)
 		.pipe(gulp.dest(dist));

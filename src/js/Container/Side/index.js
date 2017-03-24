@@ -38,16 +38,16 @@ class Side extends React.Component {
 	 *
 	 * @param {Array|String} items
 	 */
-	async getItems(items) {
+	getItems(items) {
 		const { dispatch } = this.props;
 
 		// get items
 		if (typeof items === 'string')
 		{
 			// get json data
-			const fo = await this.aaa();
+			// const fo = await this.aaa();
 			//const res = await $.get(items);
-			console.log('TEST', fo);
+			// console.log('TEST', fo);
 
 			//ple.api.side.addItems(res);
 			// dispatch(addFiles(res));

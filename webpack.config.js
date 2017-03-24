@@ -1,10 +1,6 @@
 module.exports = {
-	watch: true,
+	watch: false,
 	devtool: 'eval',
-	resolve: {
-		modulesDirectories: ['src/js'],
-		extensions: ['', '.js']
-	},
 	output: {
 		filename: 'photoLayoutEditor.js'
 	},
@@ -16,16 +12,18 @@ module.exports = {
 		'react-redux' : 'ReactRedux',
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.(js)$/,
-				loader: 'babel-loader',
 				exclude: /node_modules/,
-				query: {
-					presets: [ 'es2015', 'stage-0', 'react' ],
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: [ 'es2015', 'stage-0', 'react' ],
+					}
 				},
-
 			}
 		]
 	}
+
 };
