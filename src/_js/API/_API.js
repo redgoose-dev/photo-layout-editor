@@ -270,7 +270,7 @@ function SidebarForAPI() {
 	 *
 	 */
 	this.clear = () => {
-		sidebar.remove(sidebar.getItems(false));
+		sidebar.remove(Side.getItems(false));
 	};
 
 	/**
@@ -325,7 +325,7 @@ function SidebarForAPI() {
 	 * @return {Array}
 	 */
 	this.getItems = (selected) => {
-		return sidebar.getItems(selected);
+		return Side.getItems(selected);
 	};
 }
 

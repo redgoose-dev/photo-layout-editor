@@ -29,6 +29,9 @@ window.PLE = function(el, options)
 	// set store
 	this.store = createStore(reducers);
 
+	// set components
+	//this.components = {};
+
 	// init keyboard event
 	this.keyboard = Keyboard;
 	this.keyboard.init();

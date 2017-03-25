@@ -1,7 +1,11 @@
+const path = require('path');
+
 module.exports = {
-	watch: false,
+	watch: true,
 	devtool: 'eval',
+	entry: './src/js/App.js',
 	output: {
+		path: path.resolve(__dirname, 'dist'),
 		filename: 'photoLayoutEditor.js'
 	},
 	externals: {
@@ -10,20 +14,18 @@ module.exports = {
 		'react-dom': 'ReactDOM',
 		'redux' : 'Redux',
 		'react-redux' : 'ReactRedux',
+		'axios' : 'axios',
 	},
 	module: {
 		rules: [
 			{
 				test: /\.(js)$/,
+				use: 'babel-loader',
 				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: [ 'es2015', 'stage-0', 'react' ],
-					}
-				},
 			}
 		]
-	}
+	},
+
+	plugins: [],
 
 };

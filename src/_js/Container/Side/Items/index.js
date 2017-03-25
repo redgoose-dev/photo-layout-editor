@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Item from './Item';
 
 
-export default class SideItems extends React.Component {
+export default class SideItems extends Component {
 
 	constructor(props) {
 		super(props);

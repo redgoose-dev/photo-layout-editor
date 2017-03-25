@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { updateBody } from '../../actions/body';
 import Util from '../../lib/Util';
-// import Toolbar from './Toolbar';
-// import Gridster from './Gridster';
+import Toolbar from './Toolbar';
+import Gridster from './Gridster';
 
 
 class Body extends Component {
@@ -32,8 +32,8 @@ class Body extends Component {
 			<div className="ple-container">
 				<div className="ple-body">
 					<div className="ple-container__wrap" ref="body">
-						{/*<Toolbar {...params}/>*/}
-						{/*<Gridster {...params}/>*/}
+						<Toolbar {...params}/>
+						<Gridster {...params}/>
 					</div>
 				</div>
 			</div>

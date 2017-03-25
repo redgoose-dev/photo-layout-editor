@@ -1,8 +1,5 @@
-import $ from 'jquery';
-
-
 const $window = $(window);
-const EVENT_NAME = 'PLE';
+const EVENT_NAME = 'ple';
 
 
 export default {

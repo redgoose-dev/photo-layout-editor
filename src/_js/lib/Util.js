@@ -5,7 +5,7 @@
  * @param {int} max
  * @returns {number}
  */
-export function getRandomRange(min, max)
+function getRandomRange(min, max)
 {
 	max += 1;
 	return Math.floor(Math.random() * (max - min) + min);
@@ -16,7 +16,7 @@ export function getRandomRange(min, max)
  *
  * @returns {boolean}
  */
-export function isTouchDevice()
+function isTouchDevice()
 {
 	return (
 		('ontouchstart' in window) ||
@@ -31,7 +31,7 @@ export function isTouchDevice()
  * @param {Object} props
  * @param {Object} addProps
  */
-export function makeProps(props, addProps)
+function makeProps(props, addProps)
 {
 	const { root, dispatch } = props;
 	return Object.assign({}, {
@@ -39,3 +39,10 @@ export function makeProps(props, addProps)
 		dispatch,
 	}, addProps);
 }
+
+
+export default {
+	getRandomRange,
+	isTouchDevice,
+	makeProps,
+};

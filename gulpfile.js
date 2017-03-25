@@ -6,9 +6,6 @@ const uglify = require('gulp-uglify');
 const scss = require('gulp-sass');
 const rename = require('gulp-rename');
 
-const webpack = require('webpack');
-const webpackStream = require('webpack2-stream-watch');
-
 
 // set directory
 const src = './src';
@@ -32,28 +29,26 @@ const externalResource = function(type, extType, isDevelop)
 			switch(extType)
 			{
 				case 'js':
-					return [
-						(isDevelop) ?
-							'./node_modules/react/dist/react.js' :
-							'./node_modules/react/dist/react.min.js',
-						(isDevelop) ?
-							'./node_modules/react-dom/dist/react-dom.js' :
-							'./node_modules/react-dom/dist/react-dom.min.js',
-						(isDevelop) ?
-							'./node_modules/redux/dist/redux.js' :
-							'./node_modules/redux/dist/redux.min.js',
-						(isDevelop) ?
-							'./node_modules/react-redux/dist/react-redux.js' :
-							'./node_modules/react-redux/dist/react-redux.min.js',
-						'./node_modules/jquery/dist/jquery.min.js',
-						'./vendors/gridster.js/jquery.gridster.min.js',
-						'./vendors/jquery-minicolors/jquery.minicolors.min.js',
+					return (isDevelop) ? [
+						'./node_modules/jquery/dist/jquery.slim.js',
+						'./node_modules/react/dist/react.js',
+						'./node_modules/react-dom/dist/react-dom.js',
+						'./node_modules/redux/dist/redux.js',
+						'./node_modules/react-redux/dist/react-redux.js',
+						'./node_modules/axios/dist/axios.js',
+					] : [
+						'./node_modules/jquery/dist/jquery.slim.min.js',
+						'./node_modules/react/dist/react.min.js',
+						'./node_modules/react-dom/dist/react-dom.min.js',
+						'./node_modules/redux/dist/redux.min.js',
+						'./node_modules/react-redux/dist/react-redux.min.js',
+						'./node_modules/axios/dist/axios.min.js',
 					];
 					break;
 				case 'css':
 					return [
-						'./vendors/gridster.js/jquery.gridster.min.css',
-						'./vendors/jquery-minicolors/jquery.minicolors.min.css',
+						// './vendors/gridster.js/jquery.gridster.min.css',
+						// './vendors/jquery-minicolors/jquery.minicolors.min.css',
 					];
 					break;
 			}
@@ -98,16 +93,4 @@ gulp.task('scss', function(){
 });
 gulp.task('scss:watch', function(){
 	gulp.watch(`${src}/scss/*.scss`, ['scss']);
-});
-
-
-gulp.task('js', function() {
-	return gulp.src(`${src}/js/App.js`)
-		.pipe(
-			webpackStream(
-				require('./webpack.config.js'),
-				webpack
-			)
-		)
-		.pipe(gulp.dest(dist));
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import $ from 'jquery';
 
 import { initPLE } from '../actions/core';
 
@@ -16,27 +17,28 @@ class Container extends React.Component {
 
 	/**
 	 * Visible side panel
+	 *
 	 */
 	visibleSide() {
-		const { tree, ple } = this.props;
-
-		if (!ple) return;
+		const { tree } = this.props;
+		if (!tree.ple) return;
+		const $el = $(tree.ple.el);
 
 		if (tree.side.layout.visible)
 		{
-			ple.el.classList.add('side-active');
+			$el.addClass('side-active');
 		}
 		else
 		{
-			ple.el.classList.remove('side-active');
+			$el.removeClass('side-active');
 		}
 	}
 
 	render() {
-		const { ple } = this.props;
+		const { tree } = this.props;
 
 		// check PLE object
-		if (!ple) return null;
+		if (!tree.ple) return null;
 
 		// set visible side
 		this.visibleSide();

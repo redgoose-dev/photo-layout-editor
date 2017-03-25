@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 
-export default class Item extends React.Component {
+export default class SideItem extends Component {
 
 	render() {
 		const { image, onClick, active } = this.props;

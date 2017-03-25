@@ -7,8 +7,8 @@ import side from './side';
 
 export default combineReducers({
 	tree: combineReducers({
+		ple,
 		side,
 		body
-	}),
-	ple,
+	})
 });

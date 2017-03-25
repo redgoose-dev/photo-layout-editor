@@ -19,28 +19,37 @@
     "url": "https://github.com/RedgooseDev/PhotoLayoutEditor/issues"
   },
   "homepage": "https://github.com/RedgooseDev/PhotoLayoutEditor#readme",
+  "scripts": {
+    "build": "webpack",
+    "build-pro": "webpack -p"
+  },
   "dependencies": {
-    "@claviska/jquery-minicolors": "^2.2.4",
+    "axios": "^0.15.3",
     "dsmorse-gridster": "^0.7.0",
     "jquery": "^3.2.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-grid-layout": "^0.14.4",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-react": "^6.23.0",
-    "babel-preset-stage-0": "^6.22.0",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-block-scoping": "^6.23.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.23.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.1.2",
-    "webpack": "^2.3.1",
-    "webpack2-stream-watch": "^3.2.2"
+    "webpack": "^2.3.2",
+    "webpack-async-await": "^1.1.0"
   }
 }

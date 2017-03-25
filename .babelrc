@@ -1,0 +1,11 @@
+{
+	"plugins": [
+		"syntax-async-functions",
+		"transform-decorators-legacy",
+		"transform-class-properties",
+		"transform-object-rest-spread",
+		"transform-react-jsx",
+		"transform-flow-strip-types",
+		"transform-es2015-block-scoping"
+	]
+}

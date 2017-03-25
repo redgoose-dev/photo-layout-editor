@@ -18,23 +18,3 @@ export default {
 		items: [],
 	},
 }
-
-
-// defaultImagesScript : '',
-// replaceScript : '',
-// showSide : true,
-// gridster : {
-// 	nameID : 'ple_gridster',
-// 	createNow : true,
-// 	createCount : 5,
-// 	blockColor : '#DDDDDD',
-// 	params : null
-// },
-// setting : {
-// 	width : 80,
-// 	height : 80,
-// 	max_col : 5,
-// 	max_scale : 2,
-// 	outer_margin : 10,
-// 	inner_margin : 10
-// }

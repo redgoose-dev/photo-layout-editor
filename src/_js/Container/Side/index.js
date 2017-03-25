@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
+import { addFiles } from '../../actions/side';
 import { changeActiveFile } from '../../actions/side';
+//import Objects from '../lib/';
 
 import ToggleButton from './ToggleButton';
 import Navigation from './Navigation';
@@ -18,8 +20,9 @@ class Side extends React.Component {
 	}
 
 	componentDidMount() {
-		const { ple } = this.props;
-		Side.getItems(ple.preference.side.items).then();
+		try {
+			this.getItems(this.props.tree.ple.preference.side.items).then();
+		} catch (e) {}
 	}
 
 	/**
@@ -27,17 +30,24 @@ class Side extends React.Component {
 	 *
 	 * @param {Array|String} items
 	 */
-	static async getItems(items) {
+	async getItems(items) {
+		const { dispatch } = this.props;
+
+		// get items
 		if (typeof items === 'string')
 		{
+			// get json data
 			try {
-				const res = await axios.get(items);
-				ple.api.side.addItems(res.data);
+				// const res = await $.get(items);
+				// ple.api.side.addItems(res);
+				console.log('----------');
+				// dispatch(addFiles(res));
 			} catch(e) {}
 		}
 		else if (items instanceof Array)
 		{
-			ple.api.side.addItems(items);
+			// get array data
+			// dispatch(addFiles(items));
 		}
 	}
 
@@ -86,13 +96,14 @@ class Side extends React.Component {
 	}
 
 	render() {
-		const { tree, ple } = this.props;
+		const { dispatch, tree } = this.props;
+		const { side, ple } = tree;
 
 		return (
 			<aside className="ple-side">
-				<div className={`wrap ${tree.side.layout.visible ? 'show' : ''}`}>
+				<div className={`wrap ${side.layout.visible ? 'show' : ''}`}>
 					<ToggleButton
-						show={tree.side.layout.visible}
+						show={side.layout.visible}
 						onClick={() => ple.api.layout.toggleSide()}/>
 					<Navigation
 						attach={() => {
