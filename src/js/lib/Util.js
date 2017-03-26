@@ -25,17 +25,17 @@ export function isTouchDevice()
 	);
 }
 
+
 /**
- * Make props
+ * Sleep
  *
- * @param {Object} props
- * @param {Object} addProps
+ * @param {Number} time
+ * @param {String} id
+ * @return {Promise}
  */
-export function makeProps(props, addProps)
+export function sleep(time, id='pleTimer')
 {
-	const { root, dispatch } = props;
-	return Object.assign({}, {
-		root,
-		dispatch,
-	}, addProps);
+	return new Promise((resolve) => {
+		window[id] = setTimeout(resolve, time);
+	});
 }

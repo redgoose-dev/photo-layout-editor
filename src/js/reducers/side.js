@@ -5,6 +5,7 @@ import {
 	REMOVE_FILES,
 	CHANGE_ACTIVE_FILE,
 	INIT_PLE,
+	SIDE_TOGGLE,
 } from '../actions/types';
 
 
@@ -21,10 +22,10 @@ let nextFileId = 0;
  * @param {Number} n
  * @param {String} key press key name and select type
  * @param {Number} first
+ * @param {Number} activeCount
  */
-function changeActive(item, n, key, first)
+function changeActive(item, n, key, first, activeCount)
 {
-	// TODO : 키보드 누른 상태에서 선택하면 선택되는 아이템에 대해서 결정하기
 	switch(key)
 	{
 		case 'all':
@@ -69,7 +70,11 @@ function changeActive(item, n, key, first)
 			return item;
 	}
 
-	if (item.id === n)
+	if (activeCount >= 2 && item.id === n)
+	{
+		return Object.assign({}, item, { active: true });
+	}
+	else if (item.id === n)
 	{
 		return Object.assign({}, item, { active: !item.active });
 	}
@@ -79,19 +84,40 @@ function changeActive(item, n, key, first)
 	}
 }
 
+/**
+ * Get active items
+ *
+ * @param {Array} items
+ * @return {Array}
+ */
+function getActiveItems(items)
+{
+	return items.map(o => {
+		if (o.active) return o;
+	});
+}
+
 
 function layout(state=initialLayout, action)
 {
 	switch (action.type) {
 		case SIDE_VISIBLE:
-			return Object.assign({}, state, {
+			return {
+				...state,
 				visible: action.value,
-			});
+			};
+			break;
+		case SIDE_TOGGLE:
+			return {
+				...state,
+				visible: !state.visible,
+			};
 			break;
 		case INIT_PLE:
-			return Object.assign({}, state, {
+			return {
+				...state,
 				visible: action.value.preference.side.visible,
-			});
+			};
 			break;
 		default:
 			return state;
@@ -114,10 +140,23 @@ function files(state=[], action)
 			];
 
 		case REMOVE_FILES:
-			return state;
+			if (!action.ids.length) return state;
+			let selectItems = [];
+			state.forEach(o => {
+				if (action.ids.indexOf(o.id) < 0) selectItems.push(o);
+			});
+			return selectItems;
 
 		case CHANGE_ACTIVE_FILE:
-			return state.map(s => changeActive(s, action.num, action.keyName, action.firstNum));
+			return state.map(item => {
+				return changeActive(
+					item,
+					action.num,
+					action.keyName,
+					action.firstNum,
+					getActiveItems(state).length,
+				);
+			});
 
 		default:
 			return state;

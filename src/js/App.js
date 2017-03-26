@@ -4,9 +4,9 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import API from './API';
-import deepAssign from './lib/deep-assign';
+import assignPreference from './lib/assignPreference';
 import defaultPreference from './lib/defaultPreference';
-import Util from './lib/Util';
+import { isTouchDevice } from './lib/Util';
 import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
 import Container from './Container';
@@ -21,7 +21,7 @@ import Container from './Container';
 window.PLE = function(el, options)
 {
 	// set preference
-	this.preference = deepAssign(defaultPreference, options);
+	this.preference = assignPreference(defaultPreference, options);
 
 	// set elements
 	this.el = el;
@@ -34,7 +34,7 @@ window.PLE = function(el, options)
 	this.keyboard.init();
 
 	// check touch device
-	if (Util.isTouchDevice())
+	if (isTouchDevice())
 	{
 		document.querySelector('html').classList.add('ple-touch');
 	}

@@ -62,11 +62,15 @@ const externalResource = function(type, extType, isDevelop)
 gulp.task('vendor', function(){
 	// development vendors
 	gulp.src(externalResource('vendor', 'js', true))
+		.pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(sourcemaps.write(null, {addComment: false}))
 		.pipe(concat('photoLayoutEditor.vendors.dev.js', { newLine: '\n\n' }))
 		.pipe(gulp.dest(dist));
 
 	// production vendors
 	gulp.src(externalResource('vendor', 'js', false))
+		.pipe(sourcemaps.init({loadMaps: true}))
+		.pipe(sourcemaps.write(null, {addComment: false}))
 		.pipe(concat('photoLayoutEditor.vendors.js', { newLine: '\n\n' }))
 		.pipe(gulp.dest(dist));
 

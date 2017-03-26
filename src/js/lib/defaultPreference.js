@@ -1,5 +1,4 @@
 export default {
-	sideActive: true,
 	body: {
 		settings: {
 			width: 100,
@@ -12,8 +11,8 @@ export default {
 		blockColor: '#ff0000',
 	},
 	side: {
-		uploadScript : '',
-		removeScript : '',
+		upload: null,
+		remove : null,
 		visible: true,
 		items: [],
 	},

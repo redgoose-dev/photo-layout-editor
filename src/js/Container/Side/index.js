@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { changeActiveFile } from '../../actions/side';
+import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
+import * as uploader from '../../lib/uploader';
+import * as Util from '../../lib/Util';
 
 import ToggleButton from './ToggleButton';
 import Navigation from './Navigation';
@@ -13,13 +15,24 @@ let firstSelectIdx = null;
 
 class Side extends React.Component {
 
+	static defaultProps = {
+		tree: {}, // reduce data
+		ple: null, // root object
+		dispatch: null, // redux dispatch
+	};
+
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			uploading: false,
+			itemProgress: null,
+		};
 	}
 
 	componentDidMount() {
 		const { ple } = this.props;
-		Side.getItems(ple.preference.side.items).then();
+		this.getItems(ple.preference.side.items);
 	}
 
 	/**
@@ -27,54 +40,84 @@ class Side extends React.Component {
 	 *
 	 * @param {Array|String} items
 	 */
-	static async getItems(items) {
+	getItems(items) {
+		const { dispatch } = this.props;
+
 		if (typeof items === 'string')
 		{
-			try {
-				const res = await axios.get(items);
-				ple.api.side.addItems(res.data);
-			} catch(e) {}
+			axios.get(items)
+				.then( (res) => dispatch(addFiles(res.data)) )
+				.catch( (error) => console.log('ERROR', error) );
 		}
 		else if (items instanceof Array)
 		{
-			ple.api.side.addItems(items);
+			dispatch(addFiles(items));
 		}
 	}
 
 	/**
 	 * On select item
 	 *
-	 * @param {Number} n
+	 * @param {Object} id
 	 */
-	onSelectItem(n) {
-		const { root, dispatch, files } = this.props;
-		const { keyName } = root.keyboard;
+	_selectItem(id) {
+		const { dispatch, ple, tree } = this.props;
+		const { keyName } = ple.keyboard;
 
 		if (keyName !== 'shift')
 		{
 			let currentItem = null;
-			files.forEach((o) => {
-				if (o.id === n)
+			tree.side.files.forEach((o) => {
+				if (o.id === id)
 				{
 					currentItem = o;
 					return false;
 				}
 			});
-			firstSelectIdx = (currentItem.active === true) ? null : n;
+			firstSelectIdx = (currentItem.active === true) ? null : id;
 		}
-		dispatch(changeActiveFile(n, keyName, firstSelectIdx));
+
+		dispatch(changeActiveFile(id, keyName, firstSelectIdx));
 	}
 
 	/**
-	 * Toggle select all items
+	 * Remove items
+	 */
+	_removeItems() {
+		const { tree, dispatch } = this.props;
+		let activeItems = [];
+
+		if (!tree.side.files.length) return;
+
+		tree.side.files.forEach(o => {
+			if (o.active) activeItems.push(o.id);
+		});
+
+		if (!activeItems.length)
+		{
+			if (confirm('모두 지울까요?'))
+			{
+				tree.side.files.forEach(o => {
+					activeItems.push(o.id);
+				});
+			}
+		}
+
+		dispatch(removeFiles(activeItems));
+	}
+
+	/**
+	 * toggle select all items
 	 */
 	_toggleSelect() {
-		const { files, dispatch } = this.props;
-
+		const { tree, dispatch } = this.props;
 		let active = false;
-		files.forEach((o) => {
+
+		tree.side.files.some((o) => {
 			if (o.active) active = true;
+			return o.active;
 		});
+
 		if (active)
 		{
 			dispatch(changeActiveFile(null, 'none', null));
@@ -85,29 +128,65 @@ class Side extends React.Component {
 		}
 	}
 
+	_upload(files) {
+		if (this.state.uploading) return;
+
+		const { ple, dispatch } = this.props;
+
+		this.setState({ uploading: true }, () => {
+			uploader.multiple(files, ple.preference.side.upload)
+				.done(() => {
+					console.log('upload complete');
+					this.uploading = false;
+					this.setState({ uploading: false });
+				})
+				.progress((state, res) => {
+					switch(state)
+					{
+						case 'start':
+							this.setState({ itemProgress: 0 });
+							break;
+						case 'progress':
+							const percent = parseInt((res.loaded / res.total * 100));
+							this.setState({ itemProgress: percent });
+							break;
+						case 'done':
+							this.setState({ itemProgress: null });
+							if (res.src) dispatch(addFiles([res.src]));
+							break;
+					}
+				})
+				.fail(() => {
+					console.log('upload fail');
+					this.setState({ uploading: false });
+				});
+		});
+	}
+
 	render() {
-		const { tree, ple } = this.props;
+		const { tree, dispatch } = this.props;
 
 		return (
 			<aside className="ple-side">
 				<div className={`wrap ${tree.side.layout.visible ? 'show' : ''}`}>
+					<span
+						onClick={() => dispatch(changeActiveFile(null, 'none', null))}
+						className="background"/>
 					<ToggleButton
 						show={tree.side.layout.visible}
-						onClick={() => ple.api.layout.toggleSide()}/>
+						onClick={() => dispatch(toggle())}/>
 					<Navigation
 						attach={() => {
 							console.log('attach files');
 						}}
 						toggleSelect={this._toggleSelect.bind(this)}
-						upload={() => {
-							console.log('on upload');
-						}}
-						remove={() => {
-							console.log('on remove');
-						}}/>
-					{/*<Items*/}
-						{/*files={files}*/}
-						{/*select={this.onSelectItem.bind(this)}/>*/}
+						upload={this._upload.bind(this)}
+						remove={this._removeItems.bind(this)}/>
+					<Items
+						files={tree.side.files}
+						select={this._selectItem.bind(this)}
+					   progress={this.state.itemProgress}
+					/>
 				</div>
 			</aside>
 		);

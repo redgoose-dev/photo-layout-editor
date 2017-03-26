@@ -3,14 +3,24 @@ import {
 	ADD_FILES,
 	REMOVE_FILES,
 	CHANGE_ACTIVE_FILE,
+	SIDE_TOGGLE,
 } from './types';
 
 
+// control visible side bar
 export function visible(sw)
 {
 	return {
 		type: SIDE_VISIBLE,
 		value: sw,
+	};
+}
+
+// toggle side bar
+export function toggle()
+{
+	return {
+		type: SIDE_TOGGLE,
 	};
 }
 
@@ -22,11 +32,11 @@ export function addFiles(files)
 	};
 }
 
-export function removeFiles(idx)
+export function removeFiles(ids)
 {
 	return {
 		type: REMOVE_FILES,
-		idx: idx,
+		ids: ids,
 	};
 }
 

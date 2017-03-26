@@ -219,6 +219,10 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 		i {display: block; position: absolute; left: 50%; top: 50%;}
 	}
+	.background {
+		position: absolute;
+		left: 0; right: 0; top: 0; bottom: 0;
+	}
 	&.active .toggle i {
 		width: 7px; height: 12px; background-position: -112px 0;
 		&.abs {margin-left: -4px; margin-top: -6px;}
@@ -256,6 +260,7 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 	}
 	.items {
+		$item-height: 63px;
 		height: 100%; margin: 0; padding: 75px 0 0;
 		.wrap {
 			height: 100%; padding: 0 10px 20px;
@@ -268,10 +273,31 @@ html.ple-popup-mode {overflow: hidden;}
 			display: -webkit-flex; display: flex;
 			flex-flow: row wrap;
 		}
-		li {width: 33.3333%; padding: 5px;}
+		li {
+			width: 33.3333%; padding: 5px;
+			&.loading {
+				> .progress {
+					position: relative;
+					width: 100%; height: $item-height;
+					background: #444;
+					> .bar {
+						position: absolute;
+						left: 0; right: 0; bottom: 0;
+						background: $col-active;
+					}
+					> .percent {
+						position: absolute;
+						left: 0; right: 0; top: 50%;
+						margin-top: -7px;
+						font-size: 11px; color: #fff; text-align: center;
+						line-height: 14px;
+					}
+				}
+			}
+		}
 		button {
 			position: relative; display: block; margin: 0 auto; padding: 0; border: none;
-			width: 100%; height: 63px;
+			width: 100%; height: $item-height;
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 50% 50%;

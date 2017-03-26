@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <title>Photo layout editor program</title>
-<link rel="stylesheet" href="../dist/photoLayoutEditor.vendors.css"/>
 <link rel="stylesheet" href="../dist/photoLayoutEditor.css"/>
 </head>
 <body>
@@ -20,12 +19,15 @@ var ple = new PLE(document.getElementById('app'), {
 		}
 	},
 	side: {
+		visible: true,
+		upload: './script/upload.php',
+		//remove : './script/remove.json',
+		items: './script/default.json',
 //		items: [
 //			'./images/rg3115.jpg',
 //			'./images/rg3121.jpg',
 //			'./images/rg3130.jpg',
 //		],
-		items: './script/defaultImages.json',
 	}
 });
 </script>

@@ -1,5 +1,4 @@
 <?php
-
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
@@ -7,7 +6,6 @@ error_reporting(E_ALL);
 // set variables
 $files = $_FILES['files'];
 $count = count($files['name']);
-$copyFiles = [];
 
 $uploadDir = '../upload';
 $uploadUrl = './upload';
@@ -56,25 +54,26 @@ if ($count < 0)
 
 
 // copying files and set file list
-for ($i=0; $i<$count; $i++)
+if ($files['tmp_name'][0])
 {
-	if ($files['tmp_name'][$i])
-	{
-		$filename = generateRandomString(15).'.'.pathinfo($files['name'][$i])['extension'];
-		move_uploaded_file($files['tmp_name'][$i], $uploadDir.'/'.$filename);
-		$copyFiles[] = [
-			'loc' => $uploadUrl.'/'.$filename,
-			'type' => $files['type'][$i],
-			'size' => $files['size'][$i],
-			'name' => $filename
-		];
-	}
+	$filename = generateRandomString(15).'.'.pathinfo($files['name'][0])['extension'];
+	move_uploaded_file($files['tmp_name'][0], $uploadDir.'/'.$filename);
+	$copyFiles = $uploadUrl.'/'.$filename;
 }
 
 
-// print result
-echo json_encode([
-	'state' => 'success',
-	'message' => 'complete upload',
-	'images' => $copyFiles
-], JSON_PRETTY_PRINT);
+if ($copyFiles)
+{
+	// print result
+	echo json_encode([
+		'state' => 'success',
+		'data' => $copyFiles
+	], JSON_PRETTY_PRINT);
+}
+else
+{
+	echo urlencode(json_encode([
+		'state' => 'error',
+		'message' => 'Copy failed file'
+	]));
+}

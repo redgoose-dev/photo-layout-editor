@@ -4,3 +4,4 @@ export const SIDE_VISIBLE = 'SIDE_VISIBLE';
 export const ADD_FILES = 'ADD_FILES';
 export const REMOVE_FILES = 'REMOVE_FILES';
 export const CHANGE_ACTIVE_FILE = 'CHANGE_ACTIVE_FILE';
+export const SIDE_TOGGLE = 'SIDE_TOGGLE';
