@@ -2448,9 +2448,9 @@ react-draggable@^2.1.0, react-draggable@^2.1.1:
   dependencies:
     classnames "^2.2.5"
 
-react-grid-layout@^0.14.4:
+"react-grid-layout@https://github.com/STRML/react-grid-layout.git":
   version "0.14.4"
-  resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.14.4.tgz#7d2b664ea7368824a9a4e660ec56c8f8f498cca8"
+  resolved "https://github.com/STRML/react-grid-layout.git#d921125b2b25ae0a1a16a336450fa67fbfd94a98"
   dependencies:
     classnames "^2.2.5"
     lodash.isequal "^4.0.0"

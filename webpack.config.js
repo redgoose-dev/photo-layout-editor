@@ -12,9 +12,10 @@ module.exports = {
 		'jquery': '$',
 		'react': 'React',
 		'react-dom': 'ReactDOM',
-		'redux' : 'Redux',
-		'react-redux' : 'ReactRedux',
-		'axios' : 'axios',
+		'redux': 'Redux',
+		'react-redux': 'ReactRedux',
+		'axios': 'axios',
+		'ReactGridLayout': 'ReactGridLayout',
 	},
 	module: {
 		rules: [

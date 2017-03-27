@@ -8,7 +8,7 @@ html.ple-popup-mode {overflow: hidden;}
 	position: relative;
 	min-height: 480px;
 	overflow: hidden;
-	border: 1px solid green;
+	//border: 1px solid green;
 	*, *:before, *:after {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
@@ -24,50 +24,62 @@ html.ple-popup-mode {overflow: hidden;}
 /* Container */
 .ple-container {
 	margin: 0;
-	padding: 15px;
+	padding: 0;
 	//-webkit-transition: margin-right $sidebar-toggle-speed ease-in-out;
 	//transition: margin-right $sidebar-toggle-speed ease-in-out;
 }
 
+
 /* Body */
 .ple-body {
-	border: 1px solid #000;
-	.gridster-wrap {
-		padding: 50px 30px;
+	//.gridster {
+	//	margin: 0 auto;
+	//	background: #fff; box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
+	//	ul {padding:0; list-style: none;}
+	//	li {
+	//		background: #ddd; cursor: pointer; overflow: hidden;
+	//		&.selected {
+	//			&:after {
+	//				content: ''; position: absolute; z-index: 2;
+	//				left: 0; right: 0; top: 0; bottom: 0;
+	//				border: 4px solid $col-active;
+	//			}
+	//		}
+	//		&.hover {
+	//			&:after {
+	//				content: ''; position: absolute; z-index: 2;
+	//				left: 0; right: 0; top: 0; bottom: 0;
+	//				background: rgba(32,178,146,.3);
+	//			}
+	//		}
+	//		.gs-resize-handle {
+	//			html.ple-touch & {
+	//				opacity: 1; width: 36px; height: 36px; bottom: 0; right: 0;
+	//				background-position: 24px 24px;
+	//			}
+	//		}
+	//		figure {
+	//			margin: 0; width: 100%; height: 100%;
+	//			background-repeat: no-repeat;
+	//			pointer-events: none;
+	//		}
+	//	}
+	//}
+}
+
+
+/* Grid */
+.ple-grid {
+	background: #fff;
+	margin: 0 auto;
+	box-shadow: 0 2px 4px rgba(0,0,0,.2);
+	&__wrap {
+		padding: 30px 30px;
 		@extend %transparent-background;
 	}
-	.gridster {
-		margin: 0 auto;
-		background: #fff; box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
-		ul {padding:0; list-style: none;}
-		li {
-			background: #ddd; cursor: pointer; overflow: hidden;
-			&.selected {
-				&:after {
-					content: ''; position: absolute; z-index: 2;
-					left: 0; right: 0; top: 0; bottom: 0;
-					border: 4px solid $col-active;
-				}
-			}
-			&.hover {
-				&:after {
-					content: ''; position: absolute; z-index: 2;
-					left: 0; right: 0; top: 0; bottom: 0;
-					background: rgba(32,178,146,.3);
-				}
-			}
-			.gs-resize-handle {
-				html.ple-touch & {
-					opacity: 1; width: 36px; height: 36px; bottom: 0; right: 0;
-					background-position: 24px 24px;
-				}
-			}
-			figure {
-				margin: 0; width: 100%; height: 100%;
-				background-repeat: no-repeat;
-				pointer-events: none;
-			}
-		}
+
+	.react-grid-item {
+		cursor: move;
 	}
 }
 

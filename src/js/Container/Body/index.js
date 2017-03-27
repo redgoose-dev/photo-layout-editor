@@ -1,48 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import { updateBody } from '../../actions/body';
-//import Util from '../../lib/Util';
-// import Toolbar from './Toolbar';
-// import Gridster from './Gridster';
+import GridLayout from "./GridLayout";
+import Toolbar from './Toolbar';
 
 
-class Body extends Component {
+export default class Body extends React.Component {
 
 	constructor(props) {
 		super(props);
 	}
 
-	componentDidMount() {
-		const { root, dispatch } = this.props;
-
-		// update initial settings
-		//dispatch(updateBody(root.preference.body));
-	}
-
-	componentWillUpdate() {}
-
-	componentDidUpdate(props, state) {}
-
 	render() {
-		const { root, dispatch, env } = this.props;
-		//const params = Util.makeProps(this.props, { env });
-
 		return (
 			<div className="ple-container">
 				<div className="ple-body">
-					<div className="ple-container__wrap" ref="body">
-						{/*<Toolbar {...params}/>*/}
-						{/*<Gridster {...params}/>*/}
-					</div>
+					<Toolbar/>
+					<GridLayout/>
 				</div>
 			</div>
 		);
 	}
 
 }
-
-
-export default connect((state) => {
-	return Object.assign({}, state, {});
-})(Body);

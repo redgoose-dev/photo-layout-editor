@@ -36,6 +36,7 @@ const externalResource = function(type, extType, isDevelop)
 						'./node_modules/redux/dist/redux.js',
 						'./node_modules/react-redux/dist/react-redux.js',
 						'./node_modules/axios/dist/axios.js',
+						'./node_modules/react-grid-layout/dist/react-grid-layout.min.js',
 					] : [
 						'./node_modules/jquery/dist/jquery.slim.min.js',
 						'./node_modules/react/dist/react.min.js',
@@ -43,12 +44,13 @@ const externalResource = function(type, extType, isDevelop)
 						'./node_modules/redux/dist/redux.min.js',
 						'./node_modules/react-redux/dist/react-redux.min.js',
 						'./node_modules/axios/dist/axios.min.js',
+						'./node_modules/react-grid-layout/dist/react-grid-layout.min.js',
 					];
 					break;
 				case 'css':
 					return [
-						// './vendors/gridster.js/jquery.gridster.min.css',
-						// './vendors/jquery-minicolors/jquery.minicolors.min.css',
+						'./node_modules/react-grid-layout/css/styles.css',
+						'/node_modules/react-resizable/css/styles.css',
 					];
 					break;
 			}

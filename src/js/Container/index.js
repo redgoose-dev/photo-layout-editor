@@ -43,7 +43,7 @@ class Container extends React.Component {
 
 		return (
 			<div className="ple-wrap">
-				{/*<Body/>*/}
+				<Body/>
 				<Side/>
 			</div>
 		);
