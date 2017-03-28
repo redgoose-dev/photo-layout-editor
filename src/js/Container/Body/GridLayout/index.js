@@ -8,9 +8,9 @@ export default class GridLayout extends React.Component {
 		boxWidth: 50,
 		boxHeight: 50,
 		layout: [
-			{i: 'a', x: 0, y: 0, w: 1, h: 1},
-			{i: 'b', x: 0, y: 0, w: 1, h: 1},
-			{i: 'c', x: 0, y: 0, w: 1, h: 1},
+			// {i: 'a', x: 0, y: 0, w: 1, h: 1},
+			// {i: 'b', x: 0, y: 0, w: 1, h: 1},
+			// {i: 'c', x: 0, y: 0, w: 1, h: 1},
 		],
 	};
 
