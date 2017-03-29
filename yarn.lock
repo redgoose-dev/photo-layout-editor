@@ -580,7 +580,7 @@ cipher-base@^1.0.0, cipher-base@^1.0.1:
   dependencies:
     inherits "^2.0.1"
 
-classnames@^2.2.5:
+classnames@^2.2.0, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -2402,6 +2402,10 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
+pure-color@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/pure-color/-/pure-color-1.2.0.tgz#702d2f2819dd545b1fde5116fca5f0c2dad2d18d"
+
 qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
@@ -2472,6 +2476,13 @@ react-resizable@^1.4.0:
   resolved "https://registry.yarnpkg.com/react-resizable/-/react-resizable-1.6.0.tgz#7968c456538a349db1742680f9a05dc9780e6188"
   dependencies:
     react-draggable "^2.1.0"
+
+react-simple-colorpicker@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-simple-colorpicker/-/react-simple-colorpicker-1.4.1.tgz#7e003224fdf262b956b84d1de3c2b312c4d5e6d3"
+  dependencies:
+    classnames "^2.2.0"
+    pure-color "^1.2.0"
 
 react@^15.4.2:
   version "15.4.2"

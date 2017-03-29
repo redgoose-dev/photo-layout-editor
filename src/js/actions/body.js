@@ -1,10 +1,10 @@
-import { UPDATE_BODY } from './types';
+import { GRID_ADD_BLOCK } from './types';
 
 
-export function updateBody(values)
+export function addBlock(values)
 {
 	return {
-		type: UPDATE_BODY,
+		type: GRID_ADD_BLOCK,
 		values: values,
 	};
 }

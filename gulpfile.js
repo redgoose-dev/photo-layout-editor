@@ -37,6 +37,7 @@ const externalResource = function(type, extType, isDevelop)
 						'./node_modules/react-redux/dist/react-redux.js',
 						'./node_modules/axios/dist/axios.js',
 						'./node_modules/react-grid-layout/dist/react-grid-layout.min.js',
+						'./node_modules/react-simple-colorpicker/umd/index.js',
 					] : [
 						'./node_modules/jquery/dist/jquery.slim.min.js',
 						'./node_modules/react/dist/react.min.js',
@@ -45,6 +46,7 @@ const externalResource = function(type, extType, isDevelop)
 						'./node_modules/react-redux/dist/react-redux.min.js',
 						'./node_modules/axios/dist/axios.min.js',
 						'./node_modules/react-grid-layout/dist/react-grid-layout.min.js',
+						'./node_modules/react-simple-colorpicker/umd/index.js',
 					];
 					break;
 				case 'css':

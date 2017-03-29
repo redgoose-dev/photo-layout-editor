@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { INIT_PLE, UPDATE_BODY } from '../actions/types';
+import { INIT_PLE, GRID_ADD_BLOCK } from '../actions/types';
 
 
 const defaults = {
@@ -16,11 +16,11 @@ const defaults = {
 		shuffle: true,
 		add: true,
 		// TODO : 여기서부터 작업용으로 열어놨음
-		edit: true,
-		removeImage: true,
-		duplicate: true,
-		removeBlock: true,
-		editColor: true,
+		edit: false,
+		removeImage: false,
+		duplicate: false,
+		removeBlock: false,
+		editColor: false,
 	},
 	blockColor: '#ff0000'
 };
@@ -36,31 +36,12 @@ function setting(state=defaults.setting, action)
 				...action.value.preference.body.setting,
 			};
 			break;
-		case UPDATE_BODY:
-			break;
-	}
-	return state;
-}
-
-function blockColor(state=defaults.blockColor, action)
-{
-	switch(action.type)
-	{
-		case INIT_PLE:
-			return action.value.preference.body.blockColor || state;
-			break;
 	}
 	return state;
 }
 
 function layout(state=[], action)
 {
-	switch(action.type)
-	{
-		case INIT_PLE:
-			return action.value.preference.body.layout || state;
-			break;
-	}
 	return state;
 }
 
@@ -69,10 +50,28 @@ function visibleToolbar(state=defaults.visibleToolbar, action)
 	return state;
 }
 
+function grid(state=[], action)
+{
+	switch (action.type)
+	{
+		case INIT_PLE:
+			return action.value.preference.body.grid || state;
+			break;
+		case GRID_ADD_BLOCK:
+			return state.concat({
+				layout: action.value || { x: Infinity, y: Infinity, w: 1, h: 1 },
+				color: null,
+			});
+			break;
+	}
+
+	return state;
+}
+
 
 export default combineReducers({
 	setting,
-	blockColor,
 	layout,
 	visibleToolbar,
+	grid,
 });

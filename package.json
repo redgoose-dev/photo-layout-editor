@@ -30,6 +30,7 @@
     "react-dom": "^15.4.2",
     "react-grid-layout": "https://github.com/STRML/react-grid-layout.git",
     "react-redux": "^5.0.3",
+    "react-simple-colorpicker": "^1.4.1",
     "redux": "^3.6.0"
   },
   "devDependencies": {

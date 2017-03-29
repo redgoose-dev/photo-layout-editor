@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ColorPicker from 'react-simple-colorpicker';
+
+import { addBlock } from '../../../actions/body';
 
 import Button from './Button';
 import EditLayoutSetting from './EditLayoutSetting';
-import EditBlockColor from './EditBlockColor';
 
 
 class Toolbar extends React.Component {
@@ -64,13 +66,13 @@ class Toolbar extends React.Component {
 	submitEditSetting(state) {
 		console.log('submitEditSetting', state);
 	}
-	submitEditBlockColor(color) {
+	changeBlockColor(color) {
 		console.log('submitEditBlockColor', color);
 	}
 
 	render() {
 		const { ple, dispatch, tree } = this.props;
-		const { setting, blockColor, layout } = tree.body;
+		const { setting, layout } = tree.body;
 		const { visible, active } = this.state;
 
 		return (
@@ -91,13 +93,13 @@ class Toolbar extends React.Component {
 					{visible.shuffle && (
 						<Button
 							iconClass="ico-arrow-random"
-							onClick={() => { console.log('click button'); }}
+							onClick={() => {}}
 							title="Shuffle block"/>
 					)}
 					{visible.add && (
 						<Button
 							iconClass="ico-plus"
-							onClick={() => { console.log('click button'); }}
+							onClick={() => dispatch(addBlock())}
 							title="Add block"/>
 					)}
 					{visible.edit && (
@@ -130,9 +132,9 @@ class Toolbar extends React.Component {
 							className={`edit-color${active.editColor ? ' active' : ''}`}
 							onClick={(e) => this.changeActive('editColor', null, e)}
 							title="Change color">
-							<EditBlockColor
-								submit={this.submitEditBlockColor.bind(this)}
-								color={ple.preference.body.blockColor}/>
+							<ColorPicker
+								onChange={this.changeBlockColor.bind(this)}
+								color={'#ff0000'}/>
 						</Button>
 					)}
 				</div>

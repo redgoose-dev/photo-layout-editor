@@ -16,6 +16,7 @@ module.exports = {
 		'react-redux': 'ReactRedux',
 		'axios': 'axios',
 		'ReactGridLayout': 'ReactGridLayout',
+		'react-simple-colorpicker': 'ColorPicker',
 	},
 	module: {
 		rules: [

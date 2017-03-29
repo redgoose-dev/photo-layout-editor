@@ -10,7 +10,7 @@ export default class EditLayoutSetting extends React.Component {
 			width: 100,
 			height: 100,
 			column: 5,
-			scale: 2,
+			maxScale: 2,
 			outerMargin: 10,
 			innerMargin: 10,
 			freeMode: false,
@@ -82,12 +82,12 @@ export default class EditLayoutSetting extends React.Component {
 						</dd>
 					</dl>
 					<dl>
-						<dt><label htmlFor="frm_scale">Scale</label></dt>
+						<dt><label htmlFor="frm_maxScale">Max scale</label></dt>
 						<dd className="type-input">
 							<input
-								type="number" name="scale" id="frm_scale"
+								type="number" name="maxScale" id="frm_maxScale"
 								min="1" max="99"
-								value={this.state.scale}
+								value={this.state.maxScale}
 								onChange={this._change.bind(this)}
 								required />
 							<span>x</span>
@@ -123,12 +123,16 @@ export default class EditLayoutSetting extends React.Component {
 							<label>
 								<input
 									type="radio" name="freeMode" id="frm_freeMode"
+									onChange={() => this.setState({ freeMode: true })}
+									checked={this.state.freeMode}
 								/>
 								<span>true</span>
 							</label>
 							<label>
 								<input
 									type="radio" name="freeMode"
+									onChange={() => this.setState({ freeMode: false })}
+									checked={!this.state.freeMode}
 								/>
 								<span>false</span>
 							</label>
