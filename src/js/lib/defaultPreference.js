@@ -4,7 +4,6 @@ export default {
 			width: 100,
 			height: 100,
 			column: 5,
-			maxScale: 2,
 			outerMargin: 10,
 			innerMargin: 10,
 			freeMode: false,

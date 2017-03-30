@@ -10,7 +10,6 @@ export default class EditLayoutSetting extends React.Component {
 			width: 100,
 			height: 100,
 			column: 5,
-			maxScale: 2,
 			outerMargin: 10,
 			innerMargin: 10,
 			freeMode: false,
@@ -23,6 +22,13 @@ export default class EditLayoutSetting extends React.Component {
 			...props.defaultSetting,
 			...props.setting,
 		};
+	}
+
+	componentWillReceiveProps() {
+		this.setState({
+			...this.props.defaultSetting,
+			...this.props.setting,
+		});
 	}
 
 	_reset() {
@@ -46,11 +52,11 @@ export default class EditLayoutSetting extends React.Component {
 					<legend>Settings form</legend>
 					<h1>Settings</h1>
 					<dl>
-						<dt><label htmlFor="frm_name">Width</label></dt>
+						<dt><label htmlFor="frm_width">Width</label></dt>
 						<dd className="type-input">
 							<input
-								type="number" name="width" id="frm_name"
-								min="1" max="999" maxLength="3"
+								type="number" name="width" id="frm_width"
+								min={1} max={999} maxLength={3}
 								value={this.state.width}
 								onChange={this._change.bind(this)}
 								required />
@@ -62,7 +68,7 @@ export default class EditLayoutSetting extends React.Component {
 						<dd className="type-input">
 							<input
 								type="number" name="height" id="frm_height"
-								min="1" max="999"
+								min={1} max={999}
 								value={this.state.height}
 								onChange={this._change.bind(this)}
 								required />
@@ -74,23 +80,11 @@ export default class EditLayoutSetting extends React.Component {
 						<dd className="type-input">
 							<input
 								type="number" name="column" id="frm_column"
-								min="1" max="99"
+								min={1} max={99}
 								value={this.state.column}
 								onChange={this._change.bind(this)}
 								required />
 							<span>ea</span>
-						</dd>
-					</dl>
-					<dl>
-						<dt><label htmlFor="frm_maxScale">Max scale</label></dt>
-						<dd className="type-input">
-							<input
-								type="number" name="maxScale" id="frm_maxScale"
-								min="1" max="99"
-								value={this.state.maxScale}
-								onChange={this._change.bind(this)}
-								required />
-							<span>x</span>
 						</dd>
 					</dl>
 					<dl className="type-input">
@@ -98,7 +92,7 @@ export default class EditLayoutSetting extends React.Component {
 						<dd>
 							<input
 								type="number" name="outerMargin" id="frm_outerMargin"
-								min="0" max="500"
+								min={0} max={500}
 								value={this.state.outerMargin}
 								onChange={this._change.bind(this)}
 								required />
@@ -110,7 +104,7 @@ export default class EditLayoutSetting extends React.Component {
 						<dd>
 							<input
 								type="number" name="innerMargin" id="frm_innerMargin"
-								min="0" max="500"
+								min={0} max={500}
 								value={this.state.innerMargin}
 								onChange={this._change.bind(this)}
 								required />

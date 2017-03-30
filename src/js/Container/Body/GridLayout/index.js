@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactGridLayout from 'ReactGridLayout';
 
+import { activeBlock } from '../../../actions/body';
+
 
 class GridLayout extends React.Component {
 
@@ -11,30 +13,38 @@ class GridLayout extends React.Component {
 		dispatch: null,
 	};
 
+	_selectBlock(id) {
+		this.props.dispatch(activeBlock(id));
+	}
+
 	render() {
-		const { grid } = this.props.tree.body;
+		const { grid, setting, activeBlock } = this.props.tree.body;
+		const bodyWidth = (setting.width * setting.column) +
+			(setting.innerMargin * (setting.column-1)) +
+			(setting.outerMargin * 2);
 
 		return (
 			<div className="ple-grid__wrap">
 				<ReactGridLayout
 					autoSize={true}
-					cols={5}
-					rowHeight={80}
-					width={500}
-					height={500}
-					margin={[5, 5]}
-					containerPadding={[10,10]}
-					verticalCompact={true}
-					style={{width: `${500}px`}}
+					cols={setting.column}
+					rowHeight={setting.height}
+					width={bodyWidth}
+					margin={[setting.innerMargin, setting.innerMargin]}
+					containerPadding={[setting.outerMargin, setting.outerMargin]}
+					verticalCompact={!setting.freeMode}
+					style={{width: `${bodyWidth}px`}}
 					className="ple-grid">
 					{grid.map((o, k) => {
 						return (
 							<div
 								key={k}
-								data-grid={{
-									...o.layout,
-								}}
-								style={{ background: 'orange' }}>
+								data-grid={{ ...o.layout }}
+								onClick={() => this._selectBlock(o.index)}
+								style={{
+									background: o.color || this.props.ple.preference.body.blockColor
+								}}>
+								<figure/>
 								{k}
 							</div>
 						);

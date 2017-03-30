@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import * as Util from './Util';
+import * as util from './util';
 
 
 /**

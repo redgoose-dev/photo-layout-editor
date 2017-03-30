@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux';
-import { INIT_PLE, GRID_ADD_BLOCK } from '../actions/types';
+import {
+	INIT_PLE,
+	GRID_ADD_BLOCK,
+	GRID_ACTIVE_BLOCK,
+	GRID_SETTING_UPDATE,
+} from '../actions/types';
 
 
 const defaults = {
@@ -7,11 +12,10 @@ const defaults = {
 		width: 100,
 		height: 100,
 		maxColumn: 5,
-		maxScale: 2,
 		outerMargin: 10,
 		innerMargin: 10,
 	},
-	visibleToolbar: {
+	visibleToolbarButtons: {
 		setting: true,
 		shuffle: true,
 		add: true,
@@ -21,9 +25,9 @@ const defaults = {
 		duplicate: false,
 		removeBlock: false,
 		editColor: false,
-	},
-	blockColor: '#ff0000'
+	}
 };
+let lastGridId = null;
 
 
 function setting(state=defaults.setting, action)
@@ -36,16 +40,17 @@ function setting(state=defaults.setting, action)
 				...action.value.preference.body.setting,
 			};
 			break;
+
+		case GRID_SETTING_UPDATE:
+			return {
+				...state,
+				...action.value,
+			};
 	}
 	return state;
 }
 
-function layout(state=[], action)
-{
-	return state;
-}
-
-function visibleToolbar(state=defaults.visibleToolbar, action)
+function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 {
 	return state;
 }
@@ -55,14 +60,27 @@ function grid(state=[], action)
 	switch (action.type)
 	{
 		case INIT_PLE:
-			return action.value.preference.body.grid || state;
-			break;
-		case GRID_ADD_BLOCK:
-			return state.concat({
-				layout: action.value || { x: Infinity, y: Infinity, w: 1, h: 1 },
-				color: null,
+			return (action.value.preference.body.grid || state).map((o, k) => {
+				lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+				return {
+					color: null,
+					...o,
+					index: lastGridId,
+				};
 			});
-			break;
+
+		case GRID_ADD_BLOCK:
+			lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+			return state.concat({
+				color: null,
+				layout: {x: Infinity, y: Infinity, w: 1, h: 1},
+				...action.value,
+				index: lastGridId,
+			});
+
+		case GRID_ACTIVE_BLOCK:
+			console.log(GRID_ACTIVE_BLOCK, action.value);
+			return state;
 	}
 
 	return state;
@@ -71,7 +89,6 @@ function grid(state=[], action)
 
 export default combineReducers({
 	setting,
-	layout,
-	visibleToolbar,
+	visibleToolbarButtons,
 	grid,
 });

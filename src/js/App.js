@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import API from './API';
 import assignPreference from './lib/assignPreference';
 import defaultPreference from './lib/defaultPreference';
-import { isTouchDevice } from './lib/Util';
+import { isTouchDevice } from './lib/util';
 import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
 import Container from './Container';

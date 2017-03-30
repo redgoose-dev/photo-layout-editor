@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { addBlock } from '../../../actions/body';
+import { addBlock, updateSetting } from '../../../actions/body';
+import { randomRange } from '../../../lib/number';
 
 import Button from './Button';
 import EditLayoutSetting from './EditLayoutSetting';
@@ -21,7 +22,7 @@ class Toolbar extends React.Component {
 
 		this.state = {
 			visible: {
-				...props.tree.body.visibleToolbar
+				...props.tree.body.visibleToolbarButtons
 			},
 			active: {
 				setting: false,
@@ -64,7 +65,8 @@ class Toolbar extends React.Component {
 	}
 
 	submitEditSetting(state) {
-		console.log('submitEditSetting', state);
+		this.props.dispatch(updateSetting(state));
+		this.changeActive('setting', false);
 	}
 	changeBlockColor(color) {
 		console.log('submitEditBlockColor', color);
@@ -72,7 +74,7 @@ class Toolbar extends React.Component {
 
 	render() {
 		const { ple, dispatch, tree } = this.props;
-		const { setting, layout } = tree.body;
+		const { setting } = tree.body;
 		const { visible, active } = this.state;
 
 		return (
@@ -99,7 +101,15 @@ class Toolbar extends React.Component {
 					{visible.add && (
 						<Button
 							iconClass="ico-plus"
-							onClick={() => dispatch(addBlock())}
+							onClick={() => dispatch(addBlock({
+								layout: {
+									x: randomRange(0, tree.body.setting.column-1),
+									y: 1,
+									w: 1,
+									h: 1
+								},
+
+							}))}
 							title="Add block"/>
 					)}
 					{visible.edit && (
