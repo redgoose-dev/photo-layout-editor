@@ -2,9 +2,13 @@ import { combineReducers } from 'redux';
 import {
 	INIT_PLE,
 	GRID_ADD_BLOCK,
+	GRID_SHUFFLE_BLOCK,
 	GRID_ACTIVE_BLOCK,
 	GRID_SETTING_UPDATE,
 } from '../actions/types';
+
+import { randomRange } from '../lib/number';
+import { shuffle } from '../lib/object';
 
 
 const defaults = {
@@ -78,9 +82,28 @@ function grid(state=[], action)
 				index: lastGridId,
 			});
 
+		case GRID_SHUFFLE_BLOCK:
+			state = shuffle(state);
+			return state.map((o, k) => {
+				o.layout = {
+					x: randomRange(0, 5),
+					y: randomRange(0, 5),
+					w: randomRange(1, 2),
+					h: randomRange(1, 2),
+				};
+				return o;
+			});
+	}
+
+	return state;
+}
+
+function activeBlock(state=null, action)
+{
+	switch (action.type)
+	{
 		case GRID_ACTIVE_BLOCK:
-			console.log(GRID_ACTIVE_BLOCK, action.value);
-			return state;
+			return action.value;
 	}
 
 	return state;
@@ -91,4 +114,5 @@ export default combineReducers({
 	setting,
 	visibleToolbarButtons,
 	grid,
+	activeBlock,
 });

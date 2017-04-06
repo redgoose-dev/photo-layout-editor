@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { addBlock, updateSetting } from '../../../actions/body';
+import { addBlock, shuffleBlock, updateSetting } from '../../../actions/body';
 import { randomRange } from '../../../lib/number';
 
 import Button from './Button';
@@ -67,6 +67,7 @@ class Toolbar extends React.Component {
 	submitEditSetting(state) {
 		this.props.dispatch(updateSetting(state));
 		this.changeActive('setting', false);
+		return false;
 	}
 	changeBlockColor(color) {
 		console.log('submitEditBlockColor', color);
@@ -95,7 +96,7 @@ class Toolbar extends React.Component {
 					{visible.shuffle && (
 						<Button
 							iconClass="ico-arrow-random"
-							onClick={() => {}}
+							onClick={() => dispatch(shuffleBlock())}
 							title="Shuffle block"/>
 					)}
 					{visible.add && (

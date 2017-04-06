@@ -1,4 +1,9 @@
-import { GRID_ADD_BLOCK, GRID_SETTING_UPDATE, GRID_ACTIVE_BLOCK } from './types';
+import {
+	GRID_ADD_BLOCK,
+	GRID_SHUFFLE_BLOCK,
+	GRID_SETTING_UPDATE,
+	GRID_ACTIVE_BLOCK
+} from './types';
 
 
 export function addBlock(value)
@@ -7,6 +12,13 @@ export function addBlock(value)
 		type: GRID_ADD_BLOCK,
 		value: value,
 	};
+}
+
+export function shuffleBlock()
+{
+	return {
+		type: GRID_SHUFFLE_BLOCK,
+	}
 }
 
 export function activeBlock(index)

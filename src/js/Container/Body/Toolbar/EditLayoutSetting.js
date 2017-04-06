@@ -44,10 +44,13 @@ export default class EditLayoutSetting extends React.Component {
 	}
 
 	render() {
-		const { submit } = this.props;
+		const { state, props } = this;
 
 		return (
-			<form>
+			<form onSubmit={(event) => {
+				props.submit(state);
+				event.preventDefault();
+			}}>
 				<fieldset>
 					<legend>Settings form</legend>
 					<h1>Settings</h1>
@@ -142,12 +145,7 @@ export default class EditLayoutSetting extends React.Component {
 						</button>
 					</span>
 					<span>
-						<button
-							type="button"
-							className="submit"
-							onClick={() => submit(this.state)}>
-							Apply
-						</button>
+						<button type="submit" className="submit">Apply</button>
 					</span>
 				</nav>
 			</form>

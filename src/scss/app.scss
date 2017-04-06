@@ -79,9 +79,24 @@ html.ple-popup-mode {overflow: hidden;}
 		padding: 30px 30px;
 		@extend %transparent-background;
 	}
-
 	.react-grid-item {
-		cursor: pointer;
+		cursor: pointer; overflow: hidden;
+		&.active {
+			position: relative;
+			&:after {
+				content: ''; position: absolute;
+				left: 0; right: 0; top: 0; bottom: 0;
+				border: 4px solid $col-active;
+				pointer-events: none;
+			}
+		}
+		figure {
+			margin: 0;
+			width: 100%; height: 100%;
+		}
+		&.react-grid-placeholder {
+			background: $col-active;
+		}
 	}
 }
 
