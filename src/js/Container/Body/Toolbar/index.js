@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { addBlock, shuffleBlock, updateSetting } from '../../../actions/body';
+import { addBlock, shuffleBlocks, updateSetting } from '../../../actions/body';
 import { randomRange } from '../../../lib/number';
 
 import Button from './Button';
@@ -96,7 +96,7 @@ class Toolbar extends React.Component {
 					{visible.shuffle && (
 						<Button
 							iconClass="ico-arrow-random"
-							onClick={() => dispatch(shuffleBlock())}
+							onClick={() => dispatch(shuffleBlocks())}
 							title="Shuffle block"/>
 					)}
 					{visible.add && (

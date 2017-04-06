@@ -2,13 +2,13 @@ import { combineReducers } from 'redux';
 import {
 	INIT_PLE,
 	GRID_ADD_BLOCK,
-	GRID_SHUFFLE_BLOCK,
+	GRID_SHUFFLE_BLOCKS,
+	GRID_UPDATE_BLOCKS,
 	GRID_ACTIVE_BLOCK,
 	GRID_SETTING_UPDATE,
 } from '../actions/types';
 
 import { randomRange } from '../lib/number';
-import { shuffle } from '../lib/object';
 
 
 const defaults = {
@@ -82,8 +82,7 @@ function grid(state=[], action)
 				index: lastGridId,
 			});
 
-		case GRID_SHUFFLE_BLOCK:
-			state = shuffle(state);
+		case GRID_SHUFFLE_BLOCKS:
 			return state.map((o, k) => {
 				o.layout = {
 					x: randomRange(0, 5),
@@ -93,6 +92,9 @@ function grid(state=[], action)
 				};
 				return o;
 			});
+
+		case GRID_UPDATE_BLOCKS:
+			return action.value;
 	}
 
 	return state;

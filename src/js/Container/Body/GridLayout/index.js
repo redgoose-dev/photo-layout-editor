@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import ReactGridLayout from 'ReactGridLayout';
 
 import { activeBlock } from '../../../actions/body';
-import { randomRange } from '../../../lib/number';
 
 
 class GridLayout extends React.Component {
@@ -23,10 +22,10 @@ class GridLayout extends React.Component {
 		const bodyWidth = (setting.width * setting.column) +
 			(setting.innerMargin * (setting.column-1)) +
 			(setting.outerMargin * 2);
-
-		grid.forEach((o) => {
-			console.log(o);
+		const layout = grid.map((o) => {
+			return { i: String(o.index), ...o.layout };
 		});
+
 		return (
 			<div className="ple-grid__wrap" onClick={() => this._selectBlock(null)}>
 				<ReactGridLayout
@@ -34,6 +33,7 @@ class GridLayout extends React.Component {
 					cols={setting.column}
 					rowHeight={setting.height}
 					width={bodyWidth}
+					layout={layout}
 					margin={[setting.innerMargin, setting.innerMargin]}
 					containerPadding={[setting.outerMargin, setting.outerMargin]}
 					verticalCompact={!setting.freeMode}
@@ -43,7 +43,6 @@ class GridLayout extends React.Component {
 						return (
 							<div
 								key={o.index}
-								data-grid={{ ...o.layout }}
 								onClick={(event) => {
 									event.stopPropagation();
 									this._selectBlock(o.index);
