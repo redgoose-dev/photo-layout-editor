@@ -18,6 +18,7 @@ class GridLayout extends React.Component {
 	}
 
 	render() {
+		console.log('check render');
 		const { grid, setting, activeBlock } = this.props.tree.body;
 		const bodyWidth = (setting.width * setting.column) +
 			(setting.innerMargin * (setting.column-1)) +
@@ -63,5 +64,6 @@ class GridLayout extends React.Component {
 
 
 export default connect((state) => {
+	console.log('qqqq')
 	return Object.assign({}, state, {});
 })(GridLayout);

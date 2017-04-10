@@ -15,3 +15,19 @@ export function shuffle(input)
 	}
 	return input;
 }
+
+/**
+ * Find object value in array
+ *
+ * @param {Array} array
+ * @param {String} key
+ * @param {Number|String} value
+ * @return {Number}
+ */
+export function findObjectValueInArray(array=[], key='index', value=null)
+{
+	for (let i = 0; i < array.length; i++)
+	{
+		if (array[i][key] === value) return i;
+	}
+}

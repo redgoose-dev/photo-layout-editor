@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { addBlock, shuffleBlocks, updateSetting } from '../../../actions/body';
+import { addBlock, shuffleBlocks, updateSetting, changeColorBlock } from '../../../actions/body';
 import { randomRange } from '../../../lib/number';
+import { rgbToHex } from '../../../lib/color';
 
 import Button from './Button';
 import EditLayoutSetting from './EditLayoutSetting';
@@ -18,12 +19,9 @@ class Toolbar extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 
 		this.state = {
-			visible: {
-				...props.tree.body.visibleToolbarButtons
-			},
 			active: {
 				setting: false,
 				editBlockColor: false,
@@ -69,14 +67,21 @@ class Toolbar extends React.Component {
 		this.changeActive('setting', false);
 		return false;
 	}
-	changeBlockColor(color) {
-		console.log('submitEditBlockColor', color);
-	}
 
 	render() {
-		const { ple, dispatch, tree } = this.props;
+		const { state, props } = this;
+		const { ple, dispatch, tree } = props;
 		const { setting } = tree.body;
-		const { visible, active } = this.state;
+		const visible = tree.body.visibleToolbarButtons;
+		let activeBlockColor = '#ffffff';
+
+		if (tree.body.grid && tree.body.grid.length)
+		{
+			if (tree.body.activeBlock !== null)
+			{
+				activeBlockColor = tree.body.grid[tree.body.activeBlock].color || ple.preference.body.blockColor;
+			}
+		}
 
 		return (
 			<nav className="ple-toolbar">
@@ -84,7 +89,7 @@ class Toolbar extends React.Component {
 					{visible.setting && (
 						<Button
 							iconClass="ico-setting"
-							className={`edit-setting ${active.setting ? 'active' : ''}`}
+							className={`edit-setting ${state.active.setting ? 'active' : ''}`}
 							onClick={(e) => this.changeActive('setting', null, e)}
 							title="Edit preference">
 							<EditLayoutSetting
@@ -96,7 +101,12 @@ class Toolbar extends React.Component {
 					{visible.shuffle && (
 						<Button
 							iconClass="ico-arrow-random"
-							onClick={() => dispatch(shuffleBlocks())}
+							onClick={() => dispatch(shuffleBlocks({
+								x: tree.body.setting.column,
+								y: 2,
+								w: 2,
+								h: 2
+							}))}
 							title="Shuffle block"/>
 					)}
 					{visible.add && (
@@ -109,7 +119,6 @@ class Toolbar extends React.Component {
 									w: 1,
 									h: 1
 								},
-
 							}))}
 							title="Add block"/>
 					)}
@@ -140,12 +149,18 @@ class Toolbar extends React.Component {
 					{visible.editColor && (
 						<Button
 							iconClass="ico-palette"
-							className={`edit-color${active.editColor ? ' active' : ''}`}
+							className={`edit-color${state.active.editColor ? ' active' : ''}`}
 							onClick={(e) => this.changeActive('editColor', null, e)}
 							title="Change color">
 							<ColorPicker
-								onChange={this.changeBlockColor.bind(this)}
-								color={'#ff0000'}/>
+								onChange={(color) => {
+									color = rgbToHex(color);
+									if (color)
+									{
+										dispatch(changeColorBlock(tree.body.activeBlock, color));
+									}
+								}}
+								color={activeBlockColor}/>
 						</Button>
 					)}
 				</div>

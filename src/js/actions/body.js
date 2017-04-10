@@ -4,6 +4,7 @@ import {
 	GRID_UPDATE_BLOCKS,
 	GRID_SETTING_UPDATE,
 	GRID_ACTIVE_BLOCK,
+	GRID_CHANGE_COLOR,
 } from './types';
 
 
@@ -15,10 +16,11 @@ export function addBlock(value)
 	};
 }
 
-export function shuffleBlocks()
+export function shuffleBlocks(options)
 {
 	return {
 		type: GRID_SHUFFLE_BLOCKS,
+		value: options,
 	}
 }
 
@@ -36,6 +38,15 @@ export function activeBlock(index)
 		type: GRID_ACTIVE_BLOCK,
 		value: index,
 	};
+}
+
+export function changeColorBlock(item, color)
+{
+	return {
+		type: GRID_CHANGE_COLOR,
+		item,
+		color,
+	}
 }
 
 export function updateSetting(value)
