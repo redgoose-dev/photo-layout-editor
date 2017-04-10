@@ -18,7 +18,6 @@ class GridLayout extends React.Component {
 	}
 
 	render() {
-		console.log('check render');
 		const { grid, setting, activeBlock } = this.props.tree.body;
 		const bodyWidth = (setting.width * setting.column) +
 			(setting.innerMargin * (setting.column-1)) +
@@ -26,6 +25,8 @@ class GridLayout extends React.Component {
 		const layout = grid.map((o) => {
 			return { i: String(o.index), ...o.layout };
 		});
+
+		// TODO : 이동하다보면 오류가 일어나고 있음
 
 		return (
 			<div className="ple-grid__wrap" onClick={() => this._selectBlock(null)}>
@@ -64,6 +65,5 @@ class GridLayout extends React.Component {
 
 
 export default connect((state) => {
-	console.log('qqqq')
 	return Object.assign({}, state, {});
 })(GridLayout);

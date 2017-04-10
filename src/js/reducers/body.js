@@ -121,11 +121,9 @@ function grid(state=[], action)
 			});
 
 		case GRID_CHANGE_COLOR:
-			let newState = state;
-			const n = findObjectValueInArray(state, 'index', action.item);
+			let newState = Object.assign([], state);
+			const n = findObjectValueInArray(newState, 'index', action.item);
 			if (newState[n]) newState[n].color = action.color;
-			// TODO : 리턴을 날렸는데 렌더가 안되고 있음.
-			// TODO : 아마도 변화를 감지하지 못했나본데, 답이 안나오면 grid 데이터를 object로 변경해볼까 함..
 			return newState;
 
 		case GRID_UPDATE_BLOCKS:
