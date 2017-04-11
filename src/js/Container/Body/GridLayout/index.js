@@ -26,8 +26,6 @@ class GridLayout extends React.Component {
 			return { i: String(o.index), ...o.layout };
 		});
 
-		// TODO : 이동하다보면 오류가 일어나고 있음
-
 		return (
 			<div className="ple-grid__wrap" onClick={() => this._selectBlock(null)}>
 				<ReactGridLayout

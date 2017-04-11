@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 import {
 	INIT_PLE,
 	GRID_ADD_BLOCK,
+	GRID_REMOVE_BLOCK,
 	GRID_SHUFFLE_BLOCKS,
+	GRID_DUPLICATE_BLOCK,
 	GRID_UPDATE_BLOCKS,
 	GRID_ACTIVE_BLOCK,
 	GRID_SETTING_UPDATE,
@@ -81,13 +83,25 @@ function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 					editColor: false,
 				};
 			}
-			break;
+
+		case GRID_REMOVE_BLOCK:
+			return {
+				...state,
+				edit: false,
+				removeImage: false,
+				duplicate: false,
+				removeBlock: false,
+				editColor: false,
+			}
 	}
 	return state;
 }
 
 function grid(state=[], action)
 {
+	let newState = null;
+	let n = null;
+
 	switch (action.type)
 	{
 		case INIT_PLE:
@@ -109,6 +123,16 @@ function grid(state=[], action)
 				index: lastGridId,
 			});
 
+		case GRID_REMOVE_BLOCK:
+			if (!action.index || !action.index.length) return state;
+			newState = Object.assign([], state);
+			for (let i=0; i<action.index.length; i++)
+			{
+				const n = findObjectValueInArray(newState, 'index', action.index[i]);
+				newState.splice(n, 1);
+			}
+			return newState;
+
 		case GRID_SHUFFLE_BLOCKS:
 			return state.map((o, k) => {
 				o.layout = {
@@ -119,10 +143,19 @@ function grid(state=[], action)
 				};
 				return o;
 			});
+			
+		case GRID_DUPLICATE_BLOCK:
+			n = findObjectValueInArray(state, 'index', action.index);
+			if (!state[n]) return state;
+			lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+			return state.concat({
+				...state[n],
+				index: lastGridId,
+			});
 
 		case GRID_CHANGE_COLOR:
-			let newState = Object.assign([], state);
-			const n = findObjectValueInArray(newState, 'index', action.item);
+			newState = Object.assign([], state);
+			n = findObjectValueInArray(newState, 'index', action.item);
 			if (newState[n]) newState[n].color = action.color;
 			return newState;
 
@@ -139,6 +172,9 @@ function activeBlock(state=null, action)
 	{
 		case GRID_ACTIVE_BLOCK:
 			return action.value;
+
+		case GRID_REMOVE_BLOCK:
+			return null;
 	}
 
 	return state;

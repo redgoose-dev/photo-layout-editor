@@ -118,18 +118,15 @@ html.ple-popup-mode {overflow: hidden;}
 			display: block; position: relative;
 			margin: 0; padding: 0; width: 42px; height: 42px;
 			border: none; background: $col-blur; cursor: pointer;
-			i {
-				position: absolute; display: block; left: 50%; top: 50%;
-			}
+			i {position: absolute; display: block; left: 50%; top: 50%;}
+		}
+		&.key {
+			> button {background: $col-active;}
 		}
 		&.active {
 			> button {background: $col-key;}
 			.pop {display: block;}
 		}
-		//&.color-bg-key {
-		//	> button {background: $col-active;}
-		//	&.show {display: block;}
-		//}
 	}
 	.edit-setting {
 		form {
@@ -199,9 +196,7 @@ html.ple-popup-mode {overflow: hidden;}
 		}
 	}
 
-	.colorpicker {
-		left: -20px;
-	}
+	.colorpicker {left: -20px;}
 }
 
 

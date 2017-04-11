@@ -1,6 +1,8 @@
 import {
 	GRID_ADD_BLOCK,
+	GRID_REMOVE_BLOCK,
 	GRID_SHUFFLE_BLOCKS,
+	GRID_DUPLICATE_BLOCK,
 	GRID_UPDATE_BLOCKS,
 	GRID_SETTING_UPDATE,
 	GRID_ACTIVE_BLOCK,
@@ -16,12 +18,27 @@ export function addBlock(value)
 	};
 }
 
+export function removeBlock(index) {
+	return {
+		type: GRID_REMOVE_BLOCK,
+		index,
+	};
+}
+
 export function shuffleBlocks(options)
 {
 	return {
 		type: GRID_SHUFFLE_BLOCKS,
 		value: options,
 	}
+}
+
+export function duplicateBlock(index)
+{
+	return {
+		type: GRID_DUPLICATE_BLOCK,
+		index,
+	};
 }
 
 export function updateBlocks(blocks)

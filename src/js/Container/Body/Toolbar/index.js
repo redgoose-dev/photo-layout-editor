@@ -2,9 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { addBlock, shuffleBlocks, updateSetting, changeColorBlock } from '../../../actions/body';
 import { randomRange } from '../../../lib/number';
 import { rgbToHex } from '../../../lib/color';
+import { findObjectValueInArray } from '../../../lib/object';
+import {
+	addBlock,
+	removeBlock,
+	shuffleBlocks,
+	duplicateBlock,
+	updateSetting,
+	changeColorBlock
+} from '../../../actions/body';
 
 import Button from './Button';
 import EditLayoutSetting from './EditLayoutSetting';
@@ -30,8 +38,8 @@ class Toolbar extends React.Component {
 	}
 
 	changeActive(keyName, userSW, event) {
-		const { active } = this.state;
-		const sw = userSW || !active[keyName];
+		const { state } = this;
+		const sw = userSW || !state.active[keyName];
 		const cTarget = event ? event.currentTarget : null;
 
 		if (sw)
@@ -54,11 +62,23 @@ class Toolbar extends React.Component {
 
 		this.setState({
 			active: {
-				...active,
+				...state.active,
 				setting: false,
 				editColor: false,
 				[keyName] : sw,
 			}
+		});
+	}
+
+	deactivate() {
+		$(document).off('click.pleToolbar');
+		return new Promise((reject) => {
+			this.setState({
+				active: {
+					setting: false,
+					editColor: false,
+				}
+			}, reject);
 		});
 	}
 
@@ -79,7 +99,10 @@ class Toolbar extends React.Component {
 		{
 			if (tree.body.activeBlock !== null)
 			{
-				activeBlockColor = tree.body.grid[tree.body.activeBlock].color || ple.preference.body.blockColor;
+				const n = findObjectValueInArray(tree.body.grid, 'index', tree.body.activeBlock);
+				activeBlockColor = (tree.body.grid[n] && tree.body.grid[n].color) ?
+					tree.body.grid[n].color :
+					ple.preference.body.blockColor;
 			}
 		}
 
@@ -90,7 +113,9 @@ class Toolbar extends React.Component {
 						<Button
 							iconClass="ico-setting"
 							className={`edit-setting ${state.active.setting ? 'active' : ''}`}
-							onClick={(e) => this.changeActive('setting', null, e)}
+							onClick={(e) => {
+								this.deactivate().then(() => this.changeActive('setting', null, e));
+							}}
 							title="Edit preference">
 							<EditLayoutSetting
 								submit={this.submitEditSetting.bind(this)}
@@ -125,32 +150,52 @@ class Toolbar extends React.Component {
 					{visible.edit && (
 						<Button
 							iconClass="ico-pencel"
+							className="key"
 							onClick={() => { console.log('click button'); }}
 							title="Edit block"/>
 					)}
 					{visible.removeImage && (
 						<Button
 							iconClass="ico-empty"
+							className="key"
 							onClick={() => { console.log('click button'); }}
 							title="Remove image in block"/>
 					)}
 					{visible.duplicate && (
 						<Button
 							iconClass="ico-duplicate"
-							onClick={() => { console.log('click button'); }}
+							className="key"
+							onClick={() => {
+								if (tree.body.activeBlock === null)
+								{
+									alert('Not found select block');
+									return;
+								}
+								dispatch(duplicateBlock(tree.body.activeBlock));
+							}}
 							title="Duplicate block"/>
 					)}
 					{visible.removeBlock && (
 						<Button
 							iconClass="ico-trash"
-							onClick={() => { console.log('click button'); }}
+							className="key"
+							onClick={() => {
+								if (tree.body.activeBlock === null)
+								{
+									alert('Not found select block');
+									return;
+								}
+								dispatch(removeBlock([tree.body.activeBlock]));
+							}}
 							title="Remove block"/>
 					)}
 					{visible.editColor && (
 						<Button
 							iconClass="ico-palette"
-							className={`edit-color${state.active.editColor ? ' active' : ''}`}
-							onClick={(e) => this.changeActive('editColor', null, e)}
+							className={`edit-color key ${state.active.editColor ? 'active' : ''}`}
+							onClick={(e) => {
+								this.deactivate().then(() => this.changeActive('editColor', null, e));
+							}}
 							title="Change color">
 							<ColorPicker
 								onChange={(color) => {
