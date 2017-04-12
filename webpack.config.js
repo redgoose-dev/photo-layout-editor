@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
 	watch: true,
 	devtool: 'eval',
-	entry: './src/js/App.js',
+	entry: './src/App/index.js',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'photoLayoutEditor.js'

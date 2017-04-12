@@ -47,12 +47,5 @@ window.PLE = function(el, options)
 			<Container PLE={this}/>
 		</Provider>,
 		el,
-	)
-
-	// TODO : init keyboard event
-	// TODO : init Export
-	// TODO : init API
-	// TODO : play gridster
-	// TODO : `this.store.body.dispatch(foo())` 형태로 외부 리듀스에 접근할 수 있다.
-	// TODO : dispatch(foo()) 형식으로 action으로 호출
+	);
 };

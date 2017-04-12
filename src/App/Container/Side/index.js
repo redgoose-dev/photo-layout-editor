@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
 import * as uploader from '../../lib/uploader';
-import * as util from '../../lib/util';
 
 import ToggleButton from './ToggleButton';
 import Navigation from './Navigation';

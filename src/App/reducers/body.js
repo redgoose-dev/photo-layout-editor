@@ -160,7 +160,7 @@ function grid(state=[], action)
 			return newState;
 
 		case GRID_UPDATE_BLOCKS:
-			return action.value;
+			return Object.assign([], action.value);
 	}
 
 	return state;

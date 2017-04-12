@@ -114,6 +114,7 @@ class Toolbar extends React.Component {
 							iconClass="ico-setting"
 							className={`edit-setting ${state.active.setting ? 'active' : ''}`}
 							onClick={(e) => {
+								e.persist();
 								this.deactivate().then(() => this.changeActive('setting', null, e));
 							}}
 							title="Edit preference">
@@ -194,6 +195,7 @@ class Toolbar extends React.Component {
 							iconClass="ico-palette"
 							className={`edit-color key ${state.active.editColor ? 'active' : ''}`}
 							onClick={(e) => {
+								e.persist();
 								this.deactivate().then(() => this.changeActive('editColor', null, e));
 							}}
 							title="Change color">

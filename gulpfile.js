@@ -89,7 +89,7 @@ gulp.task('vendor', function(){
 
 // build scss
 gulp.task('scss', function(){
-	gulp.src(`${src}/scss/app.scss`)
+	gulp.src(`${src}/App/style/app.scss`)
 		.pipe(sourcemaps.init())
 		.pipe(scss({
 			//outputStyle : 'compact'
@@ -100,5 +100,5 @@ gulp.task('scss', function(){
 		.pipe(gulp.dest(dist));
 });
 gulp.task('scss:watch', function(){
-	gulp.watch(`${src}/scss/*.scss`, ['scss']);
+	gulp.watch(`${src}/App/style/*.scss`, ['scss']);
 });
