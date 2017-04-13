@@ -88,8 +88,7 @@ class GridLayout extends React.Component {
 								}}
 								className={activeBlock === o.index && 'active'}
 								style={{ background: o.color || props.ple.preference.body.blockColor }}>
-								{o.index}
-								<figure/>
+								{o.image && <figure/>}
 							</div>
 						);
 					})}

@@ -17,13 +17,27 @@ var ple = new PLE(document.getElementById('app'), {
 	body: {
 		settings: {
 			width: 200,
-		}
+		},
+		grid: [
+			{
+				layout: { x: 0, y: 0, w: 2, h: 2 },
+				image: {
+					src: './images/rg3115.jpg',
+					position: '50% 50%',
+					size: 'cover',
+				},
+				color: '#b188ff',
+			},
+			{ layout: { x: 2, y: 0, w: 1, h: 2 } },
+			{ layout: { x: 3, y: 0, w: 2, h: 1 } },
+			{ layout: { x: 3, y: 1, w: 1, h: 1 } },
+		],
 	},
 	side: {
 		visible: true,
 		upload: './script/upload.php',
-		//remove : './script/remove.json',
-		items: './script/default.json',
+		//remove : './script/removeImage.json',
+		items: './script/defaultImages.json',
 //		items: [
 //			'./images/rg3115.jpg',
 //			'./images/rg3121.jpg',

@@ -100,5 +100,5 @@ gulp.task('scss', function(){
 		.pipe(gulp.dest(dist));
 });
 gulp.task('scss:watch', function(){
-	gulp.watch(`${src}/App/style/*.scss`, ['scss']);
+	gulp.watch(`${src}/App/style/**/*.scss`, ['scss']);
 });
