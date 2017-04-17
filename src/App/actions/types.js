@@ -4,6 +4,7 @@ export const ADD_FILES = 'ADD_FILES';
 export const REMOVE_FILES = 'REMOVE_FILES';
 export const CHANGE_ACTIVE_FILE = 'CHANGE_ACTIVE_FILE';
 export const SIDE_TOGGLE = 'SIDE_TOGGLE';
+export const ATTACH_IMAGES = 'ATTACH_IMAGES';
 
 export const GRID_ADD_BLOCK = 'GRID_ADD_BLOCK';
 export const GRID_REMOVE_BLOCK = 'GRID_REMOVE_BLOCK';

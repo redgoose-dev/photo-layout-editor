@@ -7,6 +7,7 @@ import {
 	GRID_SETTING_UPDATE,
 	GRID_ACTIVE_BLOCK,
 	GRID_CHANGE_COLOR,
+	ATTACH_IMAGES,
 } from './types';
 
 
@@ -72,4 +73,12 @@ export function updateSetting(value)
 		type: GRID_SETTING_UPDATE,
 		value: value,
 	};
+}
+
+export function attachImages(images)
+{
+	return {
+		type: ATTACH_IMAGES,
+		value: images,
+	}
 }

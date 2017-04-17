@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
+import { attachImages } from '../../actions/body';
 import * as uploader from '../../lib/uploader';
 
 import ToggleButton from './ToggleButton';
@@ -127,6 +128,11 @@ class Side extends React.Component {
 		}
 	}
 
+	/**
+	 * upload
+	 *
+	 * @param {Array} files
+	 */
 	_upload(files) {
 		if (this.state.uploading) return;
 
@@ -162,6 +168,26 @@ class Side extends React.Component {
 		});
 	}
 
+	_attach() {
+		const { props } = this;
+		let selectedImages = [];
+
+		props.tree.side.files.forEach((o, k) => {
+			if (o.active)
+			{
+				selectedImages.push(o.image);
+			}
+		});
+
+		if (!selectedImages.length)
+		{
+			alert('not select image');
+			return;
+		}
+
+		props.dispatch(attachImages(selectedImages));
+	}
+
 	render() {
 		const { tree, dispatch } = this.props;
 
@@ -175,12 +201,10 @@ class Side extends React.Component {
 						show={tree.side.layout.visible}
 						onClick={() => dispatch(toggle())}/>
 					<Navigation
-						attach={() => {
-							console.log('attach files');
-						}}
-						toggleSelect={this._toggleSelect.bind(this)}
-						upload={this._upload.bind(this)}
-						remove={this._removeItems.bind(this)}/>
+						onAttach={this._attach.bind(this)}
+						onToggleSelect={this._toggleSelect.bind(this)}
+						onUpload={this._upload.bind(this)}
+						onRemove={this._removeItems.bind(this)}/>
 					<Items
 						files={tree.side.files}
 						select={this._selectItem.bind(this)}

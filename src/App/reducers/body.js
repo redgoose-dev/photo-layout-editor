@@ -9,6 +9,7 @@ import {
 	GRID_ACTIVE_BLOCK,
 	GRID_SETTING_UPDATE,
 	GRID_CHANGE_COLOR,
+	ATTACH_IMAGES,
 } from '../actions/types';
 
 import { randomRange } from '../lib/number';
@@ -118,7 +119,7 @@ function grid(state=[], action)
 			lastGridId = lastGridId === null ? 0 : lastGridId + 1;
 			return state.concat({
 				color: null,
-				layout: {x: Infinity, y: Infinity, w: 1, h: 1},
+				layout: { x: Infinity, y: Infinity, w: 1, h: 1 },
 				...action.value,
 				index: lastGridId,
 			});
@@ -159,8 +160,38 @@ function grid(state=[], action)
 			if (newState[n]) newState[n].color = action.color;
 			return newState;
 
+		case ATTACH_IMAGES:
+			if (!action.value || !action.value.length) return state;
+
+			newState = Object.assign([], state);
+			newState.forEach((o) => {
+				if (o.image) return;
+				o.image = {
+					src: action.value.splice(0,1),
+					position: '50% 50%',
+					size: 'cover',
+				};
+			});
+			if (action.value.length)
+			{
+				action.value.forEach((o) => {
+					lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+					newState = newState.concat({
+						color: null,
+						layout: { x: Infinity, y: Infinity, w: 1, h: 1 },
+						image: {
+							src: o,
+							position: '50% 50%',
+							size: 'cover',
+						},
+						index: lastGridId,
+					});
+				});
+			}
+			return newState;
+			
 		case GRID_UPDATE_BLOCKS:
-			return Object.assign([], action.value);
+			return Object.assign([], state, action.value);
 	}
 
 	return state;

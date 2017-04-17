@@ -140,8 +140,9 @@ class Toolbar extends React.Component {
 							iconClass="ico-plus"
 							onClick={() => dispatch(addBlock({
 								layout: {
-									x: randomRange(0, tree.body.setting.column-1),
-									y: 1,
+									//x: randomRange(0, tree.body.setting.column-1),
+									x: props.tree.body.grid.length % tree.body.setting.column,
+									y: Infinity,
 									w: 1,
 									h: 1
 								},
