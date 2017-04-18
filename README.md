@@ -66,5 +66,6 @@ PLE는 다음과 같이 외부 프로그램으로부터 도움받았습니다.
 - [x] init keyboard event
 - [ ] init Export
 - [ ] init API
-- [ ] play gridster
-- [ ] `this.store.body.dispatch(foo())` 형태로 외부 리듀스에 접근할 수 있다.
+- [x] play gridster
+- [x] `this.store.body.dispatch(foo())` 형태로 외부 리듀스에 접근할 수 있다.
+- [ ] support local storage

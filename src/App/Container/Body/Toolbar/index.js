@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ColorPicker from 'react-simple-colorpicker';
 
-import { randomRange } from '../../../lib/number';
 import { rgbToHex } from '../../../lib/color';
 import { findObjectValueInArray } from '../../../lib/object';
 import {
@@ -11,7 +10,8 @@ import {
 	shuffleBlocks,
 	duplicateBlock,
 	updateSetting,
-	changeColorBlock
+	changeColorBlock,
+	removeImages,
 } from '../../../actions/body';
 
 import Button from './Button';
@@ -149,18 +149,22 @@ class Toolbar extends React.Component {
 							}))}
 							title="Add block"/>
 					)}
+
 					{visible.edit && (
 						<Button
 							iconClass="ico-pencel"
 							className="key"
-							onClick={() => { console.log('click button'); }}
+							onClick={() => {
+								// TODO : 작업예정..
+								console.log('click button');
+							}}
 							title="Edit block"/>
 					)}
 					{visible.removeImage && (
 						<Button
 							iconClass="ico-empty"
 							className="key"
-							onClick={() => { console.log('click button'); }}
+							onClick={() => dispatch(removeImages([tree.body.activeBlock]))}
 							title="Remove image in block"/>
 					)}
 					{visible.duplicate && (

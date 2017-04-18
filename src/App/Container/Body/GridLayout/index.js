@@ -32,15 +32,14 @@ class GridLayout extends React.Component {
 				timeStamp[1] = new Date().getTime();
 				if (timeStamp[1] - timeStamp[0] > 400)
 				{
-					let newGrid = layout.map((o, k) => {
-						let n = findObjectValueInArray(props.tree.body.grid, 'index', parseInt(o.i));
+					let newGrid = props.tree.body.grid.map((o, k) => {
 						return {
-							...props.tree.body.grid[n],
+							...o,
 							layout: {
-								x: o.x,
-								y: o.y,
-								w: o.w,
-								h: o.h,
+								x: layout[k].x,
+								y: layout[k].y,
+								w: layout[k].w,
+								h: layout[k].h,
 							},
 						};
 					});
@@ -57,11 +56,6 @@ class GridLayout extends React.Component {
 		const bodyWidth = (setting.width * setting.column) +
 			(setting.innerMargin * (setting.column-1)) +
 			(setting.outerMargin * 2);
-
-		// TODO : 아이템을 많이 추가할때 배열이 틀어지는 현상이 보여서 layout porps를 뺐더니 셔플 기능이 꿈쩍도 않는다.
-		// TODO : 셔플에 대한 해결방법을 찾아야한다.
-		// TODO : 렌더는 들어오지만 ReactGridLayout 안에서 변화가 일어나지 않아 업데이트를 하지않는듯..
-		// TODO : attachImages 부분에서 엘리먼트 위치가 끝에서 추가되는 현상이 일어나는데 다시 생각해보면 꼭 블럭이 만들어질 필요가 없어보인다.
 
 		return (
 			<div className="ple-grid__wrap" onClick={() => this._selectBlock(null)}>
@@ -80,13 +74,11 @@ class GridLayout extends React.Component {
 					style={{width: `${bodyWidth}px`}}
 					className="ple-grid">
 					{grid.map((o, k) => {
+						let key = `${o.indexPrefix}__${o.index}`;
 						return (
 							<div
-								key={o.index}
-								data-grid={{
-									i: String(o.index),
-									...o.layout
-								}}
+								key={key}
+								data-grid={o.layout}
 								onClick={(event) => {
 									event.stopPropagation();
 									this._selectBlock(o.index);
@@ -100,7 +92,6 @@ class GridLayout extends React.Component {
 										backgroundSize: o.image.size,
 									}}/>
 								)}
-								{o.index}
 							</div>
 						);
 					})}

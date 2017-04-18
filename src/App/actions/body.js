@@ -1,27 +1,17 @@
-import {
-	GRID_ADD_BLOCK,
-	GRID_REMOVE_BLOCK,
-	GRID_SHUFFLE_BLOCKS,
-	GRID_DUPLICATE_BLOCK,
-	GRID_UPDATE_BLOCKS,
-	GRID_SETTING_UPDATE,
-	GRID_ACTIVE_BLOCK,
-	GRID_CHANGE_COLOR,
-	ATTACH_IMAGES,
-} from './types';
+import * as types from './types';
 
 
 export function addBlock(value)
 {
 	return {
-		type: GRID_ADD_BLOCK,
+		type: types.GRID_ADD_BLOCK,
 		value: value,
 	};
 }
 
 export function removeBlock(index) {
 	return {
-		type: GRID_REMOVE_BLOCK,
+		type: types.GRID_REMOVE_BLOCK,
 		index,
 	};
 }
@@ -29,7 +19,7 @@ export function removeBlock(index) {
 export function shuffleBlocks(options)
 {
 	return {
-		type: GRID_SHUFFLE_BLOCKS,
+		type: types.GRID_SHUFFLE_BLOCKS,
 		value: options,
 	}
 }
@@ -37,7 +27,7 @@ export function shuffleBlocks(options)
 export function duplicateBlock(index)
 {
 	return {
-		type: GRID_DUPLICATE_BLOCK,
+		type: types.GRID_DUPLICATE_BLOCK,
 		index,
 	};
 }
@@ -45,7 +35,7 @@ export function duplicateBlock(index)
 export function updateBlocks(blocks)
 {
 	return {
-		type: GRID_UPDATE_BLOCKS,
+		type: types.GRID_UPDATE_BLOCKS,
 		value: blocks,
 	}
 }
@@ -53,7 +43,7 @@ export function updateBlocks(blocks)
 export function activeBlock(index)
 {
 	return {
-		type: GRID_ACTIVE_BLOCK,
+		type: types.GRID_ACTIVE_BLOCK,
 		value: index,
 	};
 }
@@ -61,7 +51,7 @@ export function activeBlock(index)
 export function changeColorBlock(item, color)
 {
 	return {
-		type: GRID_CHANGE_COLOR,
+		type: types.GRID_CHANGE_COLOR,
 		item,
 		color,
 	}
@@ -70,15 +60,24 @@ export function changeColorBlock(item, color)
 export function updateSetting(value)
 {
 	return {
-		type: GRID_SETTING_UPDATE,
+		type: types.GRID_SETTING_UPDATE,
 		value: value,
 	};
 }
 
-export function attachImages(images)
+export function attachImages(images, cols)
 {
 	return {
-		type: ATTACH_IMAGES,
+		type: types.ATTACH_IMAGES,
 		value: images,
+		columns: cols,
+	}
+}
+
+export function removeImages(ids)
+{
+	return {
+		type: types.REMOVE_IMAGES,
+		value: ids,
 	}
 }
