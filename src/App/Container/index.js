@@ -5,6 +5,7 @@ import { initPLE } from '../actions/core';
 
 import Body from './Body';
 import Side from './Side';
+import Cropper from './Cropper';
 
 
 class Container extends React.Component {
@@ -45,6 +46,7 @@ class Container extends React.Component {
 			<div className="ple-wrap">
 				<Body/>
 				<Side/>
+				{/*<Cropper/>*/}
 			</div>
 		);
 	}
