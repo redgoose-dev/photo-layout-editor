@@ -40,11 +40,12 @@ export function updateBlocks(blocks)
 	}
 }
 
-export function activeBlock(index)
+export function activeBlock(index, isImage=false)
 {
 	return {
 		type: types.GRID_ACTIVE_BLOCK,
 		value: index,
+		isImage: isImage,
 	};
 }
 

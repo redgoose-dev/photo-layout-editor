@@ -17,11 +17,13 @@ class GridLayout extends React.Component {
 		dispatch: null,
 	};
 
-	_selectBlock(id) {
-		this.props.dispatch(activeBlock(id));
+	_selectBlock(id, isImage)
+	{
+		this.props.dispatch(activeBlock(id, isImage));
 	}
 
-	_updateBlocks(type, layout) {
+	_updateBlocks(type, layout)
+	{
 		const { props } = this;
 
 		switch(type) {
@@ -50,7 +52,8 @@ class GridLayout extends React.Component {
 		}
 	}
 
-	render() {
+	render()
+	{
 		const { props } = this;
 		const { grid, setting, activeBlock } = props.tree.body;
 		const bodyWidth = (setting.width * setting.column) +
@@ -81,7 +84,7 @@ class GridLayout extends React.Component {
 								data-grid={o.layout}
 								onClick={(event) => {
 									event.stopPropagation();
-									this._selectBlock(o.index);
+									this._selectBlock(o.index, !!o.image);
 								}}
 								className={activeBlock === o.index && 'active'}
 								style={{ backgroundColor: o.color || props.ple.preference.body.blockColor }}>

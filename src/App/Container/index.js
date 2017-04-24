@@ -34,7 +34,7 @@ class Container extends React.Component {
 	}
 
 	render() {
-		const { ple } = this.props;
+		const { ple, tree } = this.props;
 
 		// check PLE object
 		if (!ple) return null;
@@ -46,7 +46,9 @@ class Container extends React.Component {
 			<div className="ple-wrap">
 				<Body/>
 				<Side/>
-				{/*<Cropper/>*/}
+				{tree.cropper.visible && (
+					<Cropper/>
+				)}
 			</div>
 		);
 	}

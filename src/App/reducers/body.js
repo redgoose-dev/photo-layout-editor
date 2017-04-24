@@ -54,14 +54,21 @@ function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 		case types.GRID_ACTIVE_BLOCK:
 			if (action.value !== null)
 			{
-				return {
-					...state,
-					edit: true,
-					removeImage: true,
-					duplicate: true,
-					removeBlock: true,
-					editColor: true,
-				};
+				return Object.assign({},
+					state,
+					{
+						duplicate: true,
+						removeBlock: true,
+						editColor: true,
+					},
+					action.isImage ? {
+						edit: true,
+						removeImage: true,
+					} : {
+						edit: false,
+						removeImage: false,
+					}
+				);
 			}
 			else
 			{
@@ -206,6 +213,10 @@ function grid(state=[], action)
 
 		case types.GRID_UPDATE_BLOCKS:
 			return Object.assign([], state, action.value);
+
+		case types.CROPPER_CLOSE:
+			// TODO : 크로퍼가 끝날때 grid 정보 업데이트 하기
+			return state;
 	}
 
 	return state;

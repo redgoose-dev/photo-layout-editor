@@ -1,24 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import * as action from '../../actions/cropper';
 
 import Block from './Block';
 
 
-export default class Cropper extends React.Component {
+class Cropper extends React.Component {
 
-	static defaultProps = {
-
-	};
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			show: false,
-			visible: false,
-			color: '#fff',
-			image: null,
-			wrapStyle: null,
-		};
+	_onClose() {
+		const { props } = this;
+		props.dispatch(action.close());
 	}
 
 	render() {
@@ -26,8 +18,8 @@ export default class Cropper extends React.Component {
 
 		return (
 			<div className="ple-cropper">
-				<span className="ple-cropper__bg"/>
-				<div className="ple-cropper__wrap" style={state.wrapStyle}>
+				<span className="ple-cropper__bg" onClick={this._onClose.bind(this)}/>
+				<div className="ple-cropper__wrap">
 					<Block/>
 					<nav className="ple-cropper__nav">
 						<button type="button" onClick={() => {}}>
@@ -46,3 +38,8 @@ export default class Cropper extends React.Component {
 	}
 
 }
+
+
+export default connect((state) => {
+	return Object.assign({}, state, {});
+})(Cropper);

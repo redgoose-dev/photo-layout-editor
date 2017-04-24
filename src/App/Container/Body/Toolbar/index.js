@@ -4,15 +4,8 @@ import ColorPicker from 'react-simple-colorpicker';
 
 import { rgbToHex } from '../../../lib/color';
 import { findObjectValueInArray } from '../../../lib/object';
-import {
-	addBlock,
-	removeBlock,
-	shuffleBlocks,
-	duplicateBlock,
-	updateSetting,
-	changeColorBlock,
-	removeImages,
-} from '../../../actions/body';
+import * as actionsBody from '../../../actions/body';
+import * as actionsCropper from '../../../actions/cropper';
 
 import Button from './Button';
 import EditLayoutSetting from './EditLayoutSetting';
@@ -26,7 +19,8 @@ class Toolbar extends React.Component {
 		tree: null,
 	};
 
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 
 		this.state = {
@@ -37,7 +31,8 @@ class Toolbar extends React.Component {
 		}
 	}
 
-	changeActive(keyName, userSW, event) {
+	changeActive(keyName, userSW, event)
+	{
 		const { state } = this;
 		const sw = userSW || !state.active[keyName];
 		const cTarget = event ? event.currentTarget : null;
@@ -70,7 +65,8 @@ class Toolbar extends React.Component {
 		});
 	}
 
-	deactivate() {
+	deactivate()
+	{
 		$(document).off('click.pleToolbar');
 		return new Promise((reject) => {
 			this.setState({
@@ -82,13 +78,38 @@ class Toolbar extends React.Component {
 		});
 	}
 
-	submitEditSetting(state) {
-		this.props.dispatch(updateSetting(state));
+	submitEditSetting(state)
+	{
+		this.props.dispatch(actionsBody.updateSetting(state));
 		this.changeActive('setting', false);
 		return false;
 	}
 
-	render() {
+	_onClickEdit()
+	{
+		const { props } = this;
+		const n = findObjectValueInArray(
+			props.tree.body.grid,
+			'index',
+			props.tree.body.activeBlock);
+		const item = props.tree.body.grid[n];
+
+		if (!item.image) return;
+
+		props.dispatch(actionsCropper.open({
+			image: item.image.src,
+			color: item.color,
+			imageResize: item.image.size !== 'cover',
+			position: item.image.position,
+			size: {
+				width: props.tree.body.setting.width * item.layout.w,
+				height: props.tree.body.setting.height * item.layout.h,
+			},
+		}));
+	}
+
+	render()
+	{
 		const { state, props } = this;
 		const { ple, dispatch, tree } = props;
 		const { setting } = tree.body;
@@ -115,7 +136,10 @@ class Toolbar extends React.Component {
 							className={`edit-setting ${state.active.setting ? 'active' : ''}`}
 							onClick={(e) => {
 								e.persist();
-								this.deactivate().then(() => this.changeActive('setting', null, e));
+								if (!state.active.setting)
+								{
+									this.deactivate().then(() => this.changeActive('setting', null, e));
+								}
 							}}
 							title="Edit preference">
 							<EditLayoutSetting
@@ -127,7 +151,7 @@ class Toolbar extends React.Component {
 					{visible.shuffle && (
 						<Button
 							iconClass="ico-arrow-random"
-							onClick={() => dispatch(shuffleBlocks({
+							onClick={() => dispatch(actionsBody.shuffleBlocks({
 								x: tree.body.setting.column,
 								y: 2,
 								w: 2,
@@ -138,7 +162,7 @@ class Toolbar extends React.Component {
 					{visible.add && (
 						<Button
 							iconClass="ico-plus"
-							onClick={() => dispatch(addBlock({
+							onClick={() => dispatch(actionsBody.addBlock({
 								layout: {
 									//x: randomRange(0, tree.body.setting.column-1),
 									x: props.tree.body.grid.length % tree.body.setting.column,
@@ -154,17 +178,14 @@ class Toolbar extends React.Component {
 						<Button
 							iconClass="ico-pencel"
 							className="key"
-							onClick={() => {
-								// TODO : 작업예정..
-								console.log('click button');
-							}}
+							onClick={this._onClickEdit.bind(this)}
 							title="Edit block"/>
 					)}
 					{visible.removeImage && (
 						<Button
 							iconClass="ico-empty"
 							className="key"
-							onClick={() => dispatch(removeImages([tree.body.activeBlock]))}
+							onClick={() => dispatch(actionsBody.removeImages([tree.body.activeBlock]))}
 							title="Remove image in block"/>
 					)}
 					{visible.duplicate && (
@@ -177,7 +198,7 @@ class Toolbar extends React.Component {
 									alert('Not found select block');
 									return;
 								}
-								dispatch(duplicateBlock(tree.body.activeBlock));
+								dispatch(actionsBody.duplicateBlock(tree.body.activeBlock));
 							}}
 							title="Duplicate block"/>
 					)}
@@ -191,7 +212,7 @@ class Toolbar extends React.Component {
 									alert('Not found select block');
 									return;
 								}
-								dispatch(removeBlock([tree.body.activeBlock]));
+								dispatch(actionsBody.removeBlock([tree.body.activeBlock]));
 							}}
 							title="Remove block"/>
 					)}
@@ -209,7 +230,7 @@ class Toolbar extends React.Component {
 									color = rgbToHex(color);
 									if (color)
 									{
-										dispatch(changeColorBlock(tree.body.activeBlock, color));
+										dispatch(actionsBody.changeColorBlock(tree.body.activeBlock, color));
 									}
 								}}
 								color={activeBlockColor}/>

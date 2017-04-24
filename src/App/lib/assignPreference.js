@@ -4,9 +4,9 @@ export default function(original, target)
 		body: {
 			...(original && original.body),
 			...(target && target.body),
-			settings: {
-				...((original && original.body) && original.body.settings),
-				...((target && target.body) && target.body.settings)
+			setting: {
+				...((original && original.body) && original.body.setting),
+				...((target && target.body) && target.body.setting)
 			},
 		},
 		side: {
