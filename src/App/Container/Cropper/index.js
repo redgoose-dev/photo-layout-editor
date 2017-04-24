@@ -18,11 +18,11 @@ class Cropper extends React.Component {
 
 		return (
 			<div className="ple-cropper">
-				<span className="ple-cropper__bg" onClick={this._onClose.bind(this)}/>
+				<span className="ple-cropper__bg"/>
 				<div className="ple-cropper__wrap">
 					<Block/>
 					<nav className="ple-cropper__nav">
-						<button type="button" onClick={() => {}}>
+						<button type="button" onClick={this._onClose.bind(this)}>
 							<i className="sp-ico ico-close abs">Close cropper</i>
 						</button>
 						<button type="button" onClick={() => {}}>
