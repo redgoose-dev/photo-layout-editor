@@ -33,6 +33,7 @@ class Cropper extends React.Component {
 						</button>
 					</nav>
 				</div>
+				aaa
 			</div>
 		);
 	}

@@ -6,5 +6,8 @@
 		"transform-react-jsx",
 		"transform-flow-strip-types",
 		"transform-es2015-block-scoping",
+	],
+	"presets": [
+		"es2015"
 	]
 }

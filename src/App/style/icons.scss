@@ -1,8 +1,8 @@
 // init icon
 %sp-ico {
-	background: transparent url('./assets/sp-ico@1x.png') no-repeat;
+	background: transparent url('./assets/images/sp-ico@1x.png') no-repeat;
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.33dppx) {
-		background-image: url('./assets/sp-ico@2x.png');
+		background-image: url('./assets/images/sp-ico@2x.png');
 		background-size: 200px 100px;
 	}
 }

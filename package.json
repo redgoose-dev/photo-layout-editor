@@ -21,7 +21,7 @@
   "homepage": "https://github.com/RedgooseDev/PhotoLayoutEditor#readme",
   "scripts": {
     "build": "webpack",
-    "build-pro": "webpack -p"
+    "build-pro": "NODE_ENV=production webpack -p --progress"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -42,6 +42,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.2.2",
