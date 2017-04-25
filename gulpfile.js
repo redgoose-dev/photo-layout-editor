@@ -62,16 +62,23 @@ const externalResource = function(type, extType, isDevelop)
 };
 
 
-// build vendor files
+// build development vendor
 gulp.task('vendor', function(){
-	// development vendors
 	gulp.src(externalResource('vendor', 'js', true))
 		.pipe(sourcemaps.init({loadMaps: true}))
 		.pipe(sourcemaps.write(null, {addComment: false}))
 		.pipe(concat('photoLayoutEditor.vendors.dev.js', { newLine: '\n\n' }))
 		.pipe(gulp.dest(dist));
 
-	// production vendors
+	gulp.src(externalResource('vendor', 'css', false))
+		.pipe(scss({
+			outputStyle: 'compressed'
+		}).on('error', scss.logError))
+		.pipe(concat('photoLayoutEditor.vendors.dev.css', { newLine: '\n\n' }))
+		.pipe(gulp.dest(dist));
+});
+// build production vendor
+gulp.task('vendor-pro', function(){
 	gulp.src(externalResource('vendor', 'js', false))
 		.pipe(sourcemaps.init({loadMaps: true}))
 		.pipe(sourcemaps.write(null, {addComment: false}))
@@ -87,18 +94,33 @@ gulp.task('vendor', function(){
 });
 
 
+function cssBuild(type=null)
+{
+	if (type === 'pro')
+	{
+		gulp.src(`${src}/App/style/app.scss`)
+			.pipe(scss({
+				outputStyle: 'compressed'
+			}).on('error', scss.logError))
+			.pipe(rename('photoLayoutEditor.css'))
+			.pipe(gulp.dest(dist));
+	}
+	else
+	{
+		gulp.src(`${src}/App/style/app.scss`)
+			.pipe(sourcemaps.init())
+			.pipe(scss({
+				outputStyle: 'compact'
+			}).on('error', scss.logError))
+			.pipe(rename('photoLayoutEditor.dev.css'))
+			.pipe(sourcemaps.write(maps))
+			.pipe(gulp.dest(dist));
+	}
+}
+
 // build scss
-gulp.task('scss', function(){
-	gulp.src(`${src}/App/style/app.scss`)
-		.pipe(sourcemaps.init())
-		.pipe(scss({
-			//outputStyle : 'compact'
-			outputStyle: 'compressed'
-		}).on('error', scss.logError))
-		.pipe(rename('photoLayoutEditor.css'))
-		.pipe(sourcemaps.write(maps))
-		.pipe(gulp.dest(dist));
-});
+gulp.task('scss', () => cssBuild());
 gulp.task('scss:watch', function(){
 	gulp.watch(`${src}/App/style/**/*.scss`, ['scss']);
 });
+gulp.task('scss-pro', () => cssBuild('pro'));
