@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import $ from 'jquery/dist/jquery.slim';
 import ColorPicker from 'react-simple-colorpicker';
 
 import { rgbToHex } from '../../../lib/color';

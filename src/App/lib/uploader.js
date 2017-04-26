@@ -1,5 +1,4 @@
-import $ from 'jquery';
-import * as util from './util';
+import $ from 'jquery/dist/jquery.slim';
 
 
 /**

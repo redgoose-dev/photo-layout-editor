@@ -11,6 +11,10 @@ import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
 import Container from './Container';
 
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import './style/app.scss';
+
 
 /**
  * Photo layout editor
@@ -18,7 +22,7 @@ import Container from './Container';
  * @param {Object} el
  * @param {Object} options
  */
-window.PLE = function(el, options)
+const PLE = function(el, options)
 {
 	// set preference
 	this.preference = assignPreference(defaultPreference, options);
@@ -49,3 +53,6 @@ window.PLE = function(el, options)
 		el,
 	);
 };
+
+
+module.exports = PLE;

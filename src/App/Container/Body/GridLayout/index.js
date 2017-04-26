@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactGridLayout from 'ReactGridLayout';
+import ReactGridLayout from 'react-grid-layout';
 
 import { activeBlock, updateBlocks } from '../../../actions/body';
 import { findObjectValueInArray } from '../../../lib/object';

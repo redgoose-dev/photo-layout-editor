@@ -1,37 +1,109 @@
-const path = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
+const { getIfUtils, removeEmpty } = require('webpack-config-utils');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const prod = process.env.NODE_ENV === 'production';
 
+const config = (env) => {
+	const { ifProd, ifNotProd } = getIfUtils(env);
 
-module.exports = {
-	watch: !prod,
-	devtool: prod ? 'cheap-module-source-map' : 'eval',
-	entry: './src/App/index.js',
-	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: `photoLayoutEditor${prod ? '' : '.dev'}.js`
-	},
-	externals: {
-		'jquery': '$',
-		'react': 'React',
-		'react-dom': 'ReactDOM',
-		'redux': 'Redux',
-		'react-redux': 'ReactRedux',
-		'axios': 'axios',
-		'ReactGridLayout': 'ReactGridLayout',
-		'react-simple-colorpicker': 'ColorPicker',
-	},
-	module: {
-		rules: [
-			{
-				test: /\.(js)$/,
-				use: 'babel-loader',
-				exclude: /node_modules/,
-			}
-		]
-	},
+	return {
+		context: resolve(__dirname, 'src'),
 
-	plugins: [],
+		entry: {
+			photoLayoutEditor: ifProd(
+				[ './App/index.js' ],
+				[ 'react-hot-loader/patch', './index.dev.js' ]
+			)
+		},
 
+		output: {
+			path: resolve(__dirname, 'dist'),
+			publicPath: './',
+			filename: ifProd('[name].js', '[name].js'),
+			chunkFilename: ifProd('[name].js', '[name].js'),
+			library: 'PLE',
+			libraryTarget: ifProd('umd', 'var'),
+		},
+
+		devServer: {
+			hot: true,
+			contentBase: resolve(__dirname, 'dist'),
+			publicPath: '/',
+			historyApiFallback: true
+		},
+
+		devtool: ifProd('cheap-module-map', 'cheap-eval-source-map'),
+
+		module: {
+			rules: [
+				{
+					test: /\.js$/,
+					use: [ 'babel-loader' ],
+					exclude: /node_modules/
+				},
+				{
+					test: /\.s?css$/,
+					use: ifProd(
+						ExtractTextPlugin.extract({
+							fallback: 'style-loader',
+							use: [
+								'css-loader',
+								{
+									loader: 'postcss-loader',
+									options: { plugins: () => [ require('autoprefixer') ] }
+								},
+								'sass-loader'
+							]
+						}),
+						[
+							'style-loader',
+							'css-loader',
+							{
+								loader: 'postcss-loader',
+								options: { plugins: () => [ require('autoprefixer') ] }
+							},
+							'sass-loader'
+						]
+					)
+				},
+				{
+					test: /\.(jpg|png)$/,
+					loader: 'file-loader',
+					options: {
+						name: 'assets/images/[name].[ext]',
+					},
+				},
+			]
+		},
+
+		plugins: removeEmpty([
+			ifProd(
+				new webpack.optimize.CommonsChunkPlugin({
+					name: 'photoLayoutEditor.vendor',
+					minChunks: function (module) {
+						return (
+							module.context && module.context.indexOf('node_modules') !== -1
+						);
+					}
+				})
+			),
+			ifNotProd(
+				new HtmlWebpackPlugin({ template: 'index.dev.html' })
+			),
+			ifProd(
+				new ExtractTextPlugin({ filename: '[name].css' })
+			),
+			ifNotProd(
+				new webpack.HotModuleReplacementPlugin()
+			),
+			ifNotProd(
+				new webpack.NamedModulesPlugin()
+			),
+		])
+	};
 };
+
+
+module.exports = config;
