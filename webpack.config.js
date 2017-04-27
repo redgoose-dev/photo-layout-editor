@@ -14,7 +14,7 @@ const config = (env) => {
 		entry: {
 			photoLayoutEditor: ifProd(
 				[ './App/index.js' ],
-				[ 'react-hot-loader/patch', './index.dev.js' ]
+				[ './index.dev.js' ]
 			)
 		},
 
