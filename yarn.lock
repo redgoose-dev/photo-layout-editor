@@ -1282,9 +1282,15 @@ debug@2.6.1:
   dependencies:
     ms "0.7.2"
 
-debug@2.6.4, debug@^2.1.1, debug@^2.2.0:
+debug@2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
+  dependencies:
+    ms "0.7.3"
+
+debug@^2.1.1, debug@^2.2.0:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.5.tgz#7a76247781acd4ef2a85f0fb8abf763cd1af249e"
   dependencies:
     ms "0.7.3"
 
@@ -3307,8 +3313,8 @@ react-dom@^15.5.4:
     prop-types "~15.5.7"
 
 react-draggable@^2.1.0, react-draggable@^2.1.1:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-2.2.3.tgz#17628cb8aaefed639d38e0021b978a685d80b08b"
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-2.2.4.tgz#ed9933111b7572f40ef18e49f9b41fd84502e67d"
   dependencies:
     classnames "^2.2.5"
 

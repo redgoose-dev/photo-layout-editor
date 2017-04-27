@@ -1,7 +1,6 @@
 import PLE from './App';
 
 
-console.log('HELLO DEV');
 var ple = new PLE(document.getElementById('app'), {
 	body: {
 		setting: {
