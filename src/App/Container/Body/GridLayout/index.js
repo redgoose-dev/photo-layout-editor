@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import ReactGridLayout from 'react-grid-layout';
 
 import { activeBlock, updateBlocks } from '../../../actions/body';
-import { findObjectValueInArray } from '../../../lib/object';
 
 
 let timeStamp = [];
@@ -19,7 +18,42 @@ class GridLayout extends React.Component {
 
 	_selectBlock(id, isImage)
 	{
-		this.props.dispatch(activeBlock(id, isImage));
+		const { props } = this;
+		const { ple, tree, dispatch } = props;
+		const { keyName } = ple.keyboard;
+
+		if (id === null)
+		{
+			dispatch(activeBlock(null, false));
+			return;
+		}
+
+		switch(keyName) {
+			case 'cmd':
+			case 'ctrl':
+			case 'shift':
+				if (tree.body.activeBlock && tree.body.activeBlock.length)
+				{
+					let newActiveBlock = Object.assign([], tree.body.activeBlock);
+					if (newActiveBlock.indexOf(id) > -1)
+					{
+						newActiveBlock.splice(newActiveBlock.indexOf(id), 1);
+					}
+					else
+					{
+						newActiveBlock.push(id);
+					}
+					dispatch(activeBlock(newActiveBlock, isImage));
+				}
+				else
+				{
+					dispatch(activeBlock([id], isImage));
+				}
+				break;
+			default:
+				dispatch(activeBlock([id], isImage));
+				break;
+		}
 	}
 
 	_updateBlocks(type, layout)
@@ -78,6 +112,7 @@ class GridLayout extends React.Component {
 					className="ple-grid">
 					{grid.map((o, k) => {
 						let key = `${o.indexPrefix}__${o.index}`;
+						let active = !!(activeBlock && activeBlock.length && activeBlock.indexOf(o.index) > -1);
 						return (
 							<div
 								key={key}
@@ -86,7 +121,7 @@ class GridLayout extends React.Component {
 									event.stopPropagation();
 									this._selectBlock(o.index, !!o.image);
 								}}
-								className={activeBlock === o.index && 'active'}
+								className={active && 'active'}
 								style={{ backgroundColor: o.color || props.ple.preference.body.blockColor }}>
 								{o.image && (
 									<figure style={{

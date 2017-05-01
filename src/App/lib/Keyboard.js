@@ -9,6 +9,7 @@ export default {
 
 	names: {
 		17: 'ctrl',
+		18: 'alt',
 		91: 'cmd',
 		93: 'cmd',
 		16: 'shift',

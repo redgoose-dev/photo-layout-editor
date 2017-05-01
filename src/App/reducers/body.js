@@ -52,21 +52,20 @@ function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 {
 	switch(action.type) {
 		case types.GRID_ACTIVE_BLOCK:
-			if (action.value !== null)
+			if (action.value && action.value.length)
 			{
 				return Object.assign({},
 					state,
 					{
+						removeImage: true,
 						duplicate: true,
 						removeBlock: true,
 						editColor: true,
 					},
-					action.isImage ? {
+					action.isImage && action.value.length === 1 ? {
 						edit: true,
-						removeImage: true,
 					} : {
 						edit: false,
-						removeImage: false,
 					}
 				);
 			}
@@ -150,18 +149,24 @@ function grid(state=[], action)
 			});
 
 		case types.GRID_DUPLICATE_BLOCK:
-			n = findObjectValueInArray(state, 'index', action.index);
-			if (!state[n]) return state;
-			lastGridId = lastGridId === null ? 0 : lastGridId + 1;
-			return state.concat({
-				...state[n],
-				index: lastGridId,
+			newState = Object.assign([], state);
+			action.index.forEach((o, k) => {
+				n = findObjectValueInArray(state, 'index', o);
+				if (!newState[n]) return;
+				lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+				newState = newState.concat({
+					...newState[n],
+					index: lastGridId,
+				});
 			});
+			return newState;
 
 		case types.GRID_CHANGE_COLOR:
 			newState = Object.assign([], state);
-			n = findObjectValueInArray(newState, 'index', action.item);
-			if (newState[n]) newState[n].color = action.color;
+			action.item.forEach((o, k) => {
+				n = findObjectValueInArray(newState, 'index', o);
+				if (newState[n]) newState[n].color = action.color;
+			});
 			return newState;
 
 		case types.ATTACH_IMAGES:

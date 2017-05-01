@@ -208,8 +208,7 @@ class Side extends React.Component {
 					<Items
 						files={tree.side.files}
 						select={this._selectItem.bind(this)}
-					   progress={this.state.itemProgress}
-					/>
+					   progress={this.state.itemProgress}/>
 				</div>
 			</aside>
 		);

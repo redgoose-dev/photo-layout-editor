@@ -92,7 +92,7 @@ class Toolbar extends React.Component {
 		const n = findObjectValueInArray(
 			props.tree.body.grid,
 			'index',
-			props.tree.body.activeBlock);
+			props.tree.body.activeBlock[0]);
 		const item = props.tree.body.grid[n];
 
 		if (!item.image) return;
@@ -119,9 +119,9 @@ class Toolbar extends React.Component {
 
 		if (tree.body.grid && tree.body.grid.length)
 		{
-			if (tree.body.activeBlock !== null)
+			if (tree.body.activeBlock && tree.body.activeBlock.length)
 			{
-				const n = findObjectValueInArray(tree.body.grid, 'index', tree.body.activeBlock);
+				const n = findObjectValueInArray(tree.body.grid, 'index', tree.body.activeBlock[0]);
 				activeBlockColor = (tree.body.grid[n] && tree.body.grid[n].color) ?
 					tree.body.grid[n].color :
 					ple.preference.body.blockColor;
@@ -186,7 +186,7 @@ class Toolbar extends React.Component {
 						<Button
 							iconClass="ico-empty"
 							className="key"
-							onClick={() => dispatch(actionsBody.removeImages([tree.body.activeBlock]))}
+							onClick={() => dispatch(actionsBody.removeImages(tree.body.activeBlock))}
 							title="Remove image in block"/>
 					)}
 					{visible.duplicate && (
@@ -213,7 +213,7 @@ class Toolbar extends React.Component {
 									alert('Not found select block');
 									return;
 								}
-								dispatch(actionsBody.removeBlock([tree.body.activeBlock]));
+								dispatch(actionsBody.removeBlock(tree.body.activeBlock));
 							}}
 							title="Remove block"/>
 					)}
@@ -223,7 +223,10 @@ class Toolbar extends React.Component {
 							className={`edit-color key ${state.active.editColor ? 'active' : ''}`}
 							onClick={(e) => {
 								e.persist();
-								this.deactivate().then(() => this.changeActive('editColor', null, e));
+								if (!state.active.editColor)
+								{
+									this.deactivate().then(() => this.changeActive('editColor', null, e));
+								}
 							}}
 							title="Change color">
 							<ColorPicker
