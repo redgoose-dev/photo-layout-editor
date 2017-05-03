@@ -66,19 +66,20 @@ export function updateSetting(value)
 	};
 }
 
-export function attachImages(images, cols)
+export function attachImages(images, cols, activeBlocks)
 {
 	return {
 		type: types.ATTACH_IMAGES,
 		value: images,
 		columns: cols,
+		activeBlocks: activeBlocks,
 	}
 }
 
 export function removeImages(ids)
 {
 	return {
-		type: types.REMOVE_IMAGES,
+		type: types.GRID_REMOVE_IMAGES,
 		value: ids,
 	}
 }

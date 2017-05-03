@@ -174,6 +174,22 @@ class Toolbar extends React.Component {
 							}))}
 							title="Add block"/>
 					)}
+					{visible.select && (
+						<Button
+							iconClass="ico-select"
+							onClick={() => {
+								if (tree.body.activeBlock && tree.body.activeBlock.length)
+								{
+									dispatch(actionsBody.activeBlock(null));
+									return;
+								}
+								let newActiveBlock = [];
+								let isImage = !!(tree.body.grid[0] && tree.body.grid[0].image);
+								tree.body.grid.forEach((o) => newActiveBlock.push(o.index));
+								dispatch(actionsBody.activeBlock(newActiveBlock, isImage));
+							}}
+							title="Toggle select block"/>
+					)}
 
 					{visible.edit && (
 						<Button

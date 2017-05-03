@@ -24,7 +24,7 @@ class GridLayout extends React.Component {
 
 		if (id === null)
 		{
-			dispatch(activeBlock(null, false));
+			dispatch(activeBlock([], false));
 			return;
 		}
 

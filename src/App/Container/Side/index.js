@@ -185,7 +185,11 @@ class Side extends React.Component {
 			return;
 		}
 
-		props.dispatch(attachImages(selectedImages, props.tree.body.setting.column));
+		props.dispatch(attachImages(
+			selectedImages,
+			props.tree.body.setting.column,
+			props.tree.body.activeBlock
+		));
 	}
 
 	render() {

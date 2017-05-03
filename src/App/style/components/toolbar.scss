@@ -1,75 +1,156 @@
 /* Toolbar */
 .ple-toolbar {
-	position: relative; height: 43px;
-	&:after {content: ''; display: block; clear: both;}
-	.wrap {
-		position: absolute; z-index: 11;
-		top: 0; width: 100%; height: 43px;
-		background: #fff;
-		&.fix {position: fixed; top: 0; z-index: 1000;}
+	position: relative;
+	height: 43px;
+	&:after {
+		content: '';
+		display: block;
+		clear: both;
 	}
-	.pop {position: relative; display: none;}
+	.wrap {
+		position: absolute;
+		z-index: 11;
+		top: 0;
+		width: 100%;
+		height: 43px;
+		background: #fff;
+		&.fix {
+			position: fixed;
+			top: 0;
+			z-index: 1000;
+		}
+	}
+	.pop {
+		position: relative;
+		display: none;
+	}
 	.block {
-		float: left; margin-right: 1px;
+		float: left;
+		margin-right: 1px;
 		> button {
-			display: block; position: relative;
-			margin: 0; padding: 0; width: 42px; height: 42px;
-			border: none; background: $col-blur; cursor: pointer;
-			i {position: absolute; display: block; left: 50%; top: 50%;}
+			display: block;
+			position: relative;
+			margin: 0;
+			padding: 0;
+			width: 42px;
+			height: 42px;
+			border: none;
+			background: $col-blur;
+			cursor: pointer;
+			outline: 0;
+			i {
+				position: absolute;
+				display: block;
+				left: 50%;
+				top: 50%;
+			}
+			&:active, &:focus {
+				background: mix($col-key, #000, 98%);
+			}
 		}
 		&.key {
-			> button {background: $col-active;}
+			> button {
+				background: $col-active;
+				&:active, &:focus {
+					background: mix($col-active, #000, 75%);
+				}
+			}
 		}
 		&.active {
-			> button {background: $col-key;}
-			.pop {display: block;}
+			> button {
+				background: mix($col-key, #000, 98%);
+			}
+			.pop {
+				display: block;
+			}
+			&.key {
+				> button {
+					background: mix($col-active, #000, 75%);
+				}
+			}
 		}
 	}
 	.edit-setting {
 		form {
-			position: absolute; left: -5px; top: 0; z-index: 99999; min-width: 270px;
-			background: #fff; box-shadow: 1px 1px 8px rgba(0,0,0,.4);
-			fieldset {margin: 0; padding: 20px; border: none;}
+			position: absolute;
+			left: -5px;
+			top: 0;
+			z-index: 99999;
+			min-width: 270px;
+			background: #fff;
+			box-shadow: 1px 1px 8px rgba(0,0,0,.4);
+			fieldset {
+				margin: 0;
+				padding: 20px;
+				border: none;
+			}
 		}
-		legend {@extend %blind;}
+		legend {
+			@extend %blind;
+		}
 		h1 {
 			margin: 0 0 10px;
-			font-size: 18px; color: $col-key;
+			font-size: 18px;
+			color: $col-key;
 		}
 		dl {
-			display: table; width: 100%; margin: 1px 0;
+			display: table;
+			width: 100%;
+			margin: 1px 0;
 			> * {
-				display: table-cell; vertical-align: middle;
+				display: table-cell;
+				vertical-align: middle;
 				padding: 3px 0;
 			}
 			dt {
 				width: 95px;
-				font-size: 12px; color: #333;
-				label {display: inline;}
+				font-size: 12px;
+				color: #333;
+				label {
+					display: inline;
+				}
 			}
 			dd {
 				margin: 0 0 0 100px;
 			}
 		}
 		nav {
-			&:after {content: ''; display: block; clear: both;}
+			&:after {
+				content: '';
+				display: block;
+				clear: both;
+			}
 			span {
-				display: block; width: 50%; float: left;
-				&:first-child {padding-right: 1px;}
+				display: block;
+				width: 50%;
+				float: left;
+				&:first-child {
+					padding-right: 1px;
+				}
 			}
 			button {
-				margin: 0; padding: 12px 0; width: 100%;
-				font-size: 12px; color: #fff;
-				background: $col-blur; border: none; cursor: pointer;
+				margin: 0;
+				padding: 12px 0;
+				width: 100%;
+				font-size: 12px;
+				color: #fff;
+				background: $col-blur;
+				border: none;
+				cursor: pointer;
 				-webkit-appearance: none;
-				&.submit {background: $col-key;}
+				&.submit {
+					background: $col-key;
+				}
 			}
 		}
 		.type-input {
 			input[type=number] {
-				margin: 0; padding: 6px 6px;
-				font-size: 12px; color: #111;
-				border: 1px solid #c4c7c8; border-radius: 2px;
+				margin: 0;
+				padding: 6px 6px;
+				font-size: 12px;
+				color: #111;
+				border: 1px solid #c4c7c8;
+				border-radius: 2px;
 				box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
 			}
 			span {
@@ -93,5 +174,7 @@
 		}
 	}
 
-	.colorpicker {left: -20px;}
+	.colorpicker {
+		left: -20px;
+	}
 }

@@ -17,6 +17,7 @@ const defaults = {
 		setting: true,
 		shuffle: true,
 		add: true,
+		select: true,
 		edit: false,
 		removeImage: false,
 		duplicate: false,
@@ -89,6 +90,12 @@ function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 				duplicate: false,
 				removeBlock: false,
 				editColor: false,
+			}
+
+		case types.GRID_REMOVE_IMAGES:
+			return {
+				...state,
+				edit: false,
 			}
 	}
 	return state;
@@ -171,41 +178,56 @@ function grid(state=[], action)
 
 		case types.ATTACH_IMAGES:
 			if (!action.value || !action.value.length) return state;
-
 			newState = Object.assign([], state);
-			newState.forEach((o) => {
-				if (o.image) return;
-				if (!action.value || !action.value.length) return;
-				o.image = {
-					src: action.value.splice(0,1),
-					position: '50% 50%',
-					size: 'cover',
-				};
-			});
-			if (action.value.length)
+
+			if (action.activeBlocks && action.activeBlocks.length)
 			{
-				action.value.forEach((o, k) => {
-					lastGridId = lastGridId === null ? 0 : lastGridId + 1;
-					newState = newState.concat({
-						color: null,
-						layout: {
-							x: (state.length + k) % action.columns,
-							y: Infinity,
-							w: 1,
-							h: 1
-						},
-						image: {
-							src: o,
-							position: '50% 50%',
-							size: 'cover',
-						},
-						index: lastGridId,
-					});
+				newState.forEach((o, k) => {
+					if (!action.value.length) return;
+					if (action.activeBlocks.indexOf(o.index) < 0) return;
+					o.image = {
+						src: action.value.splice(0,1),
+						position: '50% 50%',
+						size: 'cover',
+					};
 				});
+			}
+			else
+			{
+				newState.forEach((o) => {
+					if (o.image) return;
+					if (!action.value || !action.value.length) return;
+					o.image = {
+						src: action.value.splice(0,1),
+						position: '50% 50%',
+						size: 'cover',
+					};
+				});
+				if (action.value.length)
+				{
+					action.value.forEach((o, k) => {
+						lastGridId = lastGridId === null ? 0 : lastGridId + 1;
+						newState = newState.concat({
+							color: null,
+							layout: {
+								x: (state.length + k) % action.columns,
+								y: Infinity,
+								w: 1,
+								h: 1
+							},
+							image: {
+								src: o,
+								position: '50% 50%',
+								size: 'cover',
+							},
+							index: lastGridId,
+						});
+					});
+				}
 			}
 			return newState;
 
-		case types.REMOVE_IMAGES:
+		case types.GRID_REMOVE_IMAGES:
 			newState = Object.assign([], state);
 			action.value.forEach((o) => {
 				n = findObjectValueInArray(newState, 'index', o);
@@ -227,15 +249,26 @@ function grid(state=[], action)
 	return state;
 }
 
-function activeBlock(state=null, action)
+function activeBlock(state=[], action)
 {
+	let newState = null;
+
 	switch (action.type)
 	{
 		case types.GRID_ACTIVE_BLOCK:
 			return action.value;
 
 		case types.GRID_REMOVE_BLOCK:
-			return null;
+			if (action.index && action.index.length)
+			{
+				newState = Object.assign([], state);
+				action.index.forEach((o, k) => {
+					if (newState.indexOf(o) < 0) return;
+					newState.splice(newState.indexOf(o), 1);
+				});
+				return newState;
+			}
+			return [];
 	}
 
 	return state;
