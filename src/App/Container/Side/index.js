@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import classNames from 'classnames';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
 import { attachImages } from '../../actions/body';
 import * as uploader from '../../lib/uploader';
 
-import ToggleButton from './ToggleButton';
+import ToggleSideButton from './ToggleSideButton';
 import Navigation from './Navigation';
 import Items from './Items';
 
@@ -193,15 +194,19 @@ class Side extends React.Component {
 	}
 
 	render() {
-		const { tree, dispatch } = this.props;
+		const { state, props } = this;
+		const { tree, dispatch } = props;
 
 		return (
 			<aside className="ple-side">
-				<div className={`wrap ${tree.side.layout.visible ? 'show' : ''}`}>
+				<div className={classNames(
+					'wrap',
+					{ 'show': tree.side.layout.visible }
+				)}>
 					<span
 						onClick={() => dispatch(changeActiveFile(null, 'none', null))}
 						className="background"/>
-					<ToggleButton
+					<ToggleSideButton
 						show={tree.side.layout.visible}
 						onClick={() => dispatch(toggle())}/>
 					<Navigation
@@ -212,7 +217,7 @@ class Side extends React.Component {
 					<Items
 						files={tree.side.files}
 						select={this._selectItem.bind(this)}
-					   progress={this.state.itemProgress}/>
+					   progress={state.itemProgress}/>
 				</div>
 			</aside>
 		);

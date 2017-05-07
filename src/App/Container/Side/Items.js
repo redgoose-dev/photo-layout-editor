@@ -11,6 +11,15 @@ export default class Items extends React.Component {
 		progress: null, //
 	};
 
+	// TODO : 드래그앤 드롭 이벤트 작업하기
+
+	_dragStart(e) {
+		console.log('on drag start', e);
+	}
+	_dragEnd(e) {
+		console.log('on drag end', e);
+	}
+
 	render() {
 		const { files, select, progress } = this.props;
 
@@ -21,10 +30,12 @@ export default class Items extends React.Component {
 						{files.map((o, k) => {
 							return (
 								<Item
-									key={o.id}
+									key={k}
 									image={o.image}
 									active={o.active}
-									onClick={() => select(o.id)} />
+									onClick={() => select(o.id)}
+									onDragStart={this._dragStart.bind(this)}
+									onDragEnd={this._dragEnd.bind(this)}/>
 							);
 						})}
 						{progress !== null && (
