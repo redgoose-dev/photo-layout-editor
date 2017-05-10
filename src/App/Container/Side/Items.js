@@ -7,44 +7,39 @@ export default class Items extends React.Component {
 
 	static defaultProps = {
 		files: [], // files
-		select: () => {}, // on select event
+		onSelect: (id) => {}, // on select event
+		onDragStart: (e) => {}, // on drag start
+		onDragEnd: (e) => {}, // on drag end
 		progress: null, //
 	};
 
-	// TODO : 드래그앤 드롭 이벤트 작업하기
-
-	_dragStart(e) {
-		console.log('on drag start', e);
-	}
-	_dragEnd(e) {
-		console.log('on drag end', e);
-	}
-
 	render() {
-		const { files, select, progress } = this.props;
+		const { props } = this;
 
 		return (
 			<div className="items">
 				<div className="wrap">
 					<ul>
-						{files.map((o, k) => {
+						{props.files.map((o, k) => {
 							return (
 								<Item
 									key={k}
 									image={o.image}
-									active={o.active}
-									onClick={() => select(o.id)}
-									onDragStart={this._dragStart.bind(this)}
-									onDragEnd={this._dragEnd.bind(this)}/>
+									onClick={() => props.onSelect(o.id)}
+									onDragStart={props.onDragStart}
+									onDragEnd={props.onDragEnd}
+									onTouchStart={props.onDragStart}
+									onTouchEnd={props.onDragEnd}
+									active={o.active}/>
 							);
 						})}
-						{progress !== null && (
+						{props.progress !== null && (
 							<li className="loading">
 								<div className="progress">
 									<span
 										className="bar"
-										style={{ height: `${progress}%` }}/>
-									<span className="percent">{`${progress}%`}</span>
+										style={{ height: `${props.progress}%` }}/>
+									<span className="percent">{`${props.progress}%`}</span>
 								</div>
 							</li>
 						)}

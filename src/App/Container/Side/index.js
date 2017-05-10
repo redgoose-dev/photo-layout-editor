@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import classNames from 'classnames';
+import $ from 'jquery/dist/jquery.slim';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
 import { attachImages } from '../../actions/body';
@@ -29,11 +30,16 @@ class Side extends React.Component {
 			uploading: false,
 			itemProgress: null,
 		};
+		this.dragType = null;
+		this.$grid = null;
 	}
 
 	componentDidMount() {
-		const { ple } = this.props;
-		this.getItems(ple.preference.side.items);
+		const { props } = this;
+
+		this.$grid = $(props.ple.el.querySelector('.ple-grid'));
+
+		this.getItems(props.ple.preference.side.items);
 	}
 
 	/**
@@ -193,6 +199,42 @@ class Side extends React.Component {
 		));
 	}
 
+	_dragStartItem(e) {
+		const { props } = this;
+
+		this.dragType = e.type;
+
+		switch(this.dragType) {
+			case 'dragstart':
+				this.$grid.children().on('dragover', (e) => {
+					e.preventDefault();
+					console.log('on dragover');
+				}).on('dragleave', (e) => {
+					e.preventDefault();
+					console.log('on dragleave');
+				}).on('drop', (e) => {
+					e.preventDefault();
+					console.log('on drop');
+				});
+				break;
+			case 'touchstart':
+				break;
+		}
+		//console.log('on drag start', e);
+	}
+	_dragEndItem(e) {
+		//console.log('on drag end', e);
+		switch(this.dragType) {
+			case 'dragstart':
+				console.log('offfff', this.$grid.children());
+				this.$grid.children().off('dragover dragleave drop');
+				break;
+			case 'touchstart':
+
+				break;
+		}
+	}
+
 	render() {
 		const { state, props } = this;
 		const { tree, dispatch } = props;
@@ -216,7 +258,9 @@ class Side extends React.Component {
 						onRemove={this._removeItems.bind(this)}/>
 					<Items
 						files={tree.side.files}
-						select={this._selectItem.bind(this)}
+						onSelect={this._selectItem.bind(this)}
+						onDragStart={this._dragStartItem.bind(this)}
+						onDragEnd={this._dragEndItem.bind(this)}
 					   progress={state.itemProgress}/>
 				</div>
 			</aside>
