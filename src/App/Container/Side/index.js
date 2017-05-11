@@ -6,7 +6,7 @@ import $ from 'jquery/dist/jquery.slim';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
 import { attachImages } from '../../actions/body';
-import * as uploader from '../../lib/uploader';
+import * as lib from '../../lib';
 
 import ToggleSideButton from './ToggleSideButton';
 import Navigation from './Navigation';
@@ -23,7 +23,8 @@ class Side extends React.Component {
 		dispatch: null, // redux dispatch
 	};
 
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 
 		this.state = {
@@ -34,7 +35,8 @@ class Side extends React.Component {
 		this.$grid = null;
 	}
 
-	componentDidMount() {
+	componentDidMount()
+	{
 		const { props } = this;
 
 		this.$grid = $(props.ple.el.querySelector('.ple-grid'));
@@ -47,7 +49,8 @@ class Side extends React.Component {
 	 *
 	 * @param {Array|String} items
 	 */
-	getItems(items) {
+	getItems(items)
+	{
 		const { dispatch } = this.props;
 
 		if (typeof items === 'string')
@@ -67,7 +70,8 @@ class Side extends React.Component {
 	 *
 	 * @param {Object} id
 	 */
-	_selectItem(id) {
+	_selectItem(id)
+	{
 		const { dispatch, ple, tree } = this.props;
 		const { keyName } = ple.keyboard;
 
@@ -90,7 +94,8 @@ class Side extends React.Component {
 	/**
 	 * Remove items
 	 */
-	_removeItems() {
+	_removeItems()
+	{
 		const { tree, dispatch } = this.props;
 		let activeItems = [];
 
@@ -116,7 +121,8 @@ class Side extends React.Component {
 	/**
 	 * toggle select all items
 	 */
-	_toggleSelect() {
+	_toggleSelect()
+	{
 		const { tree, dispatch } = this.props;
 		let active = false;
 
@@ -140,13 +146,14 @@ class Side extends React.Component {
 	 *
 	 * @param {Array} files
 	 */
-	_upload(files) {
+	_upload(files)
+	{
 		if (this.state.uploading) return;
 
 		const { ple, dispatch } = this.props;
 
 		this.setState({ uploading: true }, () => {
-			uploader.multiple(files, ple.preference.side.upload)
+			lib.uploader.multiple(files, ple.preference.side.upload)
 				.done(() => {
 					console.log('upload complete');
 					this.uploading = false;
@@ -175,7 +182,8 @@ class Side extends React.Component {
 		});
 	}
 
-	_attach() {
+	_attach()
+	{
 		const { props } = this;
 		let selectedImages = [];
 
@@ -199,43 +207,29 @@ class Side extends React.Component {
 		));
 	}
 
-	_dragStartItem(e) {
+	_dragStartItem(e)
+	{
 		const { props } = this;
 
 		this.dragType = e.type;
 
+		if (!lib.util.isTouchDevice()) {
+
+		}
+	}
+	_dragEndItem(e)
+	{
+		console.log('drag end item');
 		switch(this.dragType) {
 			case 'dragstart':
-				this.$grid.children().on('dragover', (e) => {
-					e.preventDefault();
-					console.log('on dragover');
-				}).on('dragleave', (e) => {
-					e.preventDefault();
-					console.log('on dragleave');
-				}).on('drop', (e) => {
-					e.preventDefault();
-					console.log('on drop');
-				});
 				break;
 			case 'touchstart':
 				break;
 		}
-		//console.log('on drag start', e);
-	}
-	_dragEndItem(e) {
-		//console.log('on drag end', e);
-		switch(this.dragType) {
-			case 'dragstart':
-				console.log('offfff', this.$grid.children());
-				this.$grid.children().off('dragover dragleave drop');
-				break;
-			case 'touchstart':
-
-				break;
-		}
 	}
 
-	render() {
+	render()
+	{
 		const { state, props } = this;
 		const { tree, dispatch } = props;
 

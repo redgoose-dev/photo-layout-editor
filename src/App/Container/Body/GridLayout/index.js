@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactGridLayout from 'react-grid-layout';
+import classNames from 'classnames';
 
 import { activeBlock, updateBlocks } from '../../../actions/body';
+import * as lib from '../../../lib';
 
 
 let timeStamp = [];
@@ -15,6 +17,15 @@ class GridLayout extends React.Component {
 		ple: null,
 		dispatch: null,
 	};
+
+	constructor(props)
+	{
+		super(props);
+
+		this.state = {
+			dragHoverBlock: null,
+		};
+	}
 
 	_selectBlock(id, isImage)
 	{
@@ -86,6 +97,66 @@ class GridLayout extends React.Component {
 		}
 	}
 
+	_dnd(event, key)
+	{
+		const { state, props } = this;
+
+		event.preventDefault();
+
+		switch(event.type) {
+			case 'dragover':
+				if (state.dragHoverBlock === key) return;
+				this.setState({ dragHoverBlock: key });
+				break;
+			case 'dragleave':
+				this.setState({ dragHoverBlock: null });
+				break;
+			case 'drop':
+				let key = state.dragHoverBlock;
+				this.setState({ dragHoverBlock: null });
+				console.log('drop');
+				break;
+		}
+	}
+
+	renderItem(item, n)
+	{
+		const { state, props } = this;
+		const { activeBlock } = props.tree.body;
+
+		let key = `${item.indexPrefix}__${item.index}`;
+		let active = !!(activeBlock && activeBlock.length && activeBlock.indexOf(item.index) > -1);
+		let dragEvents = !lib.util.isTouchDevice() ? {
+			onDragOver: (e) => this._dnd(e, key),
+			onDragLeave: (e) => this._dnd(e, key),
+			onDrop: (e) => this._dnd(e, key),
+		} : null;
+
+		return (
+			<div
+				key={key}
+				data-grid={item.layout}
+				onClick={(event) => {
+					event.stopPropagation();
+					this._selectBlock(item.index, !!item.image);
+				}}
+				{...dragEvents}
+				style={{ backgroundColor: item.color || props.ple.preference.body.blockColor }}
+				className={classNames({
+					'active': active,
+					'hover': state.dragHoverBlock === key
+				})}>
+				{item.image && (
+					<figure style={{
+						backgroundImage: `url('${item.image.src}')`,
+						backgroundPosition: item.image.position,
+						backgroundSize: item.image.size,
+					}}/>
+				)}
+			</div>
+		);
+	}
+
 	render()
 	{
 		const { props } = this;
@@ -110,29 +181,7 @@ class GridLayout extends React.Component {
 					onResizeStop={(layout) => this._updateBlocks('end', layout)}
 					style={{width: `${bodyWidth}px`}}
 					className="ple-grid">
-					{grid.map((o, k) => {
-						let key = `${o.indexPrefix}__${o.index}`;
-						let active = !!(activeBlock && activeBlock.length && activeBlock.indexOf(o.index) > -1);
-						return (
-							<div
-								key={key}
-								data-grid={o.layout}
-								onClick={(event) => {
-									event.stopPropagation();
-									this._selectBlock(o.index, !!o.image);
-								}}
-								className={active && 'active'}
-								style={{ backgroundColor: o.color || props.ple.preference.body.blockColor }}>
-								{o.image && (
-									<figure style={{
-										backgroundImage: `url('${o.image.src}')`,
-										backgroundPosition: o.image.position,
-										backgroundSize: o.image.size,
-									}}/>
-								)}
-							</div>
-						);
-					})}
+					{grid.map(this.renderItem.bind(this))}
 				</ReactGridLayout>
 			</div>
 		);
