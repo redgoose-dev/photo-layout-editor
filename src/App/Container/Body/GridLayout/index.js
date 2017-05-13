@@ -21,10 +21,6 @@ class GridLayout extends React.Component {
 	constructor(props)
 	{
 		super(props);
-
-		this.state = {
-			dragHoverBlock: null,
-		};
 	}
 
 	_selectBlock(id, isImage)
@@ -97,28 +93,6 @@ class GridLayout extends React.Component {
 		}
 	}
 
-	_dnd(event, key)
-	{
-		const { state, props } = this;
-
-		event.preventDefault();
-
-		switch(event.type) {
-			case 'dragover':
-				if (state.dragHoverBlock === key) return;
-				this.setState({ dragHoverBlock: key });
-				break;
-			case 'dragleave':
-				this.setState({ dragHoverBlock: null });
-				break;
-			case 'drop':
-				let key = state.dragHoverBlock;
-				this.setState({ dragHoverBlock: null });
-				console.log('drop');
-				break;
-		}
-	}
-
 	renderItem(item, n)
 	{
 		const { state, props } = this;
@@ -126,32 +100,29 @@ class GridLayout extends React.Component {
 
 		let key = `${item.indexPrefix}__${item.index}`;
 		let active = !!(activeBlock && activeBlock.length && activeBlock.indexOf(item.index) > -1);
-		let dragEvents = !lib.util.isTouchDevice() ? {
-			onDragOver: (e) => this._dnd(e, key),
-			onDragLeave: (e) => this._dnd(e, key),
-			onDrop: (e) => this._dnd(e, key),
-		} : null;
 
 		return (
 			<div
 				key={key}
 				data-grid={item.layout}
+				data-index={item.index}
 				onClick={(event) => {
 					event.stopPropagation();
 					this._selectBlock(item.index, !!item.image);
 				}}
-				{...dragEvents}
-				style={{ backgroundColor: item.color || props.ple.preference.body.blockColor }}
+				style={{
+					backgroundColor: item.color || props.ple.preference.body.blockColor
+				}}
 				className={classNames({
-					'active': active,
-					'hover': state.dragHoverBlock === key
+					'active': active
 				})}>
 				{item.image && (
-					<figure style={{
-						backgroundImage: `url('${item.image.src}')`,
-						backgroundPosition: item.image.position,
-						backgroundSize: item.image.size,
-					}}/>
+					<figure
+						style={{
+							backgroundImage: `url('${item.image.src}')`,
+							backgroundPosition: item.image.position,
+							backgroundSize: item.image.size,
+						}}/>
 				)}
 			</div>
 		);

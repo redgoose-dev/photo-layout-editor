@@ -76,6 +76,15 @@ export function attachImages(images, cols, activeBlocks)
 	}
 }
 
+export function attachImage(index, image)
+{
+	return {
+		type: types.ATTACH_IMAGE,
+		index,
+		image,
+	};
+}
+
 export function removeImages(ids)
 {
 	return {

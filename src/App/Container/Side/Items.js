@@ -8,9 +8,12 @@ export default class Items extends React.Component {
 	static defaultProps = {
 		files: [], // files
 		onSelect: (id) => {}, // on select event
-		onDragStart: (e) => {}, // on drag start
-		onDragEnd: (e) => {}, // on drag end
-		progress: null, //
+		onDragStart: null, // on drag start
+		onDragEnd: null, // on drag end
+		onTouchStart: null, // on touch start
+		onTouchMove: null, // on touch move
+		onTouchEnd: null, // on touch end
+		progress: null, // on progress number
 	};
 
 	render() {
@@ -24,12 +27,14 @@ export default class Items extends React.Component {
 							return (
 								<Item
 									key={k}
+									id={o.id}
 									image={o.image}
-									onClick={() => props.onSelect(o.id)}
 									onDragStart={props.onDragStart}
 									onDragEnd={props.onDragEnd}
-									onTouchStart={props.onDragStart}
-									onTouchEnd={props.onDragEnd}
+									onTouchStart={props.onTouchStart}
+									onTouchMove={props.onTouchMove}
+									onTouchEnd={props.onTouchEnd}
+									onClick={() => props.onSelect(o.id)}
 									active={o.active}/>
 							);
 						})}

@@ -177,7 +177,7 @@ function grid(state=[], action)
 			return newState;
 
 		case types.ATTACH_IMAGES:
-			if (!action.value || !action.value.length) return state;
+			if (!(action.value && action.value.length)) return state;
 			newState = Object.assign([], state);
 
 			if (action.activeBlocks && action.activeBlocks.length)
@@ -225,6 +225,21 @@ function grid(state=[], action)
 					});
 				}
 			}
+
+			return newState;
+
+		case types.ATTACH_IMAGE:
+			if (!(action.image && typeof action.image === 'string')) return state;
+			if (!(action.index !== null && typeof action.index === 'number')) return state;
+
+			newState = Object.assign([], state);
+			n = findObjectValueInArray(newState, 'index', action.index);
+			newState[n].image = {
+				src: action.image,
+				position: '50% 50%',
+				size: 'cover',
+			};
+
 			return newState;
 
 		case types.GRID_REMOVE_IMAGES:

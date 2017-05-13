@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import $ from 'jquery/dist/jquery.slim';
 
 import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
-import { attachImages } from '../../actions/body';
+import { attachImage, attachImages } from '../../actions/body';
 import * as lib from '../../lib';
 
 import ToggleSideButton from './ToggleSideButton';
@@ -31,16 +31,17 @@ class Side extends React.Component {
 			uploading: false,
 			itemProgress: null,
 		};
+
 		this.dragType = null;
-		this.$grid = null;
+		this.dragTarget = null;
+		this.dragPosition = [];
+		this.$gridItems = null;
+		this.$dragItem = null;
 	}
 
 	componentDidMount()
 	{
 		const { props } = this;
-
-		this.$grid = $(props.ple.el.querySelector('.ple-grid'));
-
 		this.getItems(props.ple.preference.side.items);
 	}
 
@@ -63,6 +64,34 @@ class Side extends React.Component {
 		{
 			dispatch(addFiles(items));
 		}
+	}
+
+	/**
+	 * get gridster item
+	 * 포인트 위치에 있는 gridster블럭을 가져온다.
+	 *
+	 * @return {Object} gridster item
+	 */
+	getGridsterItem()
+	{
+		const { props } = this;
+		let target = null;
+		this.$gridItems = $(props.ple.el).find('.ple-grid > div');
+
+		this.$gridItems.each((n, el) => {
+			const $this = $(el);
+			const pos = $this.offset();
+			if (pos.left < this.dragPosition[0] &&
+					(pos.left + $this.width()) > this.dragPosition[0] &&
+					pos.top < this.dragPosition[1] &&
+					(pos.top + $this.height()) > this.dragPosition[1])
+			{
+				target = $this.data('index');
+				return false;
+			}
+		});
+
+		return target;
 	}
 
 	/**
@@ -211,20 +240,86 @@ class Side extends React.Component {
 	{
 		const { props } = this;
 
-		this.dragType = e.type;
-
-		if (!lib.util.isTouchDevice()) {
-
-		}
+		this.$gridItems = $(props.ple.el).find('.ple-grid > div');
+		this.$gridItems.on('dragover', (e) => {
+			e.preventDefault();
+			if ($(e.currentTarget).hasClass('hover')) return;
+			$(e.currentTarget).addClass('hover');
+		}).on('dragleave', (e) => {
+			e.preventDefault();
+			$(e.currentTarget).removeClass('hover');
+		}).on('drop', (e) => {
+			e.preventDefault();
+			$(e.currentTarget).removeClass('hover');
+			this.dragTarget = $(e.currentTarget).data('index');
+		});
 	}
 	_dragEndItem(e)
 	{
-		console.log('drag end item');
-		switch(this.dragType) {
-			case 'dragstart':
-				break;
-			case 'touchstart':
-				break;
+		const { props } = this;
+
+		this.$gridItems.off();
+		this.$gridItems = null;
+
+		// check drag target
+		if (this.dragTarget === null) return;
+
+		// play redux
+		props.dispatch(attachImage(
+			this.dragTarget,
+			$(e.currentTarget).data('image')
+		));
+
+		// empty dragTarget
+		this.dragTarget = null;
+	}
+	_touchStartItem(e)
+	{
+		e.preventDefault();
+
+		this.$dragItem = $(e.currentTarget)
+			.clone()
+			.removeAttr('draggable')
+			.addClass('ple-side__placeholder')
+			.width($(e.currentTarget).width())
+			.height($(e.currentTarget).height());
+
+		$('body').append(this.$dragItem);
+	}
+	_touchMoveItem(e)
+	{
+		e.preventDefault();
+		let touch = e.nativeEvent.touches[0];
+		this.dragPosition = [touch.pageX, touch.pageY];
+		this.$dragItem.css({
+			left: touch.pageX - (this.$dragItem.width() * 0.5),
+			top: touch.pageY - (this.$dragItem.height() * 0.5)
+		});
+	}
+	_touchEndItem(e)
+	{
+		const { props } = this;
+
+		this.$dragItem.remove();
+		this.$dragItem = null;
+
+		if (this.dragPosition.length > 0)
+		{
+			this.dragTarget = this.getGridsterItem();
+
+			// check drag target
+			if (this.dragTarget === null) return;
+
+			// play redux
+			props.dispatch(attachImage(
+				this.dragTarget,
+				$(e.currentTarget).data('image')
+			));
+			this.dragPosition = [];
+		}
+		else
+		{
+			this._selectItem($(e.currentTarget).data('id'));
 		}
 	}
 
@@ -255,6 +350,9 @@ class Side extends React.Component {
 						onSelect={this._selectItem.bind(this)}
 						onDragStart={this._dragStartItem.bind(this)}
 						onDragEnd={this._dragEndItem.bind(this)}
+						onTouchStart={this._touchStartItem.bind(this)}
+						onTouchMove={this._touchMoveItem.bind(this)}
+						onTouchEnd={this._touchEndItem.bind(this)}
 					   progress={state.itemProgress}/>
 				</div>
 			</aside>

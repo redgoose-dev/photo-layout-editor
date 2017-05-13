@@ -154,4 +154,23 @@
 			}
 		}
 	}
+
+	/* placeholder */
+	&__placeholder {
+		display: block;
+		position: absolute;
+		z-index: 10000;
+		margin: 0;
+		padding: 0;
+		left: -999px;
+		top: -999px;
+		opacity: .8;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-color: #fff;
+		text-indent: -9999px;
+		cursor: pointer;
+		border: none;
+	}
 }

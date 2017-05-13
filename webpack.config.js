@@ -31,7 +31,8 @@ const config = (env) => {
 			hot: true,
 			contentBase: resolve(__dirname, 'dist'),
 			publicPath: '/',
-			historyApiFallback: true
+			historyApiFallback: true,
+			disableHostCheck: true
 		},
 
 		devtool: ifProd('cheap-module-map', 'cheap-eval-source-map'),
