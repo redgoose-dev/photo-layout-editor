@@ -75,7 +75,7 @@
 			}
 		}
 		button {
-			&:active, &:focus {
+			&:active {
 				background: mix(#444, #000, 80%);
 			}
 		}
