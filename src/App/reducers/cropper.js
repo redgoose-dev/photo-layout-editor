@@ -30,8 +30,9 @@ function setting(state=initialOptions, action)
 	switch(action.type)
 	{
 		case types.CROPPER_OPEN:
-			//console.log(action.value);
-			return true;
+			return {
+				...action.value
+			};
 
 		default:
 			return state;

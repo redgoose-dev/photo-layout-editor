@@ -97,14 +97,16 @@ class Toolbar extends React.Component {
 
 		if (!item.image) return;
 
+		let $dom = $(props.ple.el).find('.react-grid-item').filter(`[data-index=${item.index}]`);
+
 		props.dispatch(actionsCropper.open({
-			image: item.image.src,
 			color: item.color,
-			imageResize: item.image.size !== 'cover',
-			position: item.image.position,
-			size: {
-				width: props.tree.body.setting.width * item.layout.w,
-				height: props.tree.body.setting.height * item.layout.h,
+			image: item.image,
+			wrap: {
+				top: $dom.offset().top,
+				left: $dom.offset().left,
+				width: $dom.width(),
+				height: $dom.height(),
 			},
 		}));
 	}

@@ -4,25 +4,27 @@
 	position: absolute; z-index: 99999;
 	top: 0; left: 0; right: 0; bottom: 0;
 
-	&-show {display: block;}
+	&-show {
+		display: block;
+	}
 
 	&__bg {
-		display: block; position: absolute;
-		top: 0; left: 0; right: 0; bottom: 0; z-index: 1;
+		display: block;
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 		background: #000; background: rgba(0,0,0,.86);
 	}
 	&__wrap {
-		position: absolute; z-index: 2;
-		left: 100px;
-		top: 100px;
-		width: 200px;
-		height: 200px;
-	}
-	&__figure {
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		background: lime;
+		position: absolute;
+		z-index: 2;
+		left: 10px;
+		top: 10px;
+		width: 100px;
+		height: 100px;
 	}
 	&__nav {
 		position: absolute;
@@ -39,6 +41,46 @@
 				left: 50%; top: 50%;
 			}
 		}
+	}
+}
+
+
+.ple-cropperBlock {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	background: #fff;
+
+	&__image {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		&-cover {
+			right: 0;
+			bottom: 0;
+			background-size: cover;
+			background-position: 50% 50%;
+		}
+	}
+
+	&__control {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 0;
+		height: 0;
+		border: 2px solid red;
+		&-active {
+			display: block;
+		}
+	}
+	&__resize {
+		position: absolute;
+		right: 0;
+		bottom: 0;
 	}
 }
 
