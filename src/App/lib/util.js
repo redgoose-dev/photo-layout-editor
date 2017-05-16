@@ -26,3 +26,35 @@ export function sleep(time, id='pleTimer')
 		window[id] = setTimeout(resolve, time);
 	});
 }
+
+
+/**
+ * Get image size
+ *
+ * @param {String} src
+ * @return {Promise}
+ */
+export function getImageSize(src)
+{
+	return new Promise((resolve, reject) => {
+		if (!(src && typeof src === 'string')) reject();
+
+		let img = document.createElement('img');
+
+		img.onload = function()
+		{
+			resolve({
+				width: img.naturalWidth,
+				height: img.naturalHeight,
+				ratio: img.naturalHeight / img.naturalWidth,
+			});
+		};
+
+		img.onerror = function()
+		{
+			reject();
+		};
+
+		img.src = src;
+	});
+}

@@ -22,27 +22,68 @@ export default class Block extends React.Component {
 	};
 
 	// TODO : 상태값은 직접 변경으로..
-	// TODO : 상태를 변경하고나서 100ms 정도 타임아웃을 두고 부모 컴포넌트에 값을 올려주는것이 좋아보임.
 
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 
 		this.state = {
+			...this.convertState(props),
+			originalImage: {},
+			pending: true,
+		};
+	}
+
+	componentDidMount() {
+		// get image size
+		util.getImageSize(this.props.src)
+			.then((res) => {
+				this.setState({
+					pending: false,
+					originalImage: res,
+				});
+			});
+	}
+
+	componentWillReceiveProps(nextProps)
+	{
+		this.setState(this.convertState(nextProps));
+	}
+
+	convertState(props)
+	{
+		return {
 			position: props.size !== 'cover' ? props.position.split(' ') : ['50%', '50%'],
 			size: props.size !== 'cover' ? props.size.split(' ') : props.size,
 			isCover: props.size === 'cover',
 		};
 	}
 
-	render() {
+	_resizeStart(e) {
+		console.log('resize start');
+
+	}
+	_resizeMove(e) {
+		console.log('resize move');
+	}
+	_resizeEnd(e) {
+		console.log('resize end');
+	}
+
+	render()
+	{
 		const { state, props } = this;
-		let areaStyle = {};
 
-		console.log(state);
-		if (props.size !== 'cover')
+		if (state.pending)
 		{
-
+			return (
+				<figure
+					style={{ backgroundColor: props.bgColor }}
+					className="ple-cropperBlock ple-cropper__block"/>
+			);
 		}
+
+		console.log(state.originalImage.ratio);
 
 		return (
 			<figure
@@ -51,10 +92,13 @@ export default class Block extends React.Component {
 				{state.isCover ? (
 					<span
 						style={{ backgroundImage: `url('${props.src}')` }}
-						className="ple-cropperBlock__image ple-cropperBlock__image-cover"
-					/>
+						className="ple-cropperBlock__image ple-cropperBlock__image-cover"/>
 				) : (
 					<span
+						style={{
+							width: state.size[0],
+							height: state.size[1]
+						}}
 						className={classNames(
 							'ple-cropperBlock__image',
 							{ 'ple-cropperBlock__image-resize': (props.size !== 'cover') }
@@ -63,12 +107,22 @@ export default class Block extends React.Component {
 					</span>
 				)}
 				<div
-					style={{}}
+					style={{
+						width: state.size[0],
+						height: state.size[1]
+					}}
 					className={classNames(
 						'ple-cropperBlock__control',
 						{ 'ple-cropperBlock__control-active': (props.size !== 'cover') }
 					)}>
-					<button type="button" className="ple-cropperBlock__resize">resize</button>
+					<button
+						type="button"
+						title="resize"
+						onDragStart={this._resizeStart.bind(this)}
+						className="ple-cropperBlock__resize">
+						<i/>
+						<i/>
+					</button>
 				</div>
 			</figure>
 		);

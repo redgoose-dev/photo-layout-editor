@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 import * as action from '../../actions/cropper';
 
@@ -8,23 +9,46 @@ import Block from './Block';
 
 class Cropper extends React.Component {
 
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 		const { cropper } = props.tree;
 
 		this.state = {
 			position: cropper.setting.image.position,
-			size: cropper.setting.image.size || 'cover',
-			src: cropper.setting.image.src
+			size: cropper.setting.image.size || 'cover'
 		};
 	}
 
-	_onClose() {
+	_onClose()
+	{
 		const { props } = this;
 		props.dispatch(action.close());
 	}
 
-	render() {
+	_toggleImageType()
+	{
+		const { state, props } = this;
+		const { wrap } = props.tree.cropper.setting;
+
+		if (state.size === 'cover')
+		{
+			this.setState({
+				position: '50% 50%',
+				size: `${wrap.width}px ${wrap.height}px`,
+			});
+		}
+		else
+		{
+			this.setState({
+				position: `50% 50%`,
+				size: 'cover',
+			});
+		}
+	}
+
+	render()
+	{
 		const { state, props } = this;
 		const { cropper } = props.tree;
 
@@ -40,7 +64,7 @@ class Cropper extends React.Component {
 					}}
 					className="ple-cropper__wrap">
 					<Block
-						src={state.src}
+						src={cropper.setting.image.src}
 						position={state.position}
 						size={state.size}
 						bgColor={cropper.setting.color}/>
@@ -48,13 +72,19 @@ class Cropper extends React.Component {
 						<button type="button" onClick={this._onClose.bind(this)}>
 							<i className="sp-ico ico-close abs">Close cropper</i>
 						</button>
-						{/*// TODO: `size:cover`값에 따라 활성화*/}
-						<button type="button" onClick={() => {}}>
+						<button
+							type="button"
+							onClick={this._toggleImageType.bind(this)}
+							className={classNames({
+								'active': state.size !== 'cover'
+							})}>
 							<i className="sp-ico ico-resize abs">Toggle background size type</i>
 						</button>
-						<button type="button" onClick={() => {}}>
-							<i className="sp-ico ico-reduction abs">Go to center image</i>
-						</button>
+						{state.size !== 'cover' && (
+							<button type="button" onClick={() => {}}>
+								<i className="sp-ico ico-reduction abs">Go to center image</i>
+							</button>
+						)}
 					</nav>
 				</div>
 			</div>
