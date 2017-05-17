@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import $ from 'jquery/dist/jquery.slim';
 
@@ -28,62 +29,80 @@ export default class Block extends React.Component {
 		super(props);
 
 		this.state = {
-			...this.convertState(props),
-			originalImage: {},
-			pending: true,
-		};
-	}
-
-	componentDidMount() {
-		// get image size
-		util.getImageSize(this.props.src)
-			.then((res) => {
-				this.setState({
-					pending: false,
-					originalImage: res,
-				});
-			});
-	}
-
-	componentWillReceiveProps(nextProps)
-	{
-		this.setState(this.convertState(nextProps));
-	}
-
-	convertState(props)
-	{
-		return {
 			position: props.size !== 'cover' ? props.position.split(' ') : ['50%', '50%'],
 			size: props.size !== 'cover' ? props.size.split(' ') : props.size,
 			isCover: props.size === 'cover',
 		};
+
+		this.$self = null;
+		this.$img = null;
 	}
 
-	_resizeStart(e) {
-		console.log('resize start');
+	componentDidMount() {
+		// set dom
+		this.$self = $(ReactDom.findDOMNode(this));
+	}
 
+	componentWillReceiveProps(nextProps)
+	{
+		const { props } = this;
+
+		if (props.size !== nextProps.size)
+		{
+			console.log(nextProps.size);
+		}
+		//this.setState(this.convertState(nextProps));
 	}
-	_resizeMove(e) {
-		console.log('resize move');
+
+	_resizeStart(e)
+	{
+		e.stopPropagation();
+
+		this.$img = this.$self.find('img');
+
+		$(document)
+			.on(controlEvent.move + '.resize', this._resizeMove.bind(this))
+			.on(controlEvent.end + '.resize', this._resizeEnd.bind(this));
 	}
-	_resizeEnd(e) {
+	_resizeMove(e)
+	{
+		e.preventDefault();
+
+		let width = 0;
+		let height = 0;
+		let ratio = 0;
+		let mouse = {};
+		let evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
+
+		// set mouse position
+		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
+		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
+
+		// set image size
+		width = mouse.x - this.$self.offset().left;
+		ratio = width / this.$img.get(0).naturalWidth;
+		height = this.$img.get(0).naturalHeight * ratio;
+
+		this.setState({
+			size: [`${parseInt(width)}px`, `${parseInt(height)}px`]
+		});
+	}
+	_resizeEnd(e)
+	{
 		console.log('resize end');
+
+		$(document)
+			.off(controlEvent.move + '.resize')
+			.off(controlEvent.end + '.resize');
 	}
 
 	render()
 	{
 		const { state, props } = this;
 
-		if (state.pending)
-		{
-			return (
-				<figure
-					style={{ backgroundColor: props.bgColor }}
-					className="ple-cropperBlock ple-cropper__block"/>
-			);
-		}
-
-		console.log(state.originalImage.ratio);
+		//console.log(state.originalImage.ratio);
+		
+		//console.log(state.size);
 
 		return (
 			<figure
@@ -95,21 +114,20 @@ export default class Block extends React.Component {
 						className="ple-cropperBlock__image ple-cropperBlock__image-cover"/>
 				) : (
 					<span
-						style={{
-							width: state.size[0],
-							height: state.size[1]
-						}}
 						className={classNames(
 							'ple-cropperBlock__image',
 							{ 'ple-cropperBlock__image-resize': (props.size !== 'cover') }
 						)}>
-						<img src={props.src} alt="image"/>
+						<img
+							src={props.src}
+							style={{ width: state.size[0] }}
+							alt="image"/>
 					</span>
 				)}
 				<div
 					style={{
-						width: state.size[0],
-						height: state.size[1]
+						width: state.size.split(' ')[0],
+						height: state.size.split(' ')[1]
 					}}
 					className={classNames(
 						'ple-cropperBlock__control',
@@ -118,7 +136,8 @@ export default class Block extends React.Component {
 					<button
 						type="button"
 						title="resize"
-						onDragStart={this._resizeStart.bind(this)}
+						onMouseDown={this._resizeStart.bind(this)}
+						onTouchStart={this._resizeStart.bind(this)}
 						className="ple-cropperBlock__resize">
 						<i/>
 						<i/>

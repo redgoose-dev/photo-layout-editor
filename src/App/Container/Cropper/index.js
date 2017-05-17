@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
+import Block from './Block';
+
 import * as action from '../../actions/cropper';
 
-import Block from './Block';
+import { util } from '../../lib';
 
 
 class Cropper extends React.Component {
@@ -15,9 +17,21 @@ class Cropper extends React.Component {
 		const { cropper } = props.tree;
 
 		this.state = {
+			pending: true,
 			position: cropper.setting.image.position,
 			size: cropper.setting.image.size || 'cover'
 		};
+		this.imageMeta = null;
+	}
+
+	componentDidMount() {
+		const { props } = this;
+		const { cropper } = props.tree;
+
+		util.getImageSize(cropper.setting.image.src).then((res) => {
+			this.imageMeta = res;
+			this.setState({ pending: false });
+		});
 	}
 
 	_onClose()
@@ -33,9 +47,10 @@ class Cropper extends React.Component {
 
 		if (state.size === 'cover')
 		{
+			// TODO : `this.imageMeta` 값을 이용하여 사이즈 맞추기
 			this.setState({
 				position: '50% 50%',
-				size: `${wrap.width}px ${wrap.height}px`,
+				size: `0 0`,
 			});
 		}
 		else
@@ -51,6 +66,8 @@ class Cropper extends React.Component {
 	{
 		const { state, props } = this;
 		const { cropper } = props.tree;
+
+		if (state.pending) return null;
 
 		return (
 			<div className="ple-cropper">
