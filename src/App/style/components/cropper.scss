@@ -1,7 +1,7 @@
 %icon-clamp {
-	$weight: 4px;
+	$weight: 5px;
 	$color: #fff;
-	$padding: 6px;
+	$padding: 8px;
 	display: block;
 	position: absolute;
 	width: 100%;
@@ -144,8 +144,8 @@
 		height: 34px;
 		border: none;
 		background: none;
-		right: -10px;
-		bottom: -10px;
+		right: -12px;
+		bottom: -12px;
 		cursor: nwse-resize;
 		text-indent: -9999px;
 		outline: 0;
@@ -155,7 +155,7 @@
 			right: -1px;
 			bottom: -1px;
 			&:before, &:after {
-				background: rgba(0,0,0,.5);
+				background: rgba(0,0,0,.2);
 			}
 		}
 		> i + i {

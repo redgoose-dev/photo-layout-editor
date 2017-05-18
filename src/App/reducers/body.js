@@ -198,7 +198,7 @@ function grid(state=[], action)
 					if (o.image) return;
 					if (!action.value || !action.value.length) return;
 					o.image = {
-						src: action.value.splice(0,1),
+						src: action.value.splice(0,1)[0],
 						position: '50% 50%',
 						size: 'cover',
 					};

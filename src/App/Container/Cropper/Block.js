@@ -29,8 +29,8 @@ export default class Block extends React.Component {
 		super(props);
 
 		this.state = {
-			position: props.size !== 'cover' ? props.position.split(' ') : ['50%', '50%'],
-			size: props.size !== 'cover' ? props.size.split(' ') : props.size,
+			position: props.position,
+			size: props.size,
 			isCover: props.size === 'cover',
 		};
 
@@ -49,9 +49,12 @@ export default class Block extends React.Component {
 
 		if (props.size !== nextProps.size)
 		{
-			console.log(nextProps.size);
+			this.setState({
+				position: nextProps.position,
+				size: nextProps.size,
+				isCover: nextProps.size === 'cover',
+			});
 		}
-		//this.setState(this.convertState(nextProps));
 	}
 
 	_resizeStart(e)
@@ -84,7 +87,7 @@ export default class Block extends React.Component {
 		height = this.$img.get(0).naturalHeight * ratio;
 
 		this.setState({
-			size: [`${parseInt(width)}px`, `${parseInt(height)}px`]
+			size: `${parseInt(width)}px ${parseInt(height)}px`
 		});
 	}
 	_resizeEnd(e)
@@ -101,7 +104,6 @@ export default class Block extends React.Component {
 		const { state, props } = this;
 
 		//console.log(state.originalImage.ratio);
-		
 		//console.log(state.size);
 
 		return (
@@ -120,15 +122,15 @@ export default class Block extends React.Component {
 						)}>
 						<img
 							src={props.src}
-							style={{ width: state.size[0] }}
+							style={state.size !== 'cover' ? { width: state.size.split(' ')[0] } : {}}
 							alt="image"/>
 					</span>
 				)}
 				<div
-					style={{
+					style={state.size !== 'cover' ? {
 						width: state.size.split(' ')[0],
 						height: state.size.split(' ')[1]
-					}}
+					} : {}}
 					className={classNames(
 						'ple-cropperBlock__control',
 						{ 'ple-cropperBlock__control-active': (props.size !== 'cover') }

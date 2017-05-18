@@ -18,3 +18,17 @@ export function randomRange(min, max, useDecimal=false)
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }
+
+
+/**
+ * get ratio for resize
+ * max와 min값의 차이의 비율을 가져온다.
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @return {Number}
+ */
+export function getRatioForResize(min, max)
+{
+	return (max > min) ? min / max : max / min;
+}

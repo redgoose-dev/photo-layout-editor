@@ -6,7 +6,7 @@ import Block from './Block';
 
 import * as action from '../../actions/cropper';
 
-import { util } from '../../lib';
+import * as lib from '../../lib';
 
 
 class Cropper extends React.Component {
@@ -28,7 +28,7 @@ class Cropper extends React.Component {
 		const { props } = this;
 		const { cropper } = props.tree;
 
-		util.getImageSize(cropper.setting.image.src).then((res) => {
+		lib.util.getImageSize(cropper.setting.image.src).then((res) => {
 			this.imageMeta = res;
 			this.setState({ pending: false });
 		});
@@ -40,6 +40,10 @@ class Cropper extends React.Component {
 		props.dispatch(action.close());
 	}
 
+	/**
+	 * toggle image type
+	 * 직접 리사이즈를 사용하는지 기본(꽉채우는..)타입으로 사용할건지 변경하는 액션
+	 */
 	_toggleImageType()
 	{
 		const { state, props } = this;
@@ -47,10 +51,21 @@ class Cropper extends React.Component {
 
 		if (state.size === 'cover')
 		{
-			// TODO : `this.imageMeta` 값을 이용하여 사이즈 맞추기
+			let targetSize = '';
+			let ratio = 0;
+			if (wrap.height > wrap.width)
+			{
+				ratio = lib.number.getRatioForResize(wrap.height, this.imageMeta.height);
+				targetSize = `${parseInt(this.imageMeta.width * ratio)}px ${wrap.height}px`;
+			}
+			else
+			{
+				ratio = lib.number.getRatioForResize(wrap.width, this.imageMeta.width);
+				targetSize = `${wrap.width}px ${parseInt(this.imageMeta.height * ratio)}px`;
+			}
 			this.setState({
 				position: '50% 50%',
-				size: `0 0`,
+				size: targetSize,
 			});
 		}
 		else
