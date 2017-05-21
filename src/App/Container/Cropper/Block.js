@@ -22,8 +22,6 @@ export default class Block extends React.Component {
 		bgColor: '#fff',
 	};
 
-	// TODO : 상태값은 직접 변경으로..
-
 	constructor(props)
 	{
 		super(props);
@@ -40,7 +38,8 @@ export default class Block extends React.Component {
 
 	componentDidMount() {
 		// set dom
-		this.$self = $(ReactDom.findDOMNode(this));
+		console.log(this.refs);
+		this.$self = $(ReactDom.findDOMNode(this.refs.self));
 	}
 
 	componentWillReceiveProps(nextProps)
@@ -57,6 +56,36 @@ export default class Block extends React.Component {
 		}
 	}
 
+	_moveStart(e)
+	{
+		e.preventDefault();
+		e.stopPropagation();
+
+		// set image element
+		this.$img = this.$self.find('img');
+
+		$(document)
+			.on(`${controlEvent.move}.area`, this._moveIng.bind(this))
+			.on(`${controlEvent.end}.area`, this._moveEnd.bind(this));
+	}
+	_moveIng(e)
+	{
+		e.preventDefault();
+		e.stopPropagation();
+
+		console.log('move ing');
+	}
+	_moveEnd(e)
+	{
+		e.preventDefault();
+
+		console.log('move end');
+
+		$(document)
+			.off(`${controlEvent.move}.area`)
+			.off(`${controlEvent.end}.area`);
+	}
+
 	_resizeStart(e)
 	{
 		e.stopPropagation();
@@ -64,10 +93,10 @@ export default class Block extends React.Component {
 		this.$img = this.$self.find('img');
 
 		$(document)
-			.on(controlEvent.move + '.resize', this._resizeMove.bind(this))
-			.on(controlEvent.end + '.resize', this._resizeEnd.bind(this));
+			.on(`${controlEvent.move}.resize`, this._resizeIng.bind(this))
+			.on(`${controlEvent.end}.resize`, this._resizeEnd.bind(this));
 	}
-	_resizeMove(e)
+	_resizeIng(e)
 	{
 		e.preventDefault();
 
@@ -92,11 +121,13 @@ export default class Block extends React.Component {
 	}
 	_resizeEnd(e)
 	{
-		console.log('resize end');
+		this.$img = null;
+
+		// TODO : save parent component
 
 		$(document)
-			.off(controlEvent.move + '.resize')
-			.off(controlEvent.end + '.resize');
+			.off(`${controlEvent.move}.resize`)
+			.off(`${controlEvent.end}.resize`);
 	}
 
 	render()
@@ -104,10 +135,14 @@ export default class Block extends React.Component {
 		const { state, props } = this;
 
 		//console.log(state.originalImage.ratio);
-		//console.log(state.size);
+		console.log(state.position);
+
+		// TODO : 위치는 `transform`으로 쓸까하는데 프리픽스에 대해서 고민하고 있었음.
+		// TODO : 위치값부터 처리하고 나서 move 이벤트 작업할 예정
 
 		return (
 			<figure
+				ref="self"
 				style={{ backgroundColor: props.bgColor }}
 				className="ple-cropperBlock ple-cropper__block">
 				{state.isCover ? (
@@ -122,15 +157,20 @@ export default class Block extends React.Component {
 						)}>
 						<img
 							src={props.src}
-							style={state.size !== 'cover' ? { width: state.size.split(' ')[0] } : {}}
+							style={Object.assign({},
+								state.size !== 'cover' && { width: state.size.split(' ')[0] }
+							)}
 							alt="image"/>
 					</span>
 				)}
 				<div
-					style={state.size !== 'cover' ? {
-						width: state.size.split(' ')[0],
-						height: state.size.split(' ')[1]
-					} : {}}
+					onMouseDown={this._moveStart.bind(this)}
+					style={Object.assign({},
+						state.size !== 'cover' && {
+							width: state.size.split(' ')[0],
+							height: state.size.split(' ')[1]
+						}
+					)}
 					className={classNames(
 						'ple-cropperBlock__control',
 						{ 'ple-cropperBlock__control-active': (props.size !== 'cover') }

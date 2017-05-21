@@ -55,4 +55,5 @@ const PLE = function(el, options)
 };
 
 
+export default PLE;
 module.exports = PLE;
