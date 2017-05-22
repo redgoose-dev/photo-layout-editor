@@ -64,7 +64,7 @@ class Cropper extends React.Component {
 				targetSize = `${wrap.width}px ${parseInt(this.imageMeta.height * ratio)}px`;
 			}
 			this.setState({
-				position: '50% 50%',
+				position: '0 0',
 				size: targetSize,
 			});
 		}

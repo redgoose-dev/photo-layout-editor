@@ -38,7 +38,6 @@ export default class Block extends React.Component {
 
 	componentDidMount() {
 		// set dom
-		console.log(this.refs);
 		this.$self = $(ReactDom.findDOMNode(this.refs.self));
 	}
 
@@ -64,14 +63,27 @@ export default class Block extends React.Component {
 		// set image element
 		this.$img = this.$self.find('img');
 
+		// TODO: 시작위치 저장하기
+
 		$(document)
 			.on(`${controlEvent.move}.area`, this._moveIng.bind(this))
 			.on(`${controlEvent.end}.area`, this._moveEnd.bind(this));
 	}
 	_moveIng(e)
 	{
+		let mouse = {};
+		let position = {};
+		let evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
+
 		e.preventDefault();
 		e.stopPropagation();
+
+		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
+		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
+
+		console.log(mouse);
+
+
 
 		console.log('move ing');
 	}
@@ -79,7 +91,7 @@ export default class Block extends React.Component {
 	{
 		e.preventDefault();
 
-		console.log('move end');
+		//console.log('move end');
 
 		$(document)
 			.off(`${controlEvent.move}.area`)
@@ -133,12 +145,8 @@ export default class Block extends React.Component {
 	render()
 	{
 		const { state, props } = this;
-
-		//console.log(state.originalImage.ratio);
-		console.log(state.position);
-
-		// TODO : 위치는 `transform`으로 쓸까하는데 프리픽스에 대해서 고민하고 있었음.
-		// TODO : 위치값부터 처리하고 나서 move 이벤트 작업할 예정
+		const size = (state.size !== 'cover') ? state.size.split(' ') : state.size;
+		const position = state.position.split(' ');
 
 		return (
 			<figure
@@ -158,7 +166,10 @@ export default class Block extends React.Component {
 						<img
 							src={props.src}
 							style={Object.assign({},
-								state.size !== 'cover' && { width: state.size.split(' ')[0] }
+								state.size !== 'cover' && {
+									width: size[0],
+									transform: `translate(${position[0]}, ${position[1]})`
+								}
 							)}
 							alt="image"/>
 					</span>
@@ -167,8 +178,9 @@ export default class Block extends React.Component {
 					onMouseDown={this._moveStart.bind(this)}
 					style={Object.assign({},
 						state.size !== 'cover' && {
-							width: state.size.split(' ')[0],
-							height: state.size.split(' ')[1]
+							width: size[0],
+							height: size[1],
+							transform: `translate(${position[0]}, ${position[1]})`
 						}
 					)}
 					className={classNames(
