@@ -22,6 +22,7 @@ class Cropper extends React.Component {
 			size: cropper.setting.image.size || 'cover'
 		};
 		this.imageMeta = null;
+		this.block = null;
 	}
 
 	componentDidMount() {
@@ -37,6 +38,8 @@ class Cropper extends React.Component {
 	_onClose()
 	{
 		const { props } = this;
+		// TODO: 밖에 적용시키기
+		console.log(this.block.state);
 		props.dispatch(action.close());
 	}
 
@@ -96,6 +99,7 @@ class Cropper extends React.Component {
 					}}
 					className="ple-cropper__wrap">
 					<Block
+						ref={(self) => { this.block = self; }}
 						src={cropper.setting.image.src}
 						position={state.position}
 						size={state.size}

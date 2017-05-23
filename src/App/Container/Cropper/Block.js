@@ -34,6 +34,8 @@ export default class Block extends React.Component {
 
 		this.$self = null;
 		this.$img = null;
+		this.moveStartInfo = {};
+		this.resizeStartInfo = {};
 	}
 
 	componentDidMount() {
@@ -57,45 +59,52 @@ export default class Block extends React.Component {
 
 	_moveStart(e)
 	{
-		e.preventDefault();
 		e.stopPropagation();
+
+		const { state } = this;
 
 		// set image element
 		this.$img = this.$self.find('img');
 
-		// TODO: 시작위치 저장하기
+		this.moveStartInfo = {
+			containerX: parseInt(state.position.split(' ')[0]),
+			containerY: parseInt(state.position.split(' ')[1]),
+			mouseX : (e.clientX || e.pageX || e.nativeEvent.touches[0].clientX) + $(window).scrollLeft(),
+			mouseY : (e.clientY || e.pageY || e.nativeEvent.touches[0].clientY) + $(window).scrollTop(),
+		};
 
 		$(document)
-			.on(`${controlEvent.move}.area`, this._moveIng.bind(this))
-			.on(`${controlEvent.end}.area`, this._moveEnd.bind(this));
+			.on(`${controlEvent.move}.move`, this._moveIng.bind(this))
+			.on(`${controlEvent.end}.move`, this._moveEnd.bind(this));
 	}
 	_moveIng(e)
 	{
-		let mouse = {};
-		let position = {};
-		let evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
-
-		e.preventDefault();
 		e.stopPropagation();
+
+		const evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
+		let mouse = {};
+		let distance = {};
 
 		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
 		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
 
-		console.log(mouse);
+		distance.x = this.moveStartInfo.containerX + (mouse.x - this.moveStartInfo.mouseX);
+		distance.y = this.moveStartInfo.containerY + (mouse.y - this.moveStartInfo.mouseY);
 
-
-
-		console.log('move ing');
+		this.setState({
+			position: `${parseInt(distance.x)}px ${parseInt(distance.y)}px`
+		});
 	}
 	_moveEnd(e)
 	{
 		e.preventDefault();
 
-		//console.log('move end');
+		this.$img = null;
+		this.moveStartInfo = null;
 
 		$(document)
-			.off(`${controlEvent.move}.area`)
-			.off(`${controlEvent.end}.area`);
+			.off(`${controlEvent.move}.move`)
+			.off(`${controlEvent.end}.move`);
 	}
 
 	_resizeStart(e)
@@ -104,38 +113,39 @@ export default class Block extends React.Component {
 
 		this.$img = this.$self.find('img');
 
+		this.resizeStartInfo = {
+			width: this.$img.width(),
+			height: this.$img.height(),
+			x : (e.clientX || e.pageX || e.nativeEvent.touches[0].clientX) + $(window).scrollLeft(),
+		};
+
 		$(document)
 			.on(`${controlEvent.move}.resize`, this._resizeIng.bind(this))
 			.on(`${controlEvent.end}.resize`, this._resizeEnd.bind(this));
 	}
 	_resizeIng(e)
 	{
-		e.preventDefault();
+		e.stopPropagation();
 
-		let width = 0;
-		let height = 0;
-		let ratio = 0;
-		let mouse = {};
+		let size = {};
 		let evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
 
 		// set mouse position
-		mouse.x = (evt.clientX || evt.pageX) + $(window).scrollLeft();
-		mouse.y = (evt.clientY || evt.pageY) + $(window).scrollTop();
+		let distance = (evt.clientX || evt.pageX) + $(window).scrollLeft() - this.resizeStartInfo.x;
 
 		// set image size
-		width = mouse.x - this.$self.offset().left;
-		ratio = width / this.$img.get(0).naturalWidth;
-		height = this.$img.get(0).naturalHeight * ratio;
+		size.width = this.resizeStartInfo.width + distance;
+		let ratio = size.width / this.$img.get(0).naturalWidth;
+		size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
 
 		this.setState({
-			size: `${parseInt(width)}px ${parseInt(height)}px`
+			size: `${parseInt(size.width)}px ${parseInt(size.height)}px`
 		});
 	}
 	_resizeEnd(e)
 	{
 		this.$img = null;
-
-		// TODO : save parent component
+		this.resizeStartInfo = null;
 
 		$(document)
 			.off(`${controlEvent.move}.resize`)
@@ -176,6 +186,7 @@ export default class Block extends React.Component {
 				)}
 				<div
 					onMouseDown={this._moveStart.bind(this)}
+					onTouchStart={this._moveStart.bind(this)}
 					style={Object.assign({},
 						state.size !== 'cover' && {
 							width: size[0],
