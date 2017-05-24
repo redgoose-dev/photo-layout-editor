@@ -29,6 +29,13 @@ let lastGridId = null;
 let shuffleIndex = 0;
 
 
+/**
+ * setting
+ *
+ * @param {Object} state
+ * @param {*} action
+ * @return {Object}
+ */
 function setting(state=defaults.setting, action)
 {
 	switch(action.type)
@@ -49,6 +56,13 @@ function setting(state=defaults.setting, action)
 	return state;
 }
 
+/**
+ * visible toolbar buttons
+ *
+ * @param {Object} state
+ * @param {*} action
+ * @return {Object}
+ */
 function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 {
 	switch(action.type) {
@@ -101,6 +115,13 @@ function visibleToolbarButtons(state=defaults.visibleToolbarButtons, action)
 	return state;
 }
 
+/**
+ * grid
+ *
+ * @param {Array} state
+ * @param {*} action
+ * @return {Array}
+ */
 function grid(state=[], action)
 {
 	let newState = null;
@@ -257,13 +278,25 @@ function grid(state=[], action)
 			return Object.assign([], state, action.value);
 
 		case types.CROPPER_CLOSE:
-			// TODO : 크로퍼가 끝날때 grid 정보 업데이트 하기
-			return state;
+			newState = Object.assign([], state);
+			n = findObjectValueInArray(state, 'index', action.value.index);
+
+			newState[n].image.position = action.value.position;
+			newState[n].image.size = action.value.size;
+
+			return newState;
 	}
 
 	return state;
 }
 
+/**
+ * active block
+ *
+ * @param {Array} state
+ * @param {*} action
+ * @return {Array}
+ */
 function activeBlock(state=[], action)
 {
 	let newState = null;

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import classNames from 'classnames';
 import $ from 'jquery/dist/jquery.slim';
+import classNames from 'classnames';
 
 import { util } from '../../lib';
 
@@ -38,7 +38,8 @@ export default class Block extends React.Component {
 		this.resizeStartInfo = {};
 	}
 
-	componentDidMount() {
+	componentDidMount()
+	{
 		// set dom
 		this.$self = $(ReactDom.findDOMNode(this.refs.self));
 	}
@@ -157,6 +158,8 @@ export default class Block extends React.Component {
 		const { state, props } = this;
 		const size = (state.size !== 'cover') ? state.size.split(' ') : state.size;
 		const position = state.position.split(' ');
+
+		// TODO : 리사이즈 포인트 버튼을 4방향에 넣는게 좋을거 같다.
 
 		return (
 			<figure

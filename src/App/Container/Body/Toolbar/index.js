@@ -100,6 +100,7 @@ class Toolbar extends React.Component {
 		let $dom = $(props.ple.el).find('.react-grid-item').filter(`[data-index=${item.index}]`);
 
 		props.dispatch(actionsCropper.open({
+			index: props.tree.body.activeBlock[0],
 			color: item.color,
 			image: item.image,
 			wrap: {

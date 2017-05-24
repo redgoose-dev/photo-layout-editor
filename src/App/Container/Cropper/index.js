@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import Block from './Block';
-
-import * as action from '../../actions/cropper';
-
+import * as actions from '../../actions/cropper';
 import * as lib from '../../lib';
 
 
@@ -25,7 +23,8 @@ class Cropper extends React.Component {
 		this.block = null;
 	}
 
-	componentDidMount() {
+	componentDidMount()
+	{
 		const { props } = this;
 		const { cropper } = props.tree;
 
@@ -35,17 +34,25 @@ class Cropper extends React.Component {
 		});
 	}
 
+	/**
+	 * on close cropper
+	 * cropper를 닫고, 변경된 이미지를 grid로 보낸다.
+	 *
+	 */
 	_onClose()
 	{
 		const { props } = this;
-		// TODO: 밖에 적용시키기
-		console.log(this.block.state);
-		props.dispatch(action.close());
+		props.dispatch(actions.close({
+			index: props.tree.cropper.setting.index,
+			position: this.block.state.position,
+			size: this.block.state.size
+		}));
 	}
 
 	/**
 	 * toggle image type
 	 * 직접 리사이즈를 사용하는지 기본(꽉채우는..)타입으로 사용할건지 변경하는 액션
+	 *
 	 */
 	_toggleImageType()
 	{
@@ -116,11 +123,6 @@ class Cropper extends React.Component {
 							})}>
 							<i className="sp-ico ico-resize abs">Toggle background size type</i>
 						</button>
-						{state.size !== 'cover' && (
-							<button type="button" onClick={() => {}}>
-								<i className="sp-ico ico-reduction abs">Go to center image</i>
-							</button>
-						)}
 					</nav>
 				</div>
 			</div>
