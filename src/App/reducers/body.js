@@ -207,7 +207,7 @@ function grid(state=[], action)
 					if (!action.value.length) return;
 					if (action.activeBlocks.indexOf(o.index) < 0) return;
 					o.image = {
-						src: action.value.splice(0,1),
+						src: action.value.splice(0,1)[0],
 						position: '50% 50%',
 						size: 'cover',
 					};

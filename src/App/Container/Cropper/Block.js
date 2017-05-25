@@ -112,12 +112,16 @@ export default class Block extends React.Component {
 	{
 		e.stopPropagation();
 
-		this.$img = this.$self.find('img');
+		const { state } = this;
 
+		this.$img = this.$self.find('img');
 		this.resizeStartInfo = {
+			title: e.currentTarget.title,
 			width: this.$img.width(),
 			height: this.$img.height(),
-			x : (e.clientX || e.pageX || e.nativeEvent.touches[0].clientX) + $(window).scrollLeft(),
+			mouseX : (e.clientX || e.pageX || e.nativeEvent.touches[0].clientX) + $(window).scrollLeft(),
+			posX: parseInt(state.position.split(' ')[0]),
+			posY: parseInt(state.position.split(' ')[1]),
 		};
 
 		$(document)
@@ -129,18 +133,55 @@ export default class Block extends React.Component {
 		e.stopPropagation();
 
 		let size = {};
+		let position = {};
+		let ratio = 1;
+		let distanceHeight = 0;
 		let evt = (e.type === 'touchmove') ? e.originalEvent.touches[0] : e;
 
 		// set mouse position
-		let distance = (evt.clientX || evt.pageX) + $(window).scrollLeft() - this.resizeStartInfo.x;
+		let distanceX = (evt.clientX || evt.pageX) + $(window).scrollLeft() - this.resizeStartInfo.mouseX;
+
+		// set position and size
+		switch(this.resizeStartInfo.title) {
+			case 'resize-lt':
+				position.x = this.resizeStartInfo.posX + distanceX;
+				size.width = this.resizeStartInfo.width - distanceX;
+				ratio = size.width / this.$img.get(0).naturalWidth;
+				size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
+				distanceHeight = this.resizeStartInfo.height - size.height;
+				position.y = this.resizeStartInfo.posY + distanceHeight;
+				break;
+			case 'resize-rt':
+				position.x = this.resizeStartInfo.posX;
+				size.width = this.resizeStartInfo.width + distanceX;
+				ratio = size.width / this.$img.get(0).naturalWidth;
+				size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
+				distanceHeight = this.resizeStartInfo.height - size.height;
+				position.y = this.resizeStartInfo.posY + distanceHeight;
+				break;
+			case 'resize-lb':
+				position.x = this.resizeStartInfo.posX + distanceX;
+				position.y = this.resizeStartInfo.posY;
+				size.width = this.resizeStartInfo.width - distanceX;
+				ratio = size.width / this.$img.get(0).naturalWidth;
+				size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
+				break;
+			case 'resize-rb':
+				position.x = this.resizeStartInfo.posX;
+				position.y = this.resizeStartInfo.posY;
+				size.width = this.resizeStartInfo.width + distanceX;
+				ratio = size.width / this.$img.get(0).naturalWidth;
+				size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
+				break;
+			default:
+				return;
+		}
 
 		// set image size
-		size.width = this.resizeStartInfo.width + distance;
-		let ratio = size.width / this.$img.get(0).naturalWidth;
-		size.height = parseInt(this.$img.get(0).naturalHeight * ratio);
 
 		this.setState({
-			size: `${parseInt(size.width)}px ${parseInt(size.height)}px`
+			size: `${parseInt(size.width)}px ${parseInt(size.height)}px`,
+			position: `${parseInt(position.x)}px ${parseInt(position.y)}px`
 		});
 	}
 	_resizeEnd(e)
@@ -158,8 +199,6 @@ export default class Block extends React.Component {
 		const { state, props } = this;
 		const size = (state.size !== 'cover') ? state.size.split(' ') : state.size;
 		const position = state.position.split(' ');
-
-		// TODO : 리사이즈 포인트 버튼을 4방향에 넣는게 좋을거 같다.
 
 		return (
 			<figure
@@ -203,11 +242,34 @@ export default class Block extends React.Component {
 					)}>
 					<button
 						type="button"
-						title="resize"
+						title="resize-lt"
 						onMouseDown={this._resizeStart.bind(this)}
 						onTouchStart={this._resizeStart.bind(this)}
-						className="ple-cropperBlock__resize">
+						className="ple-cropperBlock__resize ple-cropperBlock__resize-lt">
 						<i/>
+					</button>
+					<button
+						type="button"
+						title="resize-rt"
+						onMouseDown={this._resizeStart.bind(this)}
+						onTouchStart={this._resizeStart.bind(this)}
+						className="ple-cropperBlock__resize ple-cropperBlock__resize-rt">
+						<i/>
+					</button>
+					<button
+						type="button"
+						title="resize-lb"
+						onMouseDown={this._resizeStart.bind(this)}
+						onTouchStart={this._resizeStart.bind(this)}
+						className="ple-cropperBlock__resize ple-cropperBlock__resize-lb">
+						<i/>
+					</button>
+					<button
+						type="button"
+						title="resize-rb"
+						onMouseDown={this._resizeStart.bind(this)}
+						onTouchStart={this._resizeStart.bind(this)}
+						className="ple-cropperBlock__resize ple-cropperBlock__resize-rb">
 						<i/>
 					</button>
 				</div>

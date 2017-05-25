@@ -101,9 +101,6 @@ class GridLayout extends React.Component {
 		let key = `${item.indexPrefix}__${item.index}`;
 		let active = !!(activeBlock && activeBlock.length && activeBlock.indexOf(item.index) > -1);
 
-		// TODO : 그리드에서 여러개 선택하고 사이드 이미지를 집어넣으면 image값이 array로 나오는 현상이 일어남.
-		// TODO : image값은 string으로 나와야함!!!
-
 		return (
 			<div
 				key={key}

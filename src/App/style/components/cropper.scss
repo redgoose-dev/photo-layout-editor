@@ -14,7 +14,7 @@
 		background: $color;
 	}
 	&:before {
-		right: $padding;
+		left: $padding;
 		top: $padding;
 		bottom: $padding;
 		width: $weight;
@@ -22,7 +22,7 @@
 	&:after {
 		left: $padding;
 		right: $padding;
-		bottom: $padding;
+		top: $padding;
 		height: $weight;
 	}
 }
@@ -144,25 +144,36 @@
 		height: 34px;
 		border: none;
 		background: none;
-		right: -12px;
-		bottom: -12px;
-		cursor: nwse-resize;
 		text-indent: -9999px;
 		outline: 0;
 
-		> i:first-child {
-			@extend %icon-clamp;
-			right: -1px;
-			bottom: -1px;
-			&:before, &:after {
-				background: rgba(0,0,0,.2);
-			}
-		}
-		> i + i {
+		> i {
 			@extend %icon-clamp;
 			left: 0;
 			top: 0;
-
+		}
+		&-lt {
+			left: -12px;
+			top: -12px;
+			cursor: nwse-resize;
+		}
+		&-rt {
+			right: -12px;
+			top: -12px;
+			transform: rotate(90deg);
+			cursor: nesw-resize;
+		}
+		&-lb {
+			left: -12px;
+			bottom: -12px;
+			transform: rotate(270deg);
+			cursor: nesw-resize;
+		}
+		&-rb {
+			right: -12px;
+			bottom: -12px;
+			transform: rotate(180deg);
+			cursor: nwse-resize;
 		}
 	}
 }
