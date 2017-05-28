@@ -196,7 +196,7 @@ class Toolbar extends React.Component {
 
 					{visible.edit && (
 						<Button
-							iconClass="ico-pencel"
+							iconClass="ico-pencil"
 							className="key"
 							onClick={this._onClickEdit.bind(this)}
 							title="Edit block"/>

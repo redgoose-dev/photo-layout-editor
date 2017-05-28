@@ -1,6 +1,6 @@
 // init icon
 %sp-ico {
-	background: transparent url('../assets/images/sp-ico@1x.png') no-repeat;
+	background: transparent url('../assets/images/sp-ico.png') no-repeat;
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.33dppx) {
 		background-image: url('../assets/images/sp-ico@2x.png');
 		background-size: 200px 100px;
@@ -64,7 +64,7 @@
 	background-position: -52px -36px;
 	@include sp-size(16px, 16px);
 }
-.ico-pencel {
+.ico-pencil {
 	background-position: -78px -36px;
 	@include sp-size(16px, 16px);
 }
@@ -83,4 +83,13 @@
 .ico-reduction {
 	background-position: -176px -36px;
 	@include sp-size(16px, 16px);
+}
+
+.ico-clamp {
+	background-position: 0 -72px;
+	@include sp-size(20px, 20px);
+}
+.ico-close2 {
+	background-position: -30px -72px;
+	@include sp-size(24px, 24px);
 }

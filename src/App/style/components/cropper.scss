@@ -1,42 +1,11 @@
-%icon-clamp {
-	$weight: 5px;
-	$color: #fff;
-	$padding: 8px;
-	display: block;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-
-	&:before, &:after {
-		content: '';
-		position: absolute;
-		display: block;
-		background: $color;
-	}
-	&:before {
-		left: $padding;
-		top: $padding;
-		bottom: $padding;
-		width: $weight;
-	}
-	&:after {
-		left: $padding;
-		right: $padding;
-		top: $padding;
-		height: $weight;
-	}
-}
-
-
 /* Popup - Cropper */
 .ple-cropper {
-	//display: none;
-	position: absolute; z-index: 99999;
-	top: 0; left: 0; right: 0; bottom: 0;
-
-	&-show {
-		display: block;
-	}
+	position: absolute;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 
 	&__bg {
 		display: block;
@@ -46,7 +15,8 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: #000; background: rgba(0,0,0,.86);
+		background: #000;
+		background: rgba(0,0,0,.86);
 	}
 	&__wrap {
 		position: absolute;
@@ -58,17 +28,27 @@
 	}
 	&__nav {
 		position: absolute;
-		right: -50px; top: 0;
+		right: -50px;
+		top: 0;
 		button {
-			position: relative; display: block; margin: 0 0 1px;
-			width: 40px; height: 40px;
+			position: relative;
+			display: block;
+			margin: 0 0 1px;
+			width: 40px;
+			height: 40px;
 			background: #888;
 			text-align: center;
-			text-indent: -9999px; border: none; cursor: pointer;
-			&.active {background: $col-active;}
+			text-indent: -9999px;
+			border: none;
+			cursor: pointer;
+			&.active {
+				background: $col-active;
+			}
 			i {
-				position: absolute; display: block;
-				left: 50%; top: 50%;
+				position: absolute;
+				display: block;
+				left: 50%;
+				top: 50%;
 			}
 		}
 	}
@@ -148,24 +128,25 @@
 		outline: 0;
 
 		> i {
-			@extend %icon-clamp;
-			left: 0;
-			top: 0;
+			display: block;
+			position: absolute;
+			left: 50%;
+			top: 50%;
 		}
 		&-lt {
-			left: -12px;
-			top: -12px;
+			left: -10px;
+			top: -10px;
 			cursor: nwse-resize;
 		}
 		&-rt {
-			right: -12px;
-			top: -12px;
+			right: -11px;
+			top: -10px;
 			transform: rotate(90deg);
 			cursor: nesw-resize;
 		}
 		&-lb {
-			left: -12px;
-			bottom: -12px;
+			left: -10px;
+			bottom: -11px;
 			transform: rotate(270deg);
 			cursor: nesw-resize;
 		}
