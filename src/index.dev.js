@@ -1,7 +1,7 @@
 import PLE from './App';
 
 
-var ple = new PLE(document.getElementById('app'), {
+window.ple = new PLE(document.getElementById('app'), {
 	body: {
 		setting: {
 			width: 100,
@@ -30,5 +30,8 @@ var ple = new PLE(document.getElementById('app'), {
 			"http://goose.redgoose.me/data/upload/original/201610/rg-c4d-junk-20161003.jpg",
 			"http://goose.redgoose.me/data/upload/original/201507/rg3322.jpg"
 		],
+	},
+	init: function(root) {
+		console.log('init', root);
 	}
 });

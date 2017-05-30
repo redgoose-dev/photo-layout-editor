@@ -1,12 +1,11 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, findDOMNode } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import API from './API';
 import assignPreference from './lib/assignPreference';
 import defaultPreference from './lib/defaultPreference';
-import { isTouchDevice } from './lib/util';
 import Keyboard from './lib/Keyboard';
 import reducers from './reducers';
 import Container from './Container';
@@ -30,6 +29,9 @@ const PLE = function(el, options)
 	// set elements
 	this.el = el;
 
+	// set className
+	el.classList.add('ple-editor');
+
 	// set store
 	this.store = createStore(reducers);
 
@@ -37,15 +39,10 @@ const PLE = function(el, options)
 	this.keyboard = Keyboard;
 	this.keyboard.init();
 
-	// check touch device
-	if (isTouchDevice())
-	{
-		document.querySelector('html').classList.add('ple-touch');
-	}
-
 	// set API
 	this.api = new API(this);
 
+	// render component
 	render(
 		<Provider store={this.store}>
 			<Container PLE={this}/>

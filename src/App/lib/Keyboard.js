@@ -47,4 +47,9 @@ export default {
 		$window.on(`keydown.${EVENT_NAME}`, this.keyDown.bind(this));
 	},
 
+	destroy() {
+		$window.off(`keydown.${EVENT_NAME}`);
+		$window.on(`keyup.${EVENT_NAME}`);
+	}
+
 };

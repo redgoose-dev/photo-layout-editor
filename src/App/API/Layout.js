@@ -1,16 +1,16 @@
-import { visible } from '../actions/side';
+import * as actionSide from '../actions/side';
 
 
 export default function Layout(root)
 {
+	const { getState, dispatch } = root.store;
+
 	/**
 	 * Toggle side
 	 *
 	 * @param {Boolean} sw
 	 */
 	this.toggleSide = (sw) => {
-		const { getState, dispatch } = root.store;
-
 		if (!getState() || !getState().tree)
 		{
 			alert('error');
@@ -20,7 +20,7 @@ export default function Layout(root)
 		const currentSw = getState().tree.side.layout.visible;
 		const targetSw = (typeof sw === 'undefined') ? !currentSw : sw;
 
-		dispatch(visible(targetSw));
+		dispatch(actionSide.visible(targetSw));
 	}
 
 }

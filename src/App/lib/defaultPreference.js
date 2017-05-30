@@ -22,4 +22,5 @@ export default {
 		visible: true,
 		items: [],
 	},
+	init: function() {},
 }

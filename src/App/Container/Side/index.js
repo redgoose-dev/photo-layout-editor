@@ -4,13 +4,14 @@ import axios from 'axios';
 import classNames from 'classnames';
 import $ from 'jquery/dist/jquery.slim';
 
-import { changeActiveFile, addFiles, removeFiles, toggle } from '../../actions/side';
-import { attachImage, attachImages } from '../../actions/body';
+import * as actionsSide from '../../actions/side';
+import * as actionsBody from '../../actions/body';
 import * as lib from '../../lib';
 
 import ToggleSideButton from './ToggleSideButton';
 import Navigation from './Navigation';
 import Items from './Items';
+
 
 let firstSelectIdx = null;
 
@@ -57,12 +58,12 @@ class Side extends React.Component {
 		if (typeof items === 'string')
 		{
 			axios.get(items)
-				.then( (res) => dispatch(addFiles(res.data)) )
+				.then( (res) => dispatch(actionsSide.addFiles(res.data)) )
 				.catch( (error) => console.log('ERROR', error) );
 		}
 		else if (items instanceof Array)
 		{
-			dispatch(addFiles(items));
+			dispatch(actionsSide.addFiles(items));
 		}
 	}
 
@@ -117,7 +118,7 @@ class Side extends React.Component {
 			firstSelectIdx = (currentItem.active === true) ? null : id;
 		}
 
-		dispatch(changeActiveFile(id, keyName, firstSelectIdx));
+		dispatch(actionsSide.changeActiveFile(id, keyName, firstSelectIdx));
 	}
 
 	/**
@@ -144,7 +145,7 @@ class Side extends React.Component {
 			}
 		}
 
-		dispatch(removeFiles(activeItems));
+		dispatch(actionsSide.removeFiles(activeItems));
 	}
 
 	/**
@@ -162,11 +163,11 @@ class Side extends React.Component {
 
 		if (active)
 		{
-			dispatch(changeActiveFile(null, 'none', null));
+			dispatch(actionsSide.changeActiveFile(null, 'none', null));
 		}
 		else
 		{
-			dispatch(changeActiveFile(null, 'all', null));
+			dispatch(actionsSide.changeActiveFile(null, 'all', null));
 		}
 	}
 
@@ -184,7 +185,7 @@ class Side extends React.Component {
 		this.setState({ uploading: true }, () => {
 			lib.uploader.multiple(files, ple.preference.side.upload)
 				.done(() => {
-					console.log('upload complete');
+					console.warn('upload complete');
 					this.uploading = false;
 					this.setState({ uploading: false });
 				})
@@ -200,12 +201,12 @@ class Side extends React.Component {
 							break;
 						case 'done':
 							this.setState({ itemProgress: null });
-							if (res.src) dispatch(addFiles([res.src]));
+							if (res.src) dispatch(actionsSide.addFiles([res.src]));
 							break;
 					}
 				})
 				.fail(() => {
-					console.log('upload fail');
+					console.warn('upload fail');
 					this.setState({ uploading: false });
 				});
 		});
@@ -229,7 +230,7 @@ class Side extends React.Component {
 			return;
 		}
 
-		props.dispatch(attachImages(
+		props.dispatch(actionsBody.attachImages(
 			selectedImages,
 			props.tree.body.setting.column,
 			props.tree.body.activeBlock
@@ -265,7 +266,7 @@ class Side extends React.Component {
 		if (this.dragTarget === null) return;
 
 		// play redux
-		props.dispatch(attachImage(
+		props.dispatch(actionsBody.attachImage(
 			this.dragTarget,
 			$(e.currentTarget).data('image')
 		));
@@ -311,7 +312,7 @@ class Side extends React.Component {
 			if (this.dragTarget === null) return;
 
 			// play redux
-			props.dispatch(attachImage(
+			props.dispatch(actionsBody.attachImage(
 				this.dragTarget,
 				$(e.currentTarget).data('image')
 			));
@@ -326,7 +327,7 @@ class Side extends React.Component {
 	render()
 	{
 		const { state, props } = this;
-		const { tree, dispatch } = props;
+		const { ple, tree, dispatch } = props;
 
 		return (
 			<aside className="ple-side">
@@ -335,11 +336,11 @@ class Side extends React.Component {
 					{ 'show': tree.side.layout.visible }
 				)}>
 					<span
-						onClick={() => dispatch(changeActiveFile(null, 'none', null))}
+						onClick={() => dispatch(actionsSide.changeActiveFile(null, 'none', null))}
 						className="background"/>
 					<ToggleSideButton
 						show={tree.side.layout.visible}
-						onClick={() => dispatch(toggle())}/>
+						onClick={() => ple.api.layout.toggleSide()}/>
 					<Navigation
 						onAttach={this._attach.bind(this)}
 						onToggleSelect={this._toggleSelect.bind(this)}

@@ -11,33 +11,34 @@ import Cropper from './Cropper';
 class Container extends React.Component {
 
 	componentDidMount() {
-		const { PLE, dispatch } = this.props;
-		dispatch(initPLE(PLE));
+		const { props } = this;
+
+		props.dispatch(initPLE(props.PLE));
 	}
 
 	/**
 	 * Visible side panel
 	 */
 	visibleSide() {
-		const { tree, ple } = this.props;
+		const { props } = this;
 
-		if (!ple) return;
+		if (!props.ple) return;
 
-		if (tree.side.layout.visible)
+		if (props.tree.side.layout.visible)
 		{
-			ple.el.classList.add('side-active');
+			props.ple.el.classList.add('side-active');
 		}
 		else
 		{
-			ple.el.classList.remove('side-active');
+			props.ple.el.classList.remove('side-active');
 		}
 	}
 
 	render() {
-		const { ple, tree } = this.props;
+		const { props } = this;
 
 		// check PLE object
-		if (!ple) return null;
+		if (!props.ple) return null;
 
 		// set visible side
 		this.visibleSide();
@@ -46,9 +47,7 @@ class Container extends React.Component {
 			<div className="ple-wrap">
 				<Body/>
 				<Side/>
-				{tree.cropper.visible && (
-					<Cropper/>
-				)}
+				{props.tree.cropper.visible ? ( <Cropper/> ) : null}
 			</div>
 		);
 	}
