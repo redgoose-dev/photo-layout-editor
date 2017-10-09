@@ -540,19 +540,19 @@ braces@^1.8.2:
     repeat-element "^1.1.2"
 
 browserslist@^2.1.2:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.4.0.tgz#693ee93d01e66468a6348da5498e011f578f87f8"
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.5.1.tgz#68e4bc536bbcc6086d62843a2ffccea8396821c6"
   dependencies:
-    caniuse-lite "^1.0.30000718"
-    electron-to-chromium "^1.3.18"
+    caniuse-lite "^1.0.30000744"
+    electron-to-chromium "^1.3.24"
 
 buffer-es6@^4.9.1:
   version "4.9.3"
   resolved "https://registry.yarnpkg.com/buffer-es6/-/buffer-es6-4.9.3.tgz#f26347b82df76fd37e18bcb5288c4970cfd5c404"
 
-caniuse-lite@^1.0.30000718:
-  version "1.0.30000738"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000738.tgz#1820c3c9adb9a117e311a5bdca1d25bc34288eba"
+caniuse-lite@^1.0.30000744:
+  version "1.0.30000745"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000745.tgz#20d6fede1157a4935133502946fc7e0e6b880da5"
 
 chalk@^1.0.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
@@ -646,9 +646,9 @@ duplexer2@0.0.2:
   dependencies:
     readable-stream "~1.1.9"
 
-electron-to-chromium@^1.3.18:
-  version "1.3.22"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.22.tgz#4322d52c151406e3eaef74ad02676883e8416418"
+electron-to-chromium@^1.3.24:
+  version "1.3.24"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.24.tgz#9b7b88bb05ceb9fa016a177833cc2dde388f21b6"
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -1544,7 +1544,7 @@ randomatic@^1.1.3:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
-react-dom@^15.5.4:
+react-dom@^15.5.4, react-dom@^15.6.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
@@ -1553,15 +1553,6 @@ react-dom@^15.5.4:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-dom@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0.tgz#9cc3079c3dcd70d4c6e01b84aab2a7e34c303f58"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
 "react-draggable@^2.2.6 || ^3.0.3", react-draggable@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-3.0.3.tgz#a6f9b3a7171981b76dadecf238316925cb9eacf4"
@@ -1569,9 +1560,9 @@ react-dom@^16.0.0:
     classnames "^2.2.5"
     prop-types "^15.5.10"
 
-react-grid-layout@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.15.3.tgz#e36b90a7d051191cbdc02b5feabfdb980368a961"
+react-grid-layout@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.16.0.tgz#f74363cd134b2f8a763224d7b6287cbb68e6de05"
   dependencies:
     classnames "2.x"
     lodash.isequal "^4.0.0"
@@ -1579,16 +1570,16 @@ react-grid-layout@^0.15.3:
     react-draggable "^3.0.3"
     react-resizable "^1.7.5"
 
-react-photo-layout-editor@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.6.tgz#7dcde7e52e3b120d99c6d7773a4195c9788e493b"
+react-photo-layout-editor@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.8.tgz#815ff52680b245f71399149b1d56c6659ffef45b"
   dependencies:
     classnames "^2.2.5"
     jquery "^3.2.1"
     prop-types "^15.6.0"
-    react "^16.0.0"
-    react-dom "^16.0.0"
-    react-grid-layout "^0.15.3"
+    react "^15.6.1"
+    react-dom "^15.6.1"
+    react-grid-layout "^0.16.0"
     react-redux "^5.0.6"
     react-simple-colorpicker "github:RedgooseDev/react-simple-colorpicker"
     redux "3.7.2"
@@ -1621,7 +1612,7 @@ react-resizable@^1.7.5:
     react "^15.5.4"
     react-dom "^15.5.4"
 
-react@^15.5.4:
+react@^15.5.4, react@^15.6.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
@@ -1630,15 +1621,6 @@ react@^15.5.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
-
-react@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
 
 "readable-stream@>=1.0.33-1 <1.1.0-0":
   version "1.0.34"
@@ -1960,8 +1942,8 @@ vinyl@^0.5.0:
     replace-ext "0.0.1"
 
 vlq@^0.2.1:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.2.tgz#e316d5257b40b86bb43cb8d5fea5d7f54d6b0ca1"
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"

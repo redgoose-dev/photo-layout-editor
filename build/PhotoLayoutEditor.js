@@ -25,14 +25,13 @@ var basePreference = {
  * @param {String} selector
  * @param {Object} options
  */
-function PhotoLayoutEditor(selector) {
+function PhotoLayoutEditor(selector, options) {
 	var _this = this;
-
-	var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : basePreference;
-
 
 	// component body
 	this.body = null;
+
+	options = options ? Object.assign({}, basePreference, options) : basePreference;
 
 	// render
 	ReactDOM.render(React.createElement(PLE, Object.assign({}, options, { ref: function ref(r) {

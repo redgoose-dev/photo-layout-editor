@@ -13,10 +13,12 @@ import basePreference from './basePreference';
  * @param {String} selector
  * @param {Object} options
  */
-function PhotoLayoutEditor(selector, options=basePreference) {
+function PhotoLayoutEditor(selector, options) {
 
 	// component body
 	this.body = null;
+
+	options = options ? Object.assign({}, basePreference, options) : basePreference;
 
 	// render
 	ReactDOM.render(
