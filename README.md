@@ -7,7 +7,7 @@
 
 이 기능을 웹에서 바로 사용할 수 있도록 페이지를 만들었습니다.
 
-https://redgoosedev.github.io/photo-layout-editor/
+http://redgoosedev.github.io/photo-layout-editor/
 
 
 ## usage
