@@ -1570,9 +1570,9 @@ react-grid-layout@^0.16.0:
     react-draggable "^3.0.3"
     react-resizable "^1.7.5"
 
-react-photo-layout-editor@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.8.tgz#815ff52680b245f71399149b1d56c6659ffef45b"
+react-photo-layout-editor@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.9.tgz#5e6f06cd6f79047d6569b62b34530321e72d6a64"
   dependencies:
     classnames "^2.2.5"
     jquery "^3.2.1"
