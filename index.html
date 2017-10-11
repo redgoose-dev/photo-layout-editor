@@ -9,7 +9,57 @@
 <link rel="stylesheet" href="layout.css">
 </head>
 <body>
-<main id="app"></main>
+<main>
+	<header class="header">
+		<h1>Photo layout editor service</h1>
+		<p>
+			우측의 패널에서 이미지를 업로드하고 이미지를 블럭으로 드래그&드롭으로 옮기고 블록의 위치를 잡아주고 이미지가 만듭니다.<br/>
+			툴바에서 블럭에 대한 설정을 할 수 있으며, 블럭의 생상을 변경할 수 있고, 이미지를 원하는 부위로 크롭할 수 있습니다.
+		</p>
+	</header>
+	<div id="app"></div>
+
+	<div class="control">
+		<section>
+			<h1 class="control__title">Make image</h1>
+			<p class="control__description">
+				이미지 퀄리티를 조정하여 `MakeImage`버튼을 누르면 jpg 이미지가 출력됩니다.
+			</p>
+			<div class="control__fields" id="makeImage">
+				<div class="control__field">
+					<label>
+						<input type="range" name="quality_range" min="0.1" max="1" step="0.01" value="0.75"/>
+						<input type="number" name="quality_number" min="0.1" max="1" step="0.01" value="0.75" readonly/>
+					</label>
+				</div>
+				<div class="control__field">
+					<button type="button" class="button submit">MakeImage</button>
+				</div>
+			</div>
+		</section>
+		<hr>
+		<section>
+			<h1 class="control__title">Save/Restore</h1>
+			<p class="control__description">
+				현재 상태를 저장하려면 `Save`, 저장된 상태를 복구하려면 `Restore save`, 저장된 상태를 삭제하려면 `Clear save` 버튼을 누릅니다.
+			</p>
+			<nav class="control__nav">
+				<button type="button" class="button" id="save">Save</button>
+				<button type="button" class="button" id="restore_save">Restore save</button>
+				<button type="button" class="button" id="clear_save">Clear save</button>
+			</nav>
+		</section>
+	</div>
+</main>
+
+<article class="result" id="result">
+	<div class="result__wrap">
+		<h1 class="result__title">Result</h1>
+		<figure class="result__image"></figure>
+	</div>
+	<button type="button" class="result__close" title="Close popup"><span>Close</span></button>
+</article>
+
 <script src="./vendor/react.min.js"></script>
 <script src="./vendor/react-dom.min.js"></script>
 <script src="./vendor/PhotoLayoutEditor.vendor.pack.js"></script>
