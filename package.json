@@ -24,7 +24,7 @@
     "node": ">=7.8.0"
   },
   "dependencies": {
-    "react-photo-layout-editor": "^1.1.9"
+    "react-photo-layout-editor": "^1.1.10"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
