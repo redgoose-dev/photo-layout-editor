@@ -20,8 +20,8 @@ gulp.task('make-vendor', function() {
 		// make `build` directory
 		shell.mkdir('-p', 'vendor');
 		// copy react
-		shell.cp('-R', 'node_modules/react/dist/react.min.js', 'vendor/');
-		shell.cp('-R', 'node_modules/react-dom/dist/react-dom.min.js', 'vendor/');
+		shell.cp('-R', 'node_modules/react/umd/react.production.min.js', 'vendor/');
+		shell.cp('-R', 'node_modules/react-dom/umd/react-dom.production.min.js', 'vendor/');
 		// copy `build`
 		shell.cp('-R', 'node_modules/react-photo-layout-editor/build/*', 'vendor/');
 

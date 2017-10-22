@@ -426,8 +426,8 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-types "^6.24.1"
 
 babel-preset-env@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.6.0.tgz#2de1c782a780a0a5d605d199c957596da43c44e4"
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.6.1.tgz#a18b564cc9b9afdf4aae57ae3c1b0d99188e6f48"
   dependencies:
     babel-plugin-check-es2015-constants "^6.22.0"
     babel-plugin-syntax-trailing-function-commas "^6.22.0"
@@ -551,8 +551,8 @@ buffer-es6@^4.9.1:
   resolved "https://registry.yarnpkg.com/buffer-es6/-/buffer-es6-4.9.3.tgz#f26347b82df76fd37e18bcb5288c4970cfd5c404"
 
 caniuse-lite@^1.0.30000744:
-  version "1.0.30000745"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000745.tgz#20d6fede1157a4935133502946fc7e0e6b880da5"
+  version "1.0.30000748"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000748.tgz#44c8d6da52ad65a5d7b9dca4efebd0bdd982ba09"
 
 chalk@^1.0.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
@@ -600,14 +600,6 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-create-react-class@^15.6.0:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
 dateformat@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
@@ -647,8 +639,8 @@ duplexer2@0.0.2:
     readable-stream "~1.1.9"
 
 electron-to-chromium@^1.3.24:
-  version "1.3.24"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.24.tgz#9b7b88bb05ceb9fa016a177833cc2dde388f21b6"
+  version "1.3.27"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.27.tgz#78ecb8a399066187bb374eede35d9c70565a803d"
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -715,7 +707,7 @@ fancy-log@^1.1.0:
     chalk "^1.1.1"
     time-stamp "^1.0.0"
 
-fbjs@^0.8.16, fbjs@^0.8.9:
+fbjs@^0.8.16:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -1508,8 +1500,8 @@ pretty-hrtime@^1.0.0:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
 
 private@^0.1.6, private@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/private/-/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
 
 process-es6@^0.11.3:
   version "0.11.6"
@@ -1533,7 +1525,7 @@ prop-types@15.x, prop-types@^15.5.10, prop-types@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-pure-color@^1.2.0:
+pure-color@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/pure-color/-/pure-color-1.3.0.tgz#1fe064fb0ac851f0de61320a8bf796836422f33e"
 
@@ -1544,14 +1536,14 @@ randomatic@^1.1.3:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
-react-dom@^15.5.4, react-dom@^15.6.1:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
+react-dom@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0.tgz#9cc3079c3dcd70d4c6e01b84aab2a7e34c303f58"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 "react-draggable@^2.2.6 || ^3.0.3", react-draggable@^3.0.3:
   version "3.0.3"
@@ -1570,15 +1562,13 @@ react-grid-layout@^0.16.0:
     react-draggable "^3.0.3"
     react-resizable "^1.7.5"
 
-react-photo-layout-editor@^1.1.10:
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.10.tgz#f067ff3693d029a6752761b79a4dc3b46c650df2"
+react-photo-layout-editor@^1.1.11:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/react-photo-layout-editor/-/react-photo-layout-editor-1.1.11.tgz#efaa6f383d0ed74a2a8ce4de717228fcf99701ba"
   dependencies:
     classnames "^2.2.5"
     jquery "^3.2.1"
     prop-types "^15.6.0"
-    react "^15.6.1"
-    react-dom "^15.6.1"
     react-grid-layout "^0.16.0"
     react-redux "^5.0.6"
     react-simple-colorpicker "github:RedgooseDev/react-simple-colorpicker"
@@ -1603,24 +1593,21 @@ react-resizable@^1.7.5:
     react-draggable "^2.2.6 || ^3.0.3"
 
 "react-simple-colorpicker@github:RedgooseDev/react-simple-colorpicker":
-  version "1.5.6"
-  resolved "https://codeload.github.com/RedgooseDev/react-simple-colorpicker/tar.gz/c2596567cb926315a05ade2f6955a7e9463490f3"
+  version "1.5.11"
+  resolved "https://codeload.github.com/RedgooseDev/react-simple-colorpicker/tar.gz/6ee7c4fcb550d0fa7c76937d8972e10ebaec0683"
   dependencies:
     classnames "^2.2.5"
-    prop-types "^15.5.10"
-    pure-color "^1.2.0"
-    react "^15.5.4"
-    react-dom "^15.5.4"
+    prop-types "^15.6.0"
+    pure-color "^1.3.0"
 
-react@^15.5.4, react@^15.6.1:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
+react@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
   dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
 
 "readable-stream@>=1.0.33-1 <1.1.0-0":
   version "1.0.34"
@@ -1888,8 +1875,8 @@ trim-right@^1.0.1:
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
 ua-parser-js@^0.7.9:
-  version "0.7.14"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
+  version "0.7.17"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
 unc-path-regex@^0.1.0:
   version "0.1.2"
