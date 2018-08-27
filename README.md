@@ -7,7 +7,7 @@
 
 이 기능을 웹에서 바로 사용할 수 있도록 페이지를 만들었습니다.
 
-http://redgoosedev.github.io/photo-layout-editor/
+http://redgoose-dev.github.io/photo-layout-editor/
 
 
 ## usage
@@ -28,4 +28,4 @@ var photoLayoutEditor = new PhotoLayoutEditor('#app', {});
 
 활용한 리소스는 `index.html` 파일의 내용을 참고하세요.
 
-https://github.com/RedgooseDev/photo-layout-editor/blob/master/index.html
+https://github.com/redgoose-dev/photo-layout-editor/blob/master/index.html
