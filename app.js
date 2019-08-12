@@ -6,7 +6,30 @@ var photoLayoutEditor = new PhotoLayoutEditor('#app', {
 			'https://images.unsplash.com/photo-1565402149395-65551328334c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2200&q=60'
 		],
 		visible: true,
-	}
+	},
+	callback: {
+		init: function() {
+			console.warn('initial component');
+		},
+		sideUploadStart: function() {
+			console.warn('side / upload start');
+		},
+		sideUploadProgress: function(loaded,total,percent) {
+			console.warn('side / uploading', loaded, total, percent);
+		},
+		sideUploadComplete: function(res) {
+			console.warn('side / upload complete', res);
+		},
+		sideUploadCompleteAll: function() {
+			console.warn('side / upload all complete');
+		},
+		sideUploadFail: function() {
+			console.warn('side / upload fail');
+		},
+		sideRemove: function(images) {
+			console.warn('side / remove item', images);
+		},
+	},
 });
 
 

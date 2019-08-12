@@ -26,6 +26,7 @@ var photoLayoutEditor = new PhotoLayoutEditor('#app', {});
 </script>
 ```
 
-활용한 리소스는 `index.html` 파일의 내용을 참고하세요.
+활용한 리소스는 다음 파일들의 내용을 참고하세요.
 
-https://github.com/redgoose-dev/photo-layout-editor/blob/master/index.html
+- html: https://github.com/redgoose-dev/photo-layout-editor/blob/master/index.html
+- javascript: https://github.com/redgoose-dev/photo-layout-editor/blob/master/app.js
