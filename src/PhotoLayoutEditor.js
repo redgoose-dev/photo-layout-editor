@@ -1,10 +1,8 @@
 import React from 'React';
 import ReactDOM from 'ReactDOM';
 import PLE from 'PLE';
-
 // library
 import basePreference from './basePreference';
-
 
 /**
  * Photo layout editor
@@ -33,6 +31,5 @@ function PhotoLayoutEditor(selector, options) {
 	);
 
 }
-
 
 export default PhotoLayoutEditor;

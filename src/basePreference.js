@@ -1,10 +1,6 @@
 export default {
 	side: {
-		files: [
-			'http://goose.redgoose.me/data/upload/original/201709/rg-20170907-000312.jpg',
-			'http://goose.redgoose.me/data/upload/original/201709/rg-20170908-000318.jpg',
-			'http://goose.redgoose.me/data/upload/original/201709/rg-20170908-000320.jpg'
-		]
+		files: []
 	},
 	body: {
 		grid: [

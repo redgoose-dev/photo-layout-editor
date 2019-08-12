@@ -22,6 +22,8 @@ gulp.task('make-vendor', function() {
 		// copy react
 		shell.cp('-R', 'node_modules/react/umd/react.production.min.js', 'vendor/');
 		shell.cp('-R', 'node_modules/react-dom/umd/react-dom.production.min.js', 'vendor/');
+		// copy jquery
+		shell.cp('-R', 'node_modules/jquery/dist/jquery.slim.min.js', 'vendor/');
 		// copy `build`
 		shell.cp('-R', 'node_modules/react-photo-layout-editor/build/*', 'vendor/');
 

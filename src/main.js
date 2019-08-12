@@ -1,4 +1,4 @@
-import PhotoLayoutEditor from './src/PhotoLayoutEditor';
+import PhotoLayoutEditor from './PhotoLayoutEditor';
 
 
 export default PhotoLayoutEditor;

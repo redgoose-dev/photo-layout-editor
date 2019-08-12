@@ -1,11 +1,12 @@
 {
   "name": "photo-layout-editor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "redgoose <scripter@me.com>",
   "description": "Photo layout editor program",
+  "main": "src/main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RedgooseDev/PhotoLayoutEditor.git"
+    "url": "git+https://github.com/redgoose-dev/photo-layout-editor.git"
   },
   "keywords": [
     "Photo",
@@ -16,26 +17,30 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RedgooseDev/PhotoLayoutEditor/issues"
+    "url": "https://github.com/redgoose-dev/photo-layout-editor/issues"
   },
-  "homepage": "https://github.com/RedgooseDev/PhotoLayoutEditor#readme",
-  "scripts": {},
-  "engines": {
-    "node": ">=7.8.0"
+  "homepage": "https://github.com/redgoose-dev/photo-layout-editor",
+  "scripts": {
+    "start": "node_modules/.bin/http-server . -p 3000",
+    "prebuild": "rm -rf build/",
+    "build": "node_modules/.bin/gulp build",
+    "build:watch": "node_modules/.bin/gulp build:watch",
+    "make-vendor": "node_modules/.bin/gulp make-vendor"
   },
   "dependencies": {
-    "react-photo-layout-editor": "^1.1.11"
+    "jquery": "^3.4.1",
+    "react-photo-layout-editor": "^1.2.4"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.0",
-    "gulp": "^3.9.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-node-globals": "^1.1.0",
-    "shelljs": "^0.7.8"
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "gulp": "^4.0.2",
+    "http-server": "^0.11.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "rollup": "^1.19.4",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "shelljs": "^0.8.3"
   }
 }
