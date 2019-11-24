@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('React'), require('ReactDOM'), require('PLE')) :
 	typeof define === 'function' && define.amd ? define(['React', 'ReactDOM', 'PLE'], factory) :
 	(global = global || self, global.PhotoLayoutEditor = factory(global.React, global.ReactDOM, global.PhotoLayoutEditor));
-}(this, function (React, ReactDOM, PLE) { 'use strict';
+}(this, (function (React, ReactDOM, PLE) { 'use strict';
 
 	React = React && React.hasOwnProperty('default') ? React['default'] : React;
 	ReactDOM = ReactDOM && ReactDOM.hasOwnProperty('default') ? ReactDOM['default'] : ReactDOM;
@@ -69,5 +69,5 @@
 
 	return PhotoLayoutEditor;
 
-}));
+})));
 //# sourceMappingURL=PhotoLayoutEditor.js.map

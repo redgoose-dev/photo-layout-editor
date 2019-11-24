@@ -13,7 +13,7 @@ const files = {
 
 
 // make vendor
-gulp.task('make-vendor', function() {
+gulp.task('make-vendor', async function() {
 	try {
 		// remove `build` directory
 		shell.rm('-rf', 'vendor');

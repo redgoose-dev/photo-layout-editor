@@ -1,9 +1,9 @@
 var photoLayoutEditor = new PhotoLayoutEditor('#app', {
 	side: {
 		files: [
-			'https://images.unsplash.com/photo-1565504052130-29d2211abd47?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=100&q=60',
-			'https://images.unsplash.com/photo-1565462900119-a16b91dead9f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2592&q=60',
-			'https://images.unsplash.com/photo-1565402149395-65551328334c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2200&q=60'
+			'https://images.unsplash.com/photo-1565504052130-29d2211abd47?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1440&q=60',
+			'https://images.unsplash.com/photo-1565462900119-a16b91dead9f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1440&q=60',
+			'https://images.unsplash.com/photo-1565402149395-65551328334c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1440&q=60'
 		],
 		visible: true,
 	},
