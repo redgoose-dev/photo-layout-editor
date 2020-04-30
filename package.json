@@ -28,7 +28,7 @@
     "make-vendor": "node_modules/.bin/gulp make-vendor"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "react-photo-layout-editor": "^1.2.5"
   },
   "devDependencies": {
