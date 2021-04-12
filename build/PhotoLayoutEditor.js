@@ -1,12 +1,14 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('React'), require('ReactDOM'), require('PLE')) :
 	typeof define === 'function' && define.amd ? define(['React', 'ReactDOM', 'PLE'], factory) :
-	(global = global || self, global.PhotoLayoutEditor = factory(global.React, global.ReactDOM, global.PhotoLayoutEditor));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.PhotoLayoutEditor = factory(global.React, global.ReactDOM, global.PhotoLayoutEditor));
 }(this, (function (React, ReactDOM, PLE) { 'use strict';
 
-	React = React && React.hasOwnProperty('default') ? React['default'] : React;
-	ReactDOM = ReactDOM && ReactDOM.hasOwnProperty('default') ? ReactDOM['default'] : ReactDOM;
-	PLE = PLE && PLE.hasOwnProperty('default') ? PLE['default'] : PLE;
+	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+	var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+	var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
+	var PLE__default = /*#__PURE__*/_interopDefaultLegacy(PLE);
 
 	var basePreference = {
 	  side: {
@@ -60,7 +62,7 @@
 	  this.body = null;
 	  options = options ? Object.assign({}, basePreference, options) : basePreference; // render
 
-	  ReactDOM.render(React.createElement(PLE, Object.assign({}, options, {
+	  ReactDOM__default['default'].render(React__default['default'].createElement(PLE__default['default'], Object.assign({}, options, {
 	    ref: function ref(r) {
 	      _this.body = r;
 	    }

@@ -119,7 +119,7 @@ main {
 .result__image {
 	margin: 0;
 	padding: 30px;
-	background: #fff url('./vendor/assets/images/bg-space.png') 0 0 repeat;
+	background: #fff url('./vendor/bg-space.png') 0 0 repeat;
 }
 .result__image img {
 	display: block;
